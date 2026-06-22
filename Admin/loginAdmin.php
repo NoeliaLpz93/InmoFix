@@ -5,7 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $clave = $_POST["clave"];
 /* Si el usuario y contraseña son correctos se dirige al panel de Administrador */
     if ($usuario === "admin" && $clave === "admin123") {
-        header("Location: panel.php");
+        header("Location: panelAdmin.php");
         exit();
     /* Si no son correctos da error */
     } else {
