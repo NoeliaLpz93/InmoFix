@@ -1,51 +1,108 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
+/* Este if se pregunta si el usuario envió el formulario */
+if ($_SERVER["REQUEST_METHOD"] === "POST") { 
     $usuario = $_POST["usuario"];
-    $clave   = $_POST["clave"];
-
+    $clave = $_POST["clave"];
+/* Si el usuario y contraseña son correctos se dirige al panel de Administrador */
     if ($usuario === "admin" && $clave === "admin123") {
         header("Location: panel.php");
         exit();
+    /* Si no son correctos da error */
     } else {
-        $error = "Credenciales inválidas";
+        $error = "Usuario o contraseña incorrecto";
     }
 }
+
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Login Administrador</title>
-    <link rel="stylesheet" href="../css/estilo.css?v=1">
+
+<meta charset="UTF-8">
+<title>Login Administrador</title>
+
+<!-- de nuevo la fuente de google fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../css/estilo.css?v=1">
+
 </head>
 
+
 <body>
-     <div class="contenedor">
-        
-        <div class="banner">
-            <img src="../img/inmofix-02.png" alt="logo">
-            <h2>Gestión inmobiliaria inteligente</h2>
-        </div>
-    <div class="contenedor">
 
-        <a class="flecha" href="../index.php">←</a>
+<div class="login-contenedor"> <!-- el contenedor principal del log in-->
 
-        <h2>Acceso Administrador</h2>
+<!-- el boton para volver al index -->
+<a class="login-flecha" href="../index.php">
+←
+</a>
 
-        <?php if (!empty($error)): ?>
-            <p class="error"><?= $error ?></p>
-        <?php endif; ?>
 
-        <form method="POST">
-            <input type="text" name="usuario" placeholder="Usuario" required>
-            <input type="password" name="clave" placeholder="Contraseña" required>
-            <button type="submit">Ingresar</button>
-        </form>
+<div class="login-banner"> <!-- el logo y slogan -->
 
-        <a class="olvide" href="recuperar.php">Olvidé mi contraseña</a>
+<img src="../img/inmofix-02.png" alt="logo">
 
-    </div>
+<h2>
+Gestión inmobiliaria inteligente
+</h2>
+
+</div>
+
+
+<div class="login-formulario">
+
+<h3>
+Acceso Administrador
+</h3>
+
+<?php if (!empty($error)): ?>
+
+<p class="login-error">
+<?= $error ?>
+</p>
+
+<?php endif; ?>
+
+<form method="POST">
+
+<label>
+Usuario
+</label>
+
+<input 
+type="text"
+name="usuario"
+required>
+
+<label>
+Contraseña
+</label>
+
+<input 
+type="password"
+name="clave"
+required>
+
+<a class="login-olvide" href="recuperar.php"> <!-- página que hay que crear -->
+Olvidé mi contraseña
+</a>
+
+<button class="login-btn" type="submit">
+
+Ingresar
+
+</button>
+
+
+</form>
+
+</div>
+
+</div>
+
 </body>
+
 </html>

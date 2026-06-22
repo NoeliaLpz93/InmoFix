@@ -1,59 +1,118 @@
 <?php
-// No mostrar error al cargar la página
-$error = "";
+/* Este if se pregunta si el usuario envió el formulario */
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $usuario = $_POST["usuario"];
+    $clave = $_POST["clave"];
 
-// Solo procesar si se envió el formulario
-if ($_SERVER["REQUEST_METHOD"] === "POST") 
+    /* Ejemplo temporal de validación
+     Después acá va la consulta a la base de datos */
 
-    $usuario = $_POST["usuario"];   // número de contrato
-    $clave   = $_POST["clave"];     // DNI
+    if ($usuario === "inquilino" && $clave === "1234") {
 
-    // Datos de ejemplo (luego se reemplazan por BD)
-    $contrato_correcto = "A12345";
-    $dni_correcto      = "30123456";
-
-    // Validación
-    if ($usuario === $contrato_correcto && $clave === $dni_correcto) {
         header("Location: panel.php");
         exit();
+
     } else {
-        $error = "Usuario o contraseña incorrectos";
-    
+        $error = "Usuario o contraseña incorrecto";
+
+    }
+
 }
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Login Inquilino</title>
-    <link rel="stylesheet" href="../css/estilo.css?v=1">
+
+<meta charset="UTF-8">
+
+<title>Login Inquilino</title>
+<!-- la fuente de google fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../css/estilo.css?v=1">
+
 </head>
 
+
 <body>
-    <div class="contenedor">
-          
-        <div class="banner">
-            <img src="../img/inmofix-02.png" alt="logo">
-            <h2>Gestión inmobiliaria inteligente</h2>
-        </div>
 
-        <a class="flecha" href="../index.php">←</a>
+<div class="login-contenedor">
 
-        <h2>Acceso Inquilino</h2>
+    <!-- el boton para volver al index -->
+    <a class="login-flecha" href="../index.php">
+    ←
+    </a>
 
-        <!-- SOLO aparece si el usuario intentó ingresar -->
-        <?php if ($error !== ""): ?>
-            <p class="error"><?= $error ?></p>
-        <?php endif; ?>
+    <div class="login-banner"> <!-- el logo y slogan -->
 
-        <form method="POST">
-            <input type="text" name="usuario" placeholder="Usuario" required>
-            <input type="password" name="clave" placeholder="Contraseña" required>
-            <button type="submit">Ingresar</button>
-        </form>
+    <img src="../img/inmofix-02.png" alt="logo">
 
-        <a class="olvide" href="recuperar.php">Olvidé mi contraseña</a>
+    <h2>
+    Gestión inmobiliaria inteligente
+    </h2>
 
     </div>
+
+
+    <div class="login-formulario">
+        <h3>
+        Acceso Inquilino
+        </h3>
+
+        <?php if (!empty($error)): ?>
+
+
+            <p class="login-error">
+
+                <?= $error ?>
+
+            </p>
+
+
+        <?php endif; ?>
+
+
+        <form method="POST">
+
+            <label>
+                Usuario
+            </label>
+
+            <input 
+                type="text"
+                name="usuario"
+                placeholder="ingrese su usuario"
+                required>
+
+            <label>
+                Contraseña
+            </label>
+
+            <input 
+                type="password"
+                name="clave"
+                placeholder="Ingrese su contraseña"
+                required>
+
+            <a class="login-olvide" href="recuperar.php">
+                Olvidé mi contraseña
+            </a>
+
+            <button class="login-btn" type="submit">
+                Ingresar
+            </button>
+
+        </form>
+
+
+    </div>
+
+</div>
+
 </body>
+
 </html>

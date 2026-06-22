@@ -1,41 +1,158 @@
+/* General */
+
 body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background: #f2f2f2;
+    margin:0;
+    padding:0;
+    min-height:100vh;
+    font-family:'Montserrat', sans-serif;
+    background:linear-gradient(to top,#D36135,white); /* degradado de fondo*/
+
 }
 
-.contenedor {
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto;
-    text-align: center;
-    padding-top: 40px;
+
+/* Index */
+
+.index-contenedor {
+
+    min-height:100vh;
+    display:flex;
+    flex-direction:column; /* uno debajo del otro*/
+    align-items:center;
+    justify-content:flex-start;
+    padding-top:60px;
 }
 
-.banner img {
-    width: 180px;
+.index-banner {
+    text-align:center;
 }
 
-.banner h2 {
-    margin-top: 10px;
-    font-size: 18px;
-    color: #333;
+.index-banner img {
+    width:180px; /*tamaño logo*/
 }
 
-.botones {
-    margin-top: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.index-banner h2 {
+    margin-top:10px;
+    font-size:18px;
+    font-weight:300;
+    color:#333;
+
 }
 
-.btn {
-    background: #007bff;
-    color: white;
-    padding: 14px;
-    text-decoration: none;
-    border-radius: 8px;
-    font-size: 18px;
-    display: block;
+.index-botones {
+    margin-top:60px;
+    display:flex;
+    gap:30px;
+    justify-content:center;
+}
+
+.index-btn {
+    background:#016A90;
+    color:white;
+    padding:16px 45px;
+    border-radius:50px;
+    text-decoration:none;
+    font-size:18px;
+    font-weight:500;
+    box-shadow: /* sombra*/
+    0px /*movimiento horizontal*/ 8px /*bajada*/ 15px /*y difuminado*/ rgba(0,0,0,0.25);
+    transition:0.3s; /* para que se mueva cuando pones el cursor arriba*/
+}
+
+.index-btn:hover {
+    transform:translateY(-3px);
+}
+
+
+/* Log in */
+
+.login-contenedor {
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+}
+
+.login-flecha {
+    position:absolute; /* esto es para mover la flecha de forma independiente*/
+    top:30px;
+    left:35px;
+    font-size:30px;
+    color:#333;
+    text-decoration:none
+}
+
+.login-banner {
+    text-align:center;
+}
+
+.login-banner img {
+    width:140px;
+}
+
+.login-banner h2 {
+    font-size:17px;
+    font-weight:300;
+    color:#333;
+}
+
+.login-formulario {
+    width:330px;
+    margin-top:35px;
+}
+
+.login-formulario h3 {
+    text-align:center;
+    font-size:22px;
+    font-weight:500;
+    margin-bottom:30px;
+}
+
+.login-formulario label {
+    display:block;
+    font-size:17px;
+    font-weight:500;
+    margin-bottom:8px;
+}
+
+.login-formulario input {
+    width:100%;
+    box-sizing:border-box;
+    padding:15px;
+    margin-bottom:25px;
+    border:none;
+    border-radius:20px;
+    background:white;
+    font-family:'Montserrat',sans-serif;
+    box-shadow:
+    0px 4px 10px rgba(0,0,0,0.12);
+}
+
+.login-olvide {
+    display:block;
+    color:#016A90;
+    text-decoration:none;
+    font-size:14px;
+    margin-bottom:35px;
+}
+
+.login-btn {
+    display:block;
+    margin:auto;
+    background:#016A90;
+    color:white;
+    border:none;
+    padding:16px 50px;
+    border-radius:50px;
+    font-size:18px;
+    font-family:'Montserrat',sans-serif;
+    cursor:pointer; /* esto es para que el cursor se ponga en manito cuando pase por arriba */
+    box-shadow:
+    0px 8px 15px rgba(0,0,0,0.25);
+}
+
+.login-error {
+    text-align:center;
+    color:#a00000;
 }
