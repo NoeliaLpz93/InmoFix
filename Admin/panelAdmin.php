@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start(); //INICIA UNA SESIÓN
 
 // DESACTIVADO PARA QUE PUEDAS VERLO SIN LOGIN
 // if (!isset($_SESSION["admin"])) {
@@ -9,61 +9,144 @@ session_start();
 
 // Datos de ejemplo (luego vienen desde BD)
 $nombre = "Administrador";
+
 $contratos_por_vencer = 3;
 $reclamos_urgentes = 2;
 $pagos_vencidos = 4;
 
 $alertas = [
-    "⚠️ Hay $contratos_por_vencer contratos próximos a vencer.",
-    "⚠️ Hay $reclamos_urgentes reclamos urgentes sin resolver.",
-    "⚠️ Hay $pagos_vencidos pagos vencidos pendientes."
+
+    [
+        "titulo" => "Vencimiento de contrato",
+        "detalle" => "Hay $contratos_por_vencer contratos próximos a vencer."
+    ],
+
+    [
+        "titulo" => "Reclamos urgentes",
+        "detalle" => "Hay $reclamos_urgentes reclamos sin resolver."
+    ],
+
+    [
+        "titulo" => "Pagos vencidos",
+        "detalle" => "Hay $pagos_vencidos pagos pendientes."
+    ]
+
 ];
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
+
     <title>Panel del Administrador</title>
-    <link rel="stylesheet" href="../css/estilo.css?v=1">
+
+    <!-- la letra -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- iconos -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../Css/estilo.css?v=1">
+
 </head>
 
 <body>
 
+    <!-- HEADER -->
+
+    <header class="panel-header">
+
+        <div></div>
+
+        <div class="panel-logo">
+            <img src="../img/inmofix-02.png" alt="Logo INMOFIX">
+        </div>
+
+        <div class="panel-perfil">
+            <i class="fa-solid fa-user"></i>
+        </div>
+
+    </header>
+
     <!-- NAVBAR -->
-    <nav class="nav-admin">
-        <a href="panel.php">Home</a>
-        <a href="inquilinos.php">Inquilinos</a>
-        <a href="propiedades.php">Propiedades</a>
-        <a href="pagos.php">Pagos</a>
-        <a href="reclamos.php">Reclamos</a>
-        <a class="salir" href="salir.php">Salir</a>
+
+    <nav class="panel-navbar">
+
+        <a class="panel-activo" href="panelAdmin.php">
+            <i class="fa-solid fa-house"></i>
+            Inicio
+        </a>
+
+        <a href="inquilinos.php">
+            <i class="fa-solid fa-users"></i>
+            Inquilinos
+        </a>
+
+        <a href="inmuebles.php">
+            <i class="fa-solid fa-folder"></i>
+            Inmuebles
+        </a>
+
+        <a href="contratos.php">
+            <i class="fa-solid fa-file-contract"></i>
+            Contratos
+        </a>
+
+        <a href="reclamos.php">
+            <i class="fa-solid fa-comments"></i>
+            Reclamos
+        </a>
+
+        <a href="pagos.php">
+            <i class="fa-solid fa-dollar-sign"></i>
+            Pagos
+        </a>
+
     </nav>
 
-    <div class="contenedor">
+    <!-- CONTENIDO -->
 
-        <h2>Bienvenido, <?= $nombre ?></h2>
+    <main class="panel-main">
 
-        <!-- ALERTAS -->
-        <?php foreach ($alertas as $a): ?>
-            <div class="alerta"><?= $a ?></div>
-        <?php endforeach; ?>
+        <h1 class="panel-bienvenida">
+            Bienvenido, <?= $nombre ?>
+        </h1>
 
-        <!-- CARDS -->
-        <div class="card">
-            <h3>Contratos</h3>
-            <p><strong>Por vencer:</strong> <?= $contratos_por_vencer ?></p>
+        <div class="panel-alertas">
+
+            <?php foreach ($alertas as $alerta): ?>
+
+                <div class="panel-alerta">
+
+                    <div class="panel-icono">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+
+                    <div class="panel-texto">
+
+                        <strong>
+                            <?= $alerta["titulo"] ?>
+                        </strong>
+
+                        <p>
+                            <?= $alerta["detalle"] ?>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            <?php endforeach; ?>
+
         </div>
 
-        <div class="card">
-            <h3>Reclamos</h3>
-            <p><strong>Urgentes:</strong> <?= $reclamos_urgentes ?></p>
-        </div>
+    </main>
 
-        <div class="card">
-            <h3>Pagos</h3>
-            <p><strong>Vencidos:</strong> <?= $pagos_vencidos ?></p>
-        </div>
-
-    </div>
 </body>
+
 </html>
