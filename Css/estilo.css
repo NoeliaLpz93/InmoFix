@@ -260,3 +260,132 @@ body {
     margin:5px 0 0 0;
     color:#333;
 }
+    /* PANEL INQUILINO*/
+.panel-header{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    padding:20px 40px;
+    background:white;
+}
+
+.panel-logo{
+    text-align:center;
+}
+
+.panel-logo img{
+    width:170px;
+}
+
+.panel-perfil{
+    justify-self:end;
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    background:#F6D9CB;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 4px 10px rgba(0,0,0,.15);
+    cursor:pointer;
+}
+
+.panel-perfil i{
+    color:#016A90;
+    font-size:24px;
+}
+
+.nav-inquilino{
+    background:#DCE5E9;
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    padding:14px 0;
+}
+
+.nav-inquilino a{
+    text-decoration:none;
+    color:#016A90;
+    font-size:14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 18px;
+    border-radius:25px;
+    transition:.3s;
+}
+
+.nav-inquilino a:hover{
+    background:#C5D7DF;
+}
+
+.nav-inquilino .activo{
+    background:#BDD3DC;
+    font-weight:600;
+}
+
+/* contenedor */
+
+.contenedor{
+    width:90%;
+    max-width:1100px;
+    margin:35px auto;
+}
+
+.contenedor h2{
+    text-align:center;
+    color:#D36135;
+    font-size:42px;
+    margin-bottom:40px;
+}
+
+/* tarjetas */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.card{
+    background:#F7E1D8;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 4px 10px rgba(0,0,0,.12);
+}
+
+.card h3{
+    margin:0;
+    background:#E8E3E0;
+    text-align:center;
+    padding:12px;
+    font-size:22px;
+    color:#222;
+}
+
+.card p{
+    padding:6px 20px;
+    color:#333;
+    font-size:18px;
+}
+
+/* Notisficaciones */
+
+.notificaciones{
+    margin-top:22px;
+}
+
+.notificaciones h3{
+    text-align:left;
+    padding-left:20px;
+}
+
+.notificaciones p{
+    background:#FFF8E5;
+    border-left:5px solid #F2A900;
+    padding:15px;
+    border-radius:10px;
+    margin:15px;
+}
+
+

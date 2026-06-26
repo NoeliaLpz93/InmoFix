@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($usuario === "inquilino" && $clave === "1234") {
 
-        header("Location: panel.php");
+        header("Location: panelInq.php");
         exit();
 
     } else {
