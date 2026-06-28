@@ -1,5 +1,6 @@
 <?php
-require "conexion.php";
+require "conection.php";
+
 
 $busqueda = $_GET["q"] ?? "";
 

@@ -3,6 +3,6 @@
  $user = 'root'; //USUARIO POR DEFECTO 
  $pass = '251293'; //CLAVE POR DEFECTO
  $bd = 'Inmofix'; //NOMBRE DE LA BD
-$conexion = mysqli_connect($host, $user, $pass, $bd);
- mysqli_set_charset($conexion, 'utf8');
+$conn = mysqli_connect($host, $user, $pass, $bd);
+ mysqli_set_charset($conn, 'utf8');
 ?>
