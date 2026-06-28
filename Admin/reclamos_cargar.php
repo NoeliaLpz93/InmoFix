@@ -1,5 +1,5 @@
 <?php
-require "../conection.php";
+require "conection.php";
 
 // Obtener lista de inquilinos
 $sqlInquilinos = "SELECT IdUsuario, Nombre, Apellido FROM Usuarios";

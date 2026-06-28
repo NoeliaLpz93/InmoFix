@@ -1,13 +1,20 @@
 <?php
-// Luego esto viene de MySQL
-$contrato = [
-    'id' => 56,
-    'inquilino' => 'Juan Perez',
-    'inmueble' => 'San Martin 123',
-    'estado' => 'Activo',
-    'vencimiento' => '1/02/2028'
-];
+require "conection.php"; // porque tu conexion.php está dentro de Admin
+
+$id = $_GET["id"]; // viene desde contratos.php
+
+$sql = "SELECT c.*, 
+               u.Nombre AS NombreInquilino,
+               u.Apellido AS ApellidoInquilino,
+               i.Direccion AS DireccionInmueble
+        FROM contratos c
+        INNER JOIN usuarios u ON c.IdInquilino = u.IdUsuario
+        INNER JOIN inmuebles i ON c.IdInmueble = i.IdInmueble
+        WHERE c.IdContrato = $id";
+
+$contrato = $conn->query($sql)->fetch_assoc();
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>

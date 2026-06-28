@@ -1,11 +1,19 @@
 <?php
-// Luego esto vendrá de MySQL
-$contratos = [
-    [56, "Juan Perez", "San Martin 123", "Activo", "1/02/2028"],
-    [57, "Ana López", "Córdoba 312", "Por vencer", "15/06/2026"],
-    [58, "Sergio Rodriguez", "Colon 123", "Finalizado", "2/04/2026"]
-];
+require "conection.php"; // porque tu conexion.php está dentro de Admin
+
+// Consulta de contratos + datos del inquilino + datos del inmueble
+$sql = "SELECT c.*, 
+               u.Nombre AS NombreInquilino,
+               u.Apellido AS ApellidoInquilino,
+               i.Direccion AS DireccionInmueble
+        FROM contratos c
+        INNER JOIN usuarios u ON c.IdInquilino = u.IdUsuario
+        INNER JOIN inmuebles i ON c.IdInmueble = i.IdInmueble
+        ORDER BY c.IdContrato DESC";
+
+$contratos = $conn->query($sql);
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
