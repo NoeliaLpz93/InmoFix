@@ -27,7 +27,7 @@
 
     </div>
 
-    <div class="index-botones">
+    <div class="index-botones"> <!-- el contenedor de los botones -->
 
         <a class="index-btn" href="Admin/loginAdmin.php">
             Administrador

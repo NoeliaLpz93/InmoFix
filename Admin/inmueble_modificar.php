@@ -1,10 +1,10 @@
 <?php
 require "conection.php";
 
-$id = $_GET["id"];
+$id = $_GET["id"]; // Obtiene el ID del inmueble que se va a modificar.
 
 // Obtener datos actuales
-$sql = "SELECT * FROM inmuebles WHERE id = $id";
+$sql = "SELECT * FROM inmuebles WHERE id = $id"; 
 $inmueble = $conn->query($sql)->fetch_assoc();
 
 if ($_POST) {

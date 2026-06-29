@@ -1,11 +1,12 @@
 <?php
 require "conection.php";
 
-$id = $_GET["id"];
+$id = $_GET["id"]; // Obtiene el ID del inmueble enviado por la URL
 
-$sql = "SELECT * FROM inmuebles WHERE id = $id";
-$inmueble = $conn->query($sql)->fetch_assoc();
+$sql = "SELECT * FROM inmuebles WHERE id = $id"; // Crea la consulta para obtener todos los datos del inmueble seleccionado
+$inmueble = $conn->query($sql)->fetch_assoc(); // Ejecuta la consulta y guarda los datos del inmueble en un array asociativo
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +22,7 @@ $inmueble = $conn->query($sql)->fetch_assoc();
 
     <h2>Detalles del Inmueble</h2>
 
-    <img src="../uploads/<?= $inmueble['imagen'] ?>" class="foto-detalle">
+    <img src="../uploads/<?= $inmueble['imagen'] ?>" class="foto-detalle"> // Muestra la imagen del inmueble almacenada en la base de datos.
 
     <p><strong>Dirección:</strong> <?= $inmueble["direccion"] ?></p>
     <p><strong>Tipo:</strong> <?= $inmueble["tipo"] ?></p>
@@ -38,7 +39,7 @@ $inmueble = $conn->query($sql)->fetch_assoc();
         <!-- Boton de ELIMINAR CON CONFIRMACIÓN  -->
         <a href="inmueble_eliminar.php?id=<?= $inmueble['id'] ?>"
            class="btn btn-rojo"
-           onclick="return confirm('¿Seguro que deseas eliminar este inmueble? Esta acción no se puede deshacer.');">
+           onclick="return confirm('¿Seguro que deseas eliminar este inmueble? Esta acción no se puede deshacer.');"> 
             Eliminar inmueble
         </a>
 
