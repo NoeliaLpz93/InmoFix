@@ -6,9 +6,9 @@ $busqueda = $_GET["q"] ?? "";
 
 $sql = "SELECT * FROM inquilinos 
         WHERE nombre LIKE '%$busqueda%' 
-        OR apellido LIKE '%$busqueda%'";
+        OR apellido LIKE '%$busqueda%'"; //Pide todos los inquilinos cuyo nombre o apellido contenga el texto que escribió el usuario en busqueda
 
-$resultado = $conn->query($sql);
+$resultado = $conn->query($sql);//ejecuta la consulta
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -47,7 +47,7 @@ $resultado = $conn->query($sql);
         </thead>
 
         <tbody>
-            <?php while ($fila = $resultado->fetch_assoc()) { ?>
+            <?php while ($fila = $resultado->fetch_assoc()) { ?> <!-- leer resultados de la base de datos -->
                 <tr>
                     <td><?= $fila["id"] ?></td>
                     <td><?= $fila["apellido"] ?></td>
