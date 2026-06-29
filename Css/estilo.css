@@ -387,23 +387,3 @@ body {
     border-radius:10px;
     margin:15px;
 }
-
-    .caja-formulario-integrada {
-    background: white;
-    width: 100%;
-    max-width: 650px;
-    margin: 0 auto;
-    padding: 40px;
-    position: relative;
-    border-radius: 0px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-}
-
-.form-cerrar {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    font-size: 22px;
-    color: #333;
-    text-decoration: none;
-}
