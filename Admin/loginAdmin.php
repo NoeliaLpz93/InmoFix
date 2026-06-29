@@ -1,5 +1,6 @@
 <?php
 include ("conection.php");
+
 /* Este if se pregunta si el usuario envió el formulario */
 if ($_SERVER["REQUEST_METHOD"] === "POST") { 
     $usuario = $_POST["usuario"];
