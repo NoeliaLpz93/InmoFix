@@ -25,6 +25,7 @@ $contrato = $conn->query($sql)->fetch_assoc();
 
     <h1>Detalle del contrato</h1>
 
+    <!-- Mostramos la información del contrato -->
     <p><strong>Id Contrato:</strong> #<?php echo $contrato['id']; ?></p>
     <p><strong>Inquilino:</strong> <?php echo $contrato['inquilino']; ?></p>
     <p><strong>Inmueble:</strong> <?php echo $contrato['inmueble']; ?></p>

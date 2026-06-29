@@ -15,6 +15,7 @@ $sql = "SELECT r.*,
         OR u.Apellido LIKE '%$busqueda%'
         OR i.Direccion LIKE '%$busqueda%'";
 
+// Ejecutamos la consulta
 $resultado = $conn->query($sql);
 ?>
 <!DOCTYPE html>

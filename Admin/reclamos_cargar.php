@@ -9,6 +9,7 @@ $inquilinos = $conn->query($sqlInquilinos);
 $sqlInmuebles = "SELECT IdInmueble, Direccion FROM Inmuebles";
 $inmuebles = $conn->query($sqlInmuebles);
 
+// Si se envió el formulario
 if ($_POST) {
 
     $IdInquilino = $_POST["IdInquilino"];
@@ -17,13 +18,15 @@ if ($_POST) {
     $Descripcion = $_POST["Descripcion"];
     $Estado = "Pendiente"; // siempre inicia pendiente
     $Prioridad = $_POST["Prioridad"];
-    $FechaCreacion = date("Y-m-d H:i:s");
+    $FechaCreacion = date("Y-m-d H:i:s");   // fecha y hora en que se crea el reclamo
 
+    // Insertamos el nuevo reclamo en la base de datos
     $sql = "INSERT INTO Reclamos 
             (IdInquilino, IdInmueble, Categoria, Descripcion, Estado, FechaCreacion, Prioridad)
             VALUES 
             ('$IdInquilino', '$IdInmueble', '$Categoria', '$Descripcion', '$Estado', '$FechaCreacion', '$Prioridad')";
 
+ // Ejecutamos la consulta
     $conn->query($sql);
 
     header("Location: reclamos.php");
