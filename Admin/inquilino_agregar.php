@@ -1,19 +1,19 @@
 <?php
 require "conection.php";
 
-if ($_POST) {
-    $apellido = $_POST["apellido"];
+if ($_POST) { //el formulario fué enviado?
+    $apellido = $_POST["apellido"]; //toma los datos escritos y los guarda en la variable
     $nombre = $_POST["nombre"];
     $dni = $_POST["dni"];
     $telefono = $_POST["telefono"];
     $email = $_POST["email"];
 
-    $sql = "INSERT INTO inquilinos (apellido, nombre, dni, telefono, email)
-            VALUES ('$apellido', '$nombre', '$dni', '$telefono', '$email')";
+    $sql = "INSERT INTO inquilinos (apellido, nombre, dni, telefono, email) 
+            VALUES ('$apellido', '$nombre', '$dni', '$telefono', '$email')"; //consulta a sql para insertar datos
 
-    $conn->query($sql);
+    $conn->query($sql); //enviar consulta
 
-    header("Location: inquilinos.php");
+    header("Location: inquilinos.php"); //redireccionar
     exit;
 }
 ?>

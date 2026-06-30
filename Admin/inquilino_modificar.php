@@ -1,10 +1,10 @@
 <?php
 require "conection.php";
 
-$id = $_GET["id"];
+$id = $_GET["id"]; //obtener el id del inquilino a modificar
 
-$sql = "SELECT * FROM inquilinos WHERE id = $id";
-$inquilino = $conn->query($sql)->fetch_assoc();
+$sql = "SELECT * FROM inquilinos WHERE id = $id"; //buscar todos los datos del inquilino con ese id
+$inquilino = $conn->query($sql)->fetch_assoc(); //ejecutar y tomar la primera fila para guardar en la variable
 
 if ($_POST) {
     $apellido = $_POST["apellido"];
@@ -16,11 +16,11 @@ if ($_POST) {
     $update = "UPDATE inquilinos 
                SET apellido='$apellido', nombre='$nombre', dni='$dni',
                    telefono='$telefono', email='$email'
-               WHERE id=$id";
+               WHERE id=$id"; // modificar registro existente
 
     $conn->query($update);
 
-    header("Location: inquilinos.php");
+    header("Location: inquilinos.php"); // redireccionar
     exit;
 }
 ?>

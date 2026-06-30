@@ -1,7 +1,7 @@
 <?php
 require "conection.php";
 
-if ($_POST) {
+if ($_POST) { // Verifica si el usuario envió el formulario
 
     $direccion = $_POST["direccion"];
     $tipo = $_POST["tipo"];
@@ -9,14 +9,14 @@ if ($_POST) {
     $descripcion = $_POST["descripcion"];
 
     // SUBIR IMAGEN
-    $nombreImg = $_FILES["imagen"]["name"];
-    $ruta = "../uploads/" . $nombreImg;
-    move_uploaded_file($_FILES["imagen"]["tmp_name"], $ruta);
+    $nombreImg = $_FILES["imagen"]["name"]; // Obtiene el nombre del archivo de imagen
+    $ruta = "../uploads/" . $nombreImg; // Crea la ruta donde se guardará la imagen
+    move_uploaded_file($_FILES["imagen"]["tmp_name"], $ruta); // Mueve la imagen desde la carpeta temporal hacia uploads
 
-    $sql = "INSERT INTO inmuebles (direccion, tipo, estado, descripcion, imagen)
-            VALUES ('$direccion', '$tipo', '$estado', '$descripcion', '$nombreImg')";
+    $sql = "INSERT INTO inmuebles (direccion, tipo, estado, descripcion, imagen) 
+            VALUES ('$direccion', '$tipo', '$estado', '$descripcion', '$nombreImg')"; // Crea la consulta para guardar el inmueble en la base de datos
 
-    $conn->query($sql);
+    $conn->query($sql); // Ejecuta la consulta SQL
 
     header("Location: inmuebles.php");
     exit;
@@ -32,7 +32,7 @@ if ($_POST) {
 
 <h2>Agregar Inmueble</h2>
 
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data"> <!-- Permite enviar archivos como imágenes. -->
 
     <label>Dirección:</label>
     <input type="text" name="direccion" required><br>

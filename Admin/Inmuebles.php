@@ -1,12 +1,12 @@
 <?php
 require "conection.php";
 
-$busqueda = $_GET["q"] ?? "";
+$busqueda = $_GET["q"] ?? ""; // Guarda el texto buscado. Si no hay búsqueda, queda vacío.
 
 $sql = "SELECT * FROM inmuebles 
-        WHERE direccion LIKE '%$busqueda%'";
+        WHERE direccion LIKE '%$busqueda%'"; // Consulta los inmuebles cuya dirección contenga el texto buscado.
 
-$resultado = $conn->query($sql);
+$resultado = $conn->query($sql); // Ejecuta la consulta y guarda los resultados.
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -18,7 +18,7 @@ $resultado = $conn->query($sql);
 
 <body>
 
-<?php include "nav.php"; ?>
+<?php include "nav.php"; ?> <!--Inserta la barra de navegación-->
 
 <div class="contenedor">
 
@@ -26,7 +26,7 @@ $resultado = $conn->query($sql);
 
     <!-- BOTONES SUPERIORES -->
     <div class="acciones-superior">
-        <a href="inmueble_cargar.php" class="btn">Agregar inmueble</a>
+        <a href="inmueble_agregar.php" class="btn">Agregar inmueble</a>
 
         <form method="GET" class="buscador">
             <input type="text" name="q" placeholder="Buscar por dirección" value="<?= $busqueda ?>">
@@ -38,7 +38,7 @@ $resultado = $conn->query($sql);
 
     <!-- TARJETAS -->
     <div class="grid-inmuebles">
-        <?php while ($fila = $resultado->fetch_assoc()) { ?>
+        <?php while ($fila = $resultado->fetch_assoc()) { ?> <!-- Recorre todos los inmuebles obtenidos de la base de datos.-->
             <div class="card-inmueble">
 
                 <img src="../uploads/<?= $fila['imagen'] ?>" class="foto-inmueble">

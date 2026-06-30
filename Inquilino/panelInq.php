@@ -69,8 +69,8 @@ $notificaciones = [
             <i class="fa-solid fa-file-contract"></i> Contrato
         </a>
 
-        <a href="reclamos.php">
-            <i class="fa-solid fa-comments"></i> Reclamos
+        <a href="reclamosInq.php">
+            <i class="fa-solid fa-comments"></i> reclamos
         </a>
 
     </nav>

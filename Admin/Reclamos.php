@@ -15,6 +15,7 @@ $sql = "SELECT r.*,
         OR u.Apellido LIKE '%$busqueda%'
         OR i.Direccion LIKE '%$busqueda%'";
 
+// Ejecutamos la consulta
 $resultado = $conn->query($sql);
 ?>
 <!DOCTYPE html>
@@ -35,6 +36,8 @@ $resultado = $conn->query($sql);
 
     <!-- BUSCADOR -->
     <form method="GET" class="buscador">
+          <!-- Formulario de búsqueda, se utiliza GET porque el dato de búsqueda viaja por la URL
+             y no modifica información en la base de datos. -->
         <input type="text" name="q" placeholder="Buscar por nombre o dirección" value="<?= $busqueda ?>">
         <button type="submit">Buscar</button>
     </form>
@@ -59,6 +62,8 @@ $resultado = $conn->query($sql);
 
                 <?php
                 // Colores según estado
+                // Asocia cada estado del reclamo con una clase CSS.
+                // Luego esa clase cambia el color del texto o del fondo.
                 $colorEstado = [
                     "Pendiente" => "estado-pendiente",
                     "En Proceso" => "estado-proceso",
@@ -66,6 +71,8 @@ $resultado = $conn->query($sql);
                 ];
 
                 // Colores según prioridad
+                // Asocia cada prioridad con una clase CSS.
+            
                 $colorPrioridad = [
                     "Alta" => "prioridad-alta",
                     "Media" => "prioridad-media",

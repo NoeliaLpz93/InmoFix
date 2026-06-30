@@ -2,7 +2,7 @@
 require "conection.php";
 
 $id = $_GET["id"];
-
+// Consulta SQL para obtener toda la información del reclamo.
 $sql = "SELECT r.*, 
                u.Nombre AS NombreInquilino,
                u.Apellido AS ApellidoInquilino,
@@ -12,6 +12,7 @@ $sql = "SELECT r.*,
         INNER JOIN Inmuebles i ON r.IdInmueble = i.IdInmueble
         WHERE r.IdReclamo = $id";
 
+// Ejecutamos la consulta
 $reclamo = $conn->query($sql)->fetch_assoc();
 ?>
 <!DOCTYPE html>
@@ -26,7 +27,7 @@ $reclamo = $conn->query($sql)->fetch_assoc();
 <?php include "nav.php"; ?>
 
 <div class="contenedor">
-
+<!-- Mostramos el número del reclamo -->
     <h2>Detalle del Reclamo #<?= $reclamo["IdReclamo"] ?></h2>
 
     <p><strong>Estado:</strong> <?= $reclamo["Estado"] ?></p>
@@ -37,18 +38,18 @@ $reclamo = $conn->query($sql)->fetch_assoc();
     <p><strong>Inmueble:</strong> <?= $reclamo["DireccionInmueble"] ?></p>
     <p><strong>Categoría:</strong> <?= $reclamo["Categoria"] ?></p>
     <p><strong>Descripción:</strong> <?= $reclamo["Descripcion"] ?></p>
-
+ <!-- modificamos el estado del reclamo -->
     <div class="acciones-detalle">
         <a href="reclamo_estado.php?id=<?= $reclamo['IdReclamo'] ?>" class="btn btn-naranja">
             Cambiar Estado
         </a>
-
+<!-- eliminamos el estado del reclamo -->
         <a href="reclamo_eliminar.php?id=<?= $reclamo['IdReclamo'] ?>"
            class="btn btn-rojo"
            onclick="return confirm('¿Seguro que deseas eliminar este reclamo?');">
             Eliminar Reclamo
         </a>
-
+ <!-- Regresamos al listado de reclamos -->
         <a href="reclamos.php" class="btn btn-gris">Volver</a>
     </div>
 
