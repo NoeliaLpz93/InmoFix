@@ -23,6 +23,10 @@ $resultado = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <title>Reclamos</title>
+    <!-- la letra -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- css -->
     <link rel="stylesheet" href="../css/estilo.css?v=1">
 </head>
 

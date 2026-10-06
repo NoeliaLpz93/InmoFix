@@ -19,17 +19,16 @@ $contratos = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <title>InmoFix - Contratos</title>
+
+     <!-- la letra -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- css -->
+    <link rel="stylesheet" href="../css/estilo.css?v=1">
 </head>
 <body>
 
-    <!-- NAV EXACTO -->
-    <nav>
-        <span>Home</span>
-        <span>Inmuebles</span>
-        <span>Contratos</span>
-        <span>Reclamos</span>
-        <span>Pagos</span>
-    </nav>
+    <?php include "nav.php"; ?> <!--Inserta la barra de navegación-->
 
     <h1>Contratos</h1>
 

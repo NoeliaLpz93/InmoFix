@@ -54,10 +54,6 @@ $alertas = [
     <!-- la letra -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- iconos -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
     <!-- CSS -->
     <link rel="stylesheet" href="../Css/estilo.css?v=1">
 
@@ -65,57 +61,7 @@ $alertas = [
 
 <body>
 
-    <!-- HEADER -->
-
-    <header class="panel-header">
-
-        <div></div>
-
-        <div class="panel-logo">
-            <img src="../img/inmofix-02.png" alt="Logo INMOFIX">
-        </div>
-
-        <div class="panel-perfil">
-            <i class="fa-solid fa-user"></i>
-        </div>
-
-    </header>
-
-    <!-- NAVBAR -->
-
-    <nav class="panel-navbar">
-
-        <a class="panel-activo" href="panelAdmin.php">
-            <i class="fa-solid fa-house"></i>
-            Inicio
-        </a>
-
-        <a href="inquilinos.php">
-            <i class="fa-solid fa-users"></i>
-            Inquilinos
-        </a>
-
-        <a href="inmuebles.php">
-            <i class="fa-solid fa-folder"></i>
-            Inmuebles
-        </a>
-
-        <a href="contratos.php">
-            <i class="fa-solid fa-file-contract"></i>
-            Contratos
-        </a>
-
-        <a href="reclamos.php">
-            <i class="fa-solid fa-comments"></i>
-            Reclamos
-        </a>
-
-        <a href="pagos.php">
-            <i class="fa-solid fa-dollar-sign"></i>
-            Pagos
-        </a>
-
-    </nav>
+    <?php include "nav.php"; ?> <!--Inserta la barra de navegación y header-->
 
     <!-- CONTENIDO -->
 
