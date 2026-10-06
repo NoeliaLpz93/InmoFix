@@ -4,7 +4,7 @@ require "conection.php";
 $id = $_GET["id"]; // Obtiene el ID del inmueble que se va a modificar.
 
 // Obtener datos actuales
-$sql = "SELECT * FROM inmuebles WHERE id = $id"; 
+$sql = "SELECT * FROM inmuebles WHERE IdInmueble = $id"; 
 $inmueble = $conn->query($sql)->fetch_assoc();
 
 if ($_POST) {
@@ -64,20 +64,20 @@ if ($_POST) {
     <form method="POST" enctype="multipart/form-data">
 
         <label>Dirección:</label>
-        <input type="text" name="direccion" value="<?= $inmueble['direccion'] ?>" required><br>
+        <input type="text" name="direccion" value="<?= $inmueble['Direccion'] ?>" required><br>
 
         <label>Tipo:</label>
-        <input type="text" name="tipo" value="<?= $inmueble['tipo'] ?>" required><br>
+        <input type="text" name="tipo" value="<?= $inmueble['Tipo'] ?>" required><br>
 
         <label>Estado:</label>
         <select name="estado">
-            <option value="Disponible" <?= $inmueble['estado']=="Disponible" ? "selected" : "" ?>>Disponible</option>
-            <option value="Alquilado" <?= $inmueble['estado']=="Alquilado" ? "selected" : "" ?>>Alquilado</option>
-            <option value="Suspendido" <?= $inmueble['estado']=="Suspendido" ? "selected" : "" ?>>Suspendido</option>
+            <option value="Disponible" <?= $inmueble['Estado']=="Disponible" ? "selected" : "" ?>>Disponible</option>
+            <option value="Alquilado" <?= $inmueble['Estado']=="Alquilado" ? "selected" : "" ?>>Alquilado</option>
+            <option value="Suspendido" <?= $inmueble['Estado']=="Suspendido" ? "selected" : "" ?>>Suspendido</option>
         </select><br>
 
         <label>Descripción:</label>
-        <textarea name="descripcion"><?= $inmueble['descripcion'] ?></textarea><br>
+        <textarea name="descripcion"><?= $inmueble['Descripcion'] ?></textarea><br>
 
         <label>Imagen actual:</label><br>
         <img src="../uploads/<?= $inmueble['imagen'] ?>" width="250" style="border-radius:10px;"><br><br>

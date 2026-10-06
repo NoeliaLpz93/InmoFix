@@ -47,11 +47,6 @@
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                 </form>
-
-                <a href="inmueble_eliminar.php" class="btn btn-rojo">
-                    <i class="fa-solid fa-trash"></i>
-                    Eliminar inmueble
-                </a>
             </div>
     <!-- TARJETAS -->
             <div class="grid-inmuebles">
@@ -68,10 +63,21 @@
                 <p><?= $fila["Tipo"] ?></p>
             </div>
 
+            <div class="acciones-tarjeta">
+
             <a href="inmueble_detalles.php?id=<?= $fila['IdInmueble'] ?>" class="btn-detalles">
                 <i class="fa-solid fa-circle-info"></i>
-                 Detalles
+                Detalles
             </a>
+
+            <a href="inmueble_eliminar.php?id=<?= $fila['IdInmueble'] ?>"
+                class="btn btn-rojo"
+                onclick="return confirm('¿Seguro que deseas eliminar este inmueble? Esta acción no se puede deshacer.');">
+                <i class="fa-solid fa-trash"></i>
+            Eliminar
+            </a>
+
+</div>
 
         </div>
 
