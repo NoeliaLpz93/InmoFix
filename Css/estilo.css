@@ -1102,13 +1102,11 @@ body {
 .campo-inmueble select:focus,
 .campo-inmueble textarea:focus {
     border-color: #016A90;
-
     box-shadow: 0 0 0 2px rgba(1, 106, 144, 0.08);
 }
 
 .campo-inmueble textarea {
     min-height: 110px;
-
     resize: vertical;
 }
 
@@ -1119,19 +1117,14 @@ body {
 
 .modal-footer {
     grid-column: 1 / -1;
-
     display: flex;
-
     justify-content: center;
-
     margin-top: 5px;
 }
 
 .modal-guardar {
     min-width: 190px;
-
     padding: 13px 25px;
-
     font-size: 14px;
 }
 
@@ -1146,4 +1139,123 @@ body {
     border-radius: 20px;
     display: block;
     margin-bottom: 15px;
+}
+
+/* =========================
+   TABLA DE INQUILINOS
+   ========================= */
+
+.tabla-contenedor {
+    max-height: 500px;
+    overflow-y: auto;
+    border-radius: 25px;
+}
+
+.tabla-inquilinos {
+    width: 100%;
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    border: 0px;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: 'Montserrat', sans-serif;
+    box-shadow: 0 0 0 2px rgba(1, 106, 144, 0.08);
+}
+
+/* Encabezado */
+.tabla-inquilinos thead {
+    background: #016A90;
+    color: white;
+}
+
+.tabla-inquilinos th {
+    padding: 16px 20px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Filas */
+.tabla-inquilinos td {
+    padding: 15px 20px;
+    font-size: 14px;
+    color: #333;
+    border-top: 1px solid rgba(1, 106, 144, 0.25);
+}
+
+/* Hover */
+.tabla-inquilinos tbody tr:hover {
+    background: rgba(1, 106, 144, 0.08);
+}
+
+/* Acciones */
+.acciones-tabla {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.acciones-tabla .btn {
+    padding: 7px 12px;
+    font-size: 12px;
+}
+
+/* ==================================================
+   MODAL INQUILINOS
+   ================================================== */
+
+.formulario-inquilino {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.campos-inquilino {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 25px;
+}
+
+.campo-inquilino {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.campo-inquilino-completo {
+    grid-column: 1 / -1;
+}
+
+.campo-inquilino label {
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.campo-inquilino input {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 12px 15px;
+
+    border: 1px solid #d4dfe2;
+    border-radius: 12px;
+
+    background: white;
+    color: #444;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+
+    outline: none;
+}
+
+.campo-inquilino input::placeholder {
+    color: #a5abad;
+}
+
+.campo-inquilino input:focus {
+    border-color: #016A90;
+    box-shadow: 0 0 0 2px rgba(1, 106, 144, 0.08);
 }

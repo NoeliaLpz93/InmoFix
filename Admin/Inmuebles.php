@@ -247,15 +247,15 @@
 
 <script>
 
-    const botonAgregar = document.getElementById("btn-agregar-inmueble");
-    const modalAgregar = document.getElementById("modal-agregar-inmueble");
+    const botonAgregar = document.getElementById("btn-agregar-inmueble"); //busca el botón de Agregar inmueble.
+    const modalAgregar = document.getElementById("modal-agregar-inmueble"); //busca el modal
     const botonCerrar = document.getElementById("cerrar-modal-inmueble");
 
 
     // ABRIR MODAL
     botonAgregar.addEventListener("click", function () {
 
-        modalAgregar.classList.add("modal-visible");
+        modalAgregar.classList.add("modal-visible"); //le agrega la clase
 
     });
 
