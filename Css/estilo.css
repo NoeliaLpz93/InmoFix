@@ -834,3 +834,316 @@ body {
     }
 
 } 
+
+/* ==================================================
+   MODAL AGREGAR INMUEBLE
+   ================================================== */
+
+.modal-fondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.45);
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 1000;
+}
+
+.modal-fondo.modal-visible {
+    display: flex;
+}
+
+
+/* ==================================================
+   CONTENEDOR DEL MODAL
+   ================================================== */
+
+.modal-inmueble {
+    width: 850px;
+    max-width: 90%;
+    max-height: 90vh;
+
+    background: white;
+
+    border-radius: 28px;
+
+    padding: 35px 40px;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+
+    overflow-y: auto;
+}
+
+
+/* ==================================================
+   ENCABEZADO
+   ================================================== */
+
+.modal-header {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 30px;
+}
+
+.modal-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin: 0;
+
+    color: #333;
+
+    font-size: 27px;
+    font-weight: 600;
+}
+
+.modal-icono-titulo {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 50%;
+
+    background: #016A90;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 15px;
+}
+
+
+/* ==================================================
+   BOTÓN CERRAR
+   ================================================== */
+
+.modal-cerrar {
+    position: absolute;
+
+    right: 0;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #dce5e9;
+    color: #016A90;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-cerrar:hover {
+    background: #c9dce2;
+}
+
+
+/* ==================================================
+   FORMULARIO
+   ================================================== */
+
+.formulario-inmueble {
+    display: grid;
+
+    grid-template-columns: 280px 1fr;
+
+    gap: 35px;
+}
+
+
+/* ==================================================
+   ZONA DE IMAGEN
+   ================================================== */
+
+.modal-columna-imagen {
+    display: flex;
+    align-items: stretch;
+}
+
+.zona-subir-imagen {
+    width: 100%;
+    min-height: 330px;
+
+    border: 2px dashed #cbd8dc;
+
+    border-radius: 25px;
+
+    background: #f5f8f9;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.zona-subir-imagen:hover {
+    background: #edf4f6;
+    border-color: #016A90;
+}
+
+.zona-subir-imagen i {
+    font-size: 42px;
+
+    color: #016A90;
+
+    margin-bottom: 15px;
+}
+
+.zona-subir-imagen span {
+    color: #333;
+
+    font-size: 18px;
+
+    font-weight: 600;
+}
+
+.zona-subir-imagen small {
+    margin-top: 8px;
+
+    color: #888;
+
+    font-size: 11px;
+}
+
+.modal-columna-imagen input[type="file"] {
+    display: none;
+}
+
+
+/* ==================================================
+   CAMPOS
+   ================================================== */
+
+.modal-columna-datos {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 17px;
+}
+
+.campo-inmueble {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.campo-inmueble label {
+    color: #333;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+.campo-inmueble input,
+.campo-inmueble select,
+.campo-inmueble textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 12px 15px;
+
+    border: 1px solid #d4dfe2;
+
+    border-radius: 12px;
+
+    background: white;
+
+    color: #444;
+
+    font-family: 'Montserrat', sans-serif;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+.campo-inmueble input::placeholder,
+.campo-inmueble textarea::placeholder {
+    color: #a5abad;
+}
+
+.campo-inmueble input:focus,
+.campo-inmueble select:focus,
+.campo-inmueble textarea:focus {
+    border-color: #016A90;
+
+    box-shadow: 0 0 0 2px rgba(1, 106, 144, 0.08);
+}
+
+.campo-inmueble textarea {
+    min-height: 110px;
+
+    resize: vertical;
+}
+
+
+/* ==================================================
+   BOTÓN GUARDAR
+   ================================================== */
+
+.modal-footer {
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    justify-content: center;
+
+    margin-top: 5px;
+}
+
+.modal-guardar {
+    min-width: 190px;
+
+    padding: 13px 25px;
+
+    font-size: 14px;
+}
+
+/* ==================================================
+   IMAGEN ACTUAL - MODAL MODIFICAR
+   ================================================== */
+
+.imagen-actual-modal {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 20px;
+    display: block;
+    margin-bottom: 15px;
+}

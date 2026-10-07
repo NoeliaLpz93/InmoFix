@@ -5,6 +5,11 @@
 
     $sql = "SELECT * FROM inmuebles WHERE IdInmueble = $id"; //La consulta SQL busca en la tabla inmuebles el registro que tenga ese ID
     $inmueble = $conn->query($sql)->fetch_assoc(); //convierte el resultado de la consulta en un array asociativo para poder acceder a los datos usando los nombres de las columnas
+
+    // Obtener reclamos del inmueble
+    $sqlReclamos = "SELECT * FROM reclamos WHERE IdInmueble = $id
+                    ORDER BY FechaCreacion DESC";
+    $reclamos = $conn->query($sqlReclamos);
 ?>
 
 <!DOCTYPE html>
@@ -80,12 +85,14 @@
                 <!-- ACCIONES -->
                 <div class="detalle-acciones">
 
-                    <a
-                        href="inmueble_modificar.php?id=<?= $inmueble['IdInmueble'] ?>"
-                        class="btn">
+                    <button
+                        type="button"
+                        class="btn"
+                        id="btn-modificar-inmueble"
+                        >
                         <i class="fa-solid fa-pen"></i>
                         Modificar
-                    </a>
+                    </button>
 
                     <a
                         href="inmueble_eliminar.php?id=<?= $inmueble['IdInmueble'] ?>"
@@ -161,46 +168,55 @@
 
                     <tbody>
 
-                        <tr>
-                            <td>12/09/2026</td>
-                            <td>Plomería</td>
-                            <td>Pérdida de agua en cocina</td>
-                            <td>
-                                <span class="reclamo-estado pendiente">
-                                    Pendiente
-                                </span>
-                            </td>
-                        </tr>
+                        <?php if ($reclamos->num_rows > 0) { ?>
+
+                            <?php while ($reclamo = $reclamos->fetch_assoc()) { ?>
+
+                                <tr>
+
+                                    <td>
+                                        <?= date("d/m/Y", strtotime($reclamo["FechaCreacion"])) ?>
+                                    </td>
+
+                                    <td>
+                                        <?= $reclamo["Categoria"] ?>
+                                    </td>
+
+                                    <td>
+                                        <?= $reclamo["Descripcion"] ?>
+                                    </td>
+
+                                    <td>
+
+                                        <span class="reclamo-estado <?= strtolower(str_replace(" ", "-", $reclamo["Estado"])) ?>">
+                                            <?= $reclamo["Estado"] ?>
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                            <?php } ?>
+
+                        <?php } else { ?>
 
                         <tr>
-                            <td>03/09/2026</td>
-                            <td>Electricidad</td>
-                            <td>Falla en una de las habitaciones</td>
-                            <td>
-                                <span class="reclamo-estado resuelto">
-                                    Resuelto
-                                </span>
-                            </td>
-                        </tr>
 
-                        <tr>
-                            <td>28/08/2026</td>
-                            <td>Mantenimiento</td>
-                            <td>Revisión general</td>
-                            <td>
-                                <span class="reclamo-estado proceso">
-                                    En proceso
-                                </span>
-                            </td>
-                        </tr>
+                        <td colspan="4" style="text-align: center;">
+                            Este inmueble no tiene reclamos registrados.
+                        </td>
 
-                    </tbody>
+                    </tr>
 
-                </table>
+                <?php } ?>
+
+                </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
-
-        </div>
 
 
         <!-- VOLVER -->
@@ -215,5 +231,228 @@
 
     </div>
 
+
+    <!-- ==================================================
+     MODAL MODIFICAR INMUEBLE
+     ================================================== -->
+
+    <div class="modal-fondo" id="modal-modificar-inmueble">
+
+        <div class="modal-inmueble">
+
+            <!-- ENCABEZADO -->
+            <div class="modal-header">
+
+                <h2>
+                    <span class="modal-icono-titulo">
+                        <i class="fa-solid fa-pen"></i>
+                    </span>
+                    Modificar inmueble
+                </h2>
+
+                <button
+                    type="button"
+                    class="modal-cerrar"
+                    id="cerrar-modal-modificar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <!-- FORMULARIO -->
+            <form
+                action="inmueble_modificar.php?id=<?= $inmueble['IdInmueble'] ?>"
+                method="POST"
+                enctype="multipart/form-data"
+                class="formulario-inmueble">
+
+                <!-- IMAGEN -->
+            <div class="modal-columna-imagen">
+
+                <label for="imagen-modificar" class="zona-subir-imagen">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                    <span>Subir nueva imagen</span>
+
+                    <small>
+                         Hacé clic para seleccionar una nueva imagen
+                    </small>
+
+                </label>
+
+                <input
+                    type="file"
+                    id="imagen-modificar"
+                    name="imagen"
+                    accept="image/*">
+
+            </div>
+
+
+            <!-- DATOS -->
+            <div class="modal-columna-datos">
+
+                <div class="campo-inmueble">
+
+                    <label for="direccion-modificar">
+                        Dirección
+                    </label>
+
+                    <input
+                        type="text"
+                        id="direccion-modificar"
+                        name="direccion"
+                        value="<?= $inmueble['Direccion'] ?>"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo-inmueble">
+
+                    <label for="tipo-modificar">
+                        Tipo
+                    </label>
+
+                    <select
+                        id="tipo-modificar"
+                        name="tipo"
+                        required
+                    >
+
+                        <option value="Casa"
+                            <?= $inmueble['Tipo'] == "Casa" ? "selected" : "" ?>>
+                            Casa
+                        </option>
+
+                        <option value="Departamento"
+                            <?= $inmueble['Tipo'] == "Departamento" ? "selected" : "" ?>>
+                            Departamento
+                        </option>
+
+                        <option value="Duplex"
+                            <?= $inmueble['Tipo'] == "Duplex" ? "selected" : "" ?>>
+                            Duplex
+                        </option>
+
+                        <option value="Monoambiente"
+                            <?= $inmueble['Tipo'] == "Monoambiente" ? "selected" : "" ?>>
+                            Monoambiente
+                        </option>
+
+                        <option value="Local comercial"
+                            <?= $inmueble['Tipo'] == "Local comercial" ? "selected" : "" ?>>
+                            Local comercial
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo-inmueble">
+
+                    <label for="estado-modificar">
+                        Estado
+                    </label>
+
+                    <select
+                        id="estado-modificar"
+                        name="estado"
+                        required
+                    >
+
+                        <option value="Disponible"
+                            <?= $inmueble['Estado'] == "Disponible" ? "selected" : "" ?>>
+                            Disponible
+                        </option>
+
+                        <option value="Alquilado"
+                            <?= $inmueble['Estado'] == "Alquilado" ? "selected" : "" ?>>
+                            Alquilado
+                        </option>
+
+                        <option value="Suspendido"
+                            <?= $inmueble['Estado'] == "Suspendido" ? "selected" : "" ?>>
+                            Suspendido
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo-inmueble">
+
+                    <label for="descripcion-modificar">
+                        Descripción
+                    </label>
+
+                    <textarea
+                        id="descripcion-modificar"
+                        name="descripcion"
+                        placeholder="descripción del inmueble"
+                    ><?= $inmueble['Descripcion'] ?></textarea>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTÓN -->
+            <div class="modal-footer">
+
+                <button
+                    type="submit"
+                    class="btn modal-guardar"
+                >
+                    <i class="fa-solid fa-check"></i>
+                    Guardar cambios
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+<script>
+
+const botonModificar = document.getElementById("btn-modificar-inmueble");
+const modalModificar = document.getElementById("modal-modificar-inmueble");
+const botonCerrarModificar = document.getElementById("cerrar-modal-modificar");
+
+
+// ABRIR MODAL
+botonModificar.addEventListener("click", function () {
+
+    modalModificar.classList.add("modal-visible");
+
+});
+
+
+// CERRAR CON LA X
+botonCerrarModificar.addEventListener("click", function () {
+
+    modalModificar.classList.remove("modal-visible");
+
+});
+
+
+// CERRAR HACIENDO CLIC FUERA
+modalModificar.addEventListener("click", function (e) {
+
+    if (e.target === modalModificar) {
+
+        modalModificar.classList.remove("modal-visible");
+
+    }
+
+});
+
+</script>
 </body>
 </html>
