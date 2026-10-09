@@ -1,11 +1,13 @@
 <?php
-$paginaActual = basename($_SERVER['PHP_SELF']);
+    // Obtiene únicamente el nombre del archivo PHP que se está ejecutando
+    // Se utiliza para identificar qué opción de la barra de navegación debe aparecer activa.
+    $paginaActual = basename($_SERVER['PHP_SELF']);
 ?>
 
 <!-- Font Awesome para los iconos -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-<!-- HEADER -->
+<!-- Header -->
 <header class="panel-header">
 
     <div></div>
@@ -21,10 +23,15 @@ $paginaActual = basename($_SERVER['PHP_SELF']);
 </header>
 
 
-<!-- NAVBAR -->
+<!-- Barra de navegación
+     La clase panel-activo se agrega automáticamente
+     a la opción correspondiente a la página actual -->
 <nav class="panel-navbar">
 
-    <a class="<?= $paginaActual == 'panelAdmin.php' ? 'panel-activo' : '' ?>" href="panelAdmin.php">
+    <!-- Compara la página actual con panelAdmin.php
+    Si coinciden, se agrega la clase panel-activo,
+    Si no coinciden, se deja vacío -->
+    <a class="<?= $paginaActual == 'panelAdmin.php' ? 'panel-activo' : '' ?>" href="panelAdmin.php"> 
         <i class="fa-solid fa-house"></i>
         Inicio
     </a>

@@ -1,10 +1,8 @@
 <?php
-
     require "conection.php";
-
-
+    
     // BUSCADOR
-    $busqueda = $_GET["q"] ?? "";
+    $busqueda = $_GET["q"] ?? ""; // Obtiene el texto ingresado en el buscador.
 
     $sql = "SELECT * FROM inquilinos
             WHERE nombre LIKE '%$busqueda%'
@@ -84,9 +82,7 @@
 
             <div class="tabla-contenedor">
 
-
                 <table class="tabla-inquilinos">
-
 
                     <thead>
 
@@ -103,9 +99,7 @@
 
                     </thead>
 
-
                 <tbody>
-
 
                 <?php while ($fila = $resultado->fetch_assoc()) { ?>
 
@@ -113,7 +107,7 @@
 
                     <tr>
                         <td>
-                            <?= htmlspecialchars($fila["nombre"]) ?>
+                            <?= htmlspecialchars($fila["nombre"]) ?> <!-- convierte caracteres especiales en entidades HTML antes de insertar los datos en los atributos HTML -->
                         </td>
 
                         <td>
@@ -181,6 +175,9 @@
                         </div>
 
                             <!-- MODAL AGREGAR INQUILINO -->
+                            <!-- El modal comienza oculto mediante CSS,
+                            JavaScript agregará la clase modal-visible
+                            cuando el usuario presione Agregar Inquilino -->
 
                             <div class="modal-fondo" id="modal-agregar-inquilino">
 
@@ -545,8 +542,8 @@
 
     // Buscamos el botón "Agregar Inquilino"
     const botonAgregarInquilino =
-        document.getElementById("btn-agregar-inquilino");
-
+        document.getElementById("btn-agregar-inquilino");   // Busca en el HTML el elemento que tiene este ID
+                                                            // y lo guarda en una constante para poder manipularlo.
 
     // Buscamos el modal de agregar
     const modalAgregarInquilino =
@@ -651,7 +648,8 @@
             // Tomamos el ID del inquilino
             const id = boton.dataset.id;
 
-
+            // Recuperamos los datos almacenados previamente
+            // en los atributos data-* del botón "Editar".
             // Tomamos los datos del inquilino
             const apellido = boton.dataset.apellido;
             const nombre = boton.dataset.nombre;
