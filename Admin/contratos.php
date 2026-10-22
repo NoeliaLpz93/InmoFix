@@ -2,12 +2,15 @@
 require "conection.php"; // porque tu conexion.php está dentro de Admin
 
 // Consulta de contratos + datos del inquilino + datos del inmueble
-$sql = "SELECT c.*, 
-               u.Nombre AS NombreInquilino,
-               u.Apellido AS ApellidoInquilino,
-               i.Direccion AS DireccionInmueble
+$sql = "SELECT
+            c.IdContrato,
+            c.Estado,
+            c.FechaFin,
+            u.nombre AS NombreInquilino,
+            u.apellido AS ApellidoInquilino,
+            i.Direccion AS DireccionInmueble
         FROM contratos c
-        INNER JOIN usuarios u ON c.IdInquilino = u.IdUsuario
+        INNER JOIN inquilinos u ON c.IdInquilino = u.id
         INNER JOIN inmuebles i ON c.IdInmueble = i.IdInmueble
         ORDER BY c.IdContrato DESC";
 
@@ -53,11 +56,17 @@ $contratos = $conn->query($sql);
         <tbody>
             <?php foreach ($contratos as $c): ?>
                 <tr>
-                    <td>#<?php echo $c[0]; ?></td>
-                    <td><?php echo $c[1]; ?></td>
-                    <td><?php echo $c[2]; ?></td>
-                    <td><?php echo $c[3]; ?></td>
-                    <td><?php echo $c[4]; ?></td>
+                    <td>#<?= $c['IdContrato']; ?></td>
+
+                    <td>
+            <?= htmlspecialchars($c['NombreInquilino'] . ' ' . $c['ApellidoInquilino']); ?>
+                    </td>
+
+                    <td><?= htmlspecialchars($c['DireccionInmueble']); ?></td>
+
+                    <td><?= htmlspecialchars($c['Estado']); ?></td>
+
+                    <td><?= date('d/m/Y', strtotime($c['FechaFin'])); ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
