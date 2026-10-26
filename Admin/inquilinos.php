@@ -250,13 +250,13 @@
                                 type="text"
                                 id="nombre"
                                 name="nombre"
-                                placeholder="nombre"
+                                placeholder="Nombre"
                                 required
+                                maxlength="50"
+                                pattern="[A-Za-zÁÉÍÓÚÜÑáéíóúüñ ]+"
                             >
 
                         </div>
-
-
 
                         <!-- DNI -->
 
@@ -266,13 +266,17 @@
                                 DNI
                             </label>
 
-                            <input
-                                type="text"
-                                id="dni"
-                                name="dni"
-                                placeholder="DNI"
-                                required
-                            >
+<input
+    type="text"
+    id="dni"
+    name="dni"
+    placeholder="DNI"
+    required
+    inputmode="numeric"
+    pattern="[0-9]{7,8}"
+    maxlength="8"
+    title="El DNI debe contener entre 7 y 8 números."
+>
 
                         </div>
 
