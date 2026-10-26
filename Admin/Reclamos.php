@@ -68,15 +68,15 @@ $resultado = $conn->query($sql);
                 // Colores según estado
                 // Asocia cada estado del reclamo con una clase CSS.
                 // Luego esa clase cambia el color del texto o del fondo.
+                // Colores según estado
                 $colorEstado = [
                     "Pendiente" => "estado-pendiente",
+                    "En proceso" => "estado-proceso",
                     "En Proceso" => "estado-proceso",
                     "Resuelto" => "estado-resuelto"
                 ];
 
                 // Colores según prioridad
-                // Asocia cada prioridad con una clase CSS.
-            
                 $colorPrioridad = [
                     "Alta" => "prioridad-alta",
                     "Media" => "prioridad-media",
