@@ -40,8 +40,7 @@ $resultado = $conn->query($sql);
 
     <!-- BUSCADOR -->
     <form method="GET" class="buscador">
-          <!-- Formulario de búsqueda, se utiliza GET porque el dato de búsqueda viaja por la URL
-             y no modifica información en la base de datos. -->
+          <!-- Formulario de búsqueda. -->
         <input type="text" name="q" placeholder="Buscar por nombre o dirección" value="<?= $busqueda ?>">
         <button type="submit">Buscar</button>
     </form>

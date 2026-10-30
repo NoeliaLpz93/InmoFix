@@ -672,7 +672,7 @@ $mensajeOk = $mensajes[$_GET["ok"] ?? ""] ?? null;
              modalFinalizar.classList.remove("modal-visible");
             }
         });
-    </script>
+    git </script>
     <script>
 
         const notificacion = document.getElementById("notificacion-toast");

@@ -7,8 +7,9 @@ body {
     padding: 0;
     min-height: 100vh;
     font-family: 'Montserrat', sans-serif;
-    background: linear-gradient(to top, #D36135, white);
+    background: white;
 }
+
 
 
 /* ==================================================
@@ -21,45 +22,196 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding-top: 60px;
+    padding: 60px 30px;
+    box-sizing: border-box;
 }
+
+/* LOGO Y ESLOGAN */
 
 .index-banner {
     text-align: center;
 }
 
 .index-banner img {
-    width: 180px;
+    width: 350px;
+    max-width: 100%;
 }
 
 .index-banner h2 {
-    margin-top: 10px;
-    font-size: 18px;
-    font-weight: 300;
-    color: #333;
+    margin-top: 0px;
+    font-size: 20px;
+    font-weight: 400;
+    color: #172126;
 }
 
-.index-botones {
-    margin-top: 60px;
-    display: flex;
-    gap: 30px;
-    justify-content: center;
+/* TÍTULO DE INGRESO */
+
+.index-titulo {
+    margin-top: 75px;
+    margin-bottom: 40px;
+    font-size: 29px;
+    font-weight: 500;
+    color: #172126;
+    text-align: center;
 }
+
+/* CONTENEDOR DE TARJETAS */
+
+.index-tarjetas {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    width: 100%;
+    max-width: 1050px;
+}
+
+/* TARJETAS */
+
+.index-card {
+    background-color: #FBECE7;
+    width: 430px;
+    min-height: 315px;
+    padding: 30px 45px;
+    border-radius: 28px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    transition: 0.3s;
+}
+
+.index-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* ICONOS */
+
+.index-icono {
+    width: 55px;
+    height: 55px;
+    border: 1px solid #C9BFC7;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #49454F;
+    font-size: 29px;
+    margin-bottom: 10px;
+}
+
+/* TÍTULOS DE LAS TARJETAS */
+
+.index-card h3 {
+    font-size: 28px;
+    font-weight: 500;
+    color: #222;
+    margin: 0 0 8px 0;
+}
+
+/* DESCRIPCIONES */
+
+.index-card p {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: #292929;
+    margin: 0 0 25px 0;
+}
+
+/* BOTONES */
 
 .index-btn {
-    background: #016A90;
+    background-color: #08799B;
     color: white;
-    padding: 16px 45px;
+
+    width: 100%;
+    padding: 17px 15px;
+
+    box-sizing: border-box;
     border-radius: 50px;
     text-decoration: none;
-    font-size: 18px;
+    text-align: center;
+
+    font-size: 17px;
     font-weight: 500;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.25);
+
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.18);
     transition: 0.3s;
 }
 
 .index-btn:hover {
-    transform: translateY(-3px);
+    background-color: #005D7C;
+    transform: translateY(-2px);
+}
+
+
+/* ==================================================
+   RESPONSIVE - INDEX
+   ================================================== */
+
+@media (max-width: 850px) {
+
+    .index-tarjetas {
+        gap: 25px;
+    }
+
+    .index-card {
+        width: 50%;
+        padding: 25px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .index-contenedor {
+        padding: 40px 20px;
+    }
+
+    .index-banner img {
+        width: 280px;
+    }
+
+    .index-banner h2 {
+        font-size: 19px;
+    }
+
+    .index-titulo {
+        margin-top: 55px;
+        margin-bottom: 30px;
+        font-size: 23px;
+    }
+
+    .index-tarjetas {
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+    }
+
+    .index-card {
+        width: 100%;
+        max-width: 430px;
+        min-height: auto;
+        padding: 25px;
+    }
+
+    .index-card h3 {
+        font-size: 24px;
+    }
+
+    .index-card p {
+        font-size: 15px;
+    }
+
+    .index-btn {
+        font-size: 15px;
+    }
+
 }
 
 
@@ -100,8 +252,8 @@ body {
 }
 
 .login-formulario {
-    width: 330px;
-    margin-top: 35px;
+    width: 100%;
+    margin-top: 0;
 }
 
 .login-formulario h3 {
@@ -159,6 +311,68 @@ body {
     color: #a00000;
 }
 
+
+/* ==================================================
+   TARJETA DEL LOGIN
+   ================================================== */
+
+.login-tarjeta {
+    background: #FBECE7;
+    width: 430px;
+    max-width: 90%;
+    padding: 35px 45px;
+    box-sizing: border-box;
+    border-radius: 28px;
+    margin-top: 25px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+}
+
+/* TÍTULO */
+
+.login-formulario h3 {
+    color: #222;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 23px;
+}
+
+/* CAMPOS */
+
+.login-formulario input {
+    background: white;
+    border: 1px solid #eadbd5;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* EFECTO AL SELECCIONAR UN CAMPO */
+
+.login-formulario input:focus {
+    outline: none;
+    border-color: #D36135;
+    box-shadow: 0 0 0 3px rgba(211, 97, 53, 0.10);
+}
+
+/* BOTÓN */
+
+.login-btn {
+    background: #08799B;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    background: #005D7C;
+    transform: translateY(-2px);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 500px) {
+
+    .login-tarjeta {
+        padding: 30px 25px;
+    }
+
+}
 
 /* ==================================================
    PANEL ADMINISTRADOR
