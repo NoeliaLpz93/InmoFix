@@ -29,7 +29,7 @@ if ($_POST) {
  // Ejecutamos la consulta
     $conn->query($sql);
 
-    header("Location: reclamos.php");
+    header("Location: Reclamos.php");
     exit;
 }
 ?>
@@ -48,7 +48,9 @@ if ($_POST) {
 
     <h2>Cargar Reclamo</h2>
 
-    <form method="POST">
+    <div class="form-reclamo">
+
+        <form method="POST">
 
         <!-- INQUILINO -->
         <label>Inquilino:</label>
@@ -89,3 +91,36 @@ if ($_POST) {
         <!-- PRIORIDAD -->
         <label>Prioridad:</label>
         <select name="Prioridad" required>
+                <option value="Alta">Alta</option>
+    <option value="Media">Media</option>
+    <option value="Baja">Baja</option>
+</select>
+
+<br>
+
+<label>Detalle del reclamo:</label>
+
+<textarea
+    name="Descripcion"
+    rows="5"
+    required>
+</textarea>
+
+<br>
+
+<button
+    type="submit"
+    class="btn-guardar-reclamo">
+
+    Guardar Reclamo
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</body>
+</html>

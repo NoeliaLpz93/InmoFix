@@ -16,13 +16,92 @@
         <img src="../Img/inmofix-02.png" alt="InmoFix">
     </div>
 
-    <div class="panel-perfil">
+ <div class="panel-perfil">
+
+    <button class="perfil-btn" onclick="toggleMenu()">
         <i class="fa-solid fa-user"></i>
+    </button>
+
+    <div id="menuPerfil" class="menu-perfil">
+
+        <a href="#" onclick="abrirModal()">
+            <i class="fa-solid fa-user-plus"></i>
+            Alta de Inquilino
+        </a>
+
+        <a href="logout.php">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Cerrar sesión
+        </a>
+
     </div>
 
+</div>
+
 </header>
+<!-- Form oculto para alta de inquilino -->
+<div id="modalInquilino" class="modal">
 
+    <div class="modal-contenido">
 
+        <h2>Alta de Inquilino</h2>
+
+        <form action="guardarInquilino.php" method="POST">
+
+            <input
+                type="text"
+                name="nombre"
+                placeholder="Nombre"
+                required>
+
+            <input
+                type="text"
+                name="apellido"
+                placeholder="Apellido"
+                required>
+
+            <input
+                type="text"
+                name="dni"
+                placeholder="DNI"
+                required>
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                required>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Contraseña"
+                required>
+
+            <button type="submit">
+                Crear inquilino
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+<script>
+function toggleMenu() {
+    let menu = document.getElementById("menuPerfil");
+
+    if(menu.style.display == "block"){
+        menu.style.display = "none";
+    } else {
+        menu.style.display = "block";
+    }
+}
+
+function abrirModal() {
+    document.getElementById("modalInquilino").style.display = "block";
+}
+</script>
 <!-- Barra de navegación
      La clase panel-activo se agrega automáticamente
      a la opción correspondiente a la página actual -->

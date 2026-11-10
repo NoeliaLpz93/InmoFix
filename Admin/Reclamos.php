@@ -37,6 +37,16 @@ $resultado = $conn->query($sql);
 <div class="contenedor">
 
     <h2>Reclamos</h2>
+    
+<!-- CARGAR RECLAMO --> 
+ 
+<div class="acciones-superior">
+
+    <a href="reclamos_cargar.php" class="btn">
+    <i class="fa-solid fa-plus"></i>
+     Agregar reclamo
+</a>
+
 
     <!-- BUSCADOR -->
     <form method="GET" class="buscador">
@@ -44,6 +54,7 @@ $resultado = $conn->query($sql);
         <input type="text" name="q" placeholder="Buscar por nombre o dirección" value="<?= $busqueda ?>">
         <button type="submit">Buscar</button>
     </form>
+    </div>
 
     <!-- TABLA -->
     <table class="tabla">

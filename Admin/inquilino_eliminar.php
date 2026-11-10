@@ -1,10 +1,13 @@
 <?php
+
 require "conection.php";
 
-$id = $_GET["id"]; // obtiene el id del inquilino a borrar
+$id = $_GET["id"];
 
-$sql = "DELETE FROM inquilinos WHERE id = $id";
+$sql = "DELETE FROM inquilinos
+        WHERE idInquilino = $id";
+
 $conn->query($sql);
 
-header("Location: inquilinos.php"); //redireccionar
-exit;
+header("Location: inquilinos.php");
+exit();
