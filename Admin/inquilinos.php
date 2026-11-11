@@ -139,7 +139,7 @@
                                 <button
                                     type="button"
                                     class="btn btn-editar-inquilino"
-                                    data-id="<?= $fila['idInquilino'] ?>"
+                                    data-id="<?= $fila['id'] ?>"
                                     data-apellido="<?= htmlspecialchars($fila['apellido'], ENT_QUOTES) ?>"
                                     data-nombre="<?= htmlspecialchars($fila['nombre'], ENT_QUOTES) ?>"
                                     data-dni="<?= htmlspecialchars($fila['dni'], ENT_QUOTES) ?>"
@@ -154,7 +154,7 @@
                                      BOTÓN ELIMINAR
                                      ================================================== -->
                                 <a
-                                    href="inquilino_eliminar.php?id=<?= $fila['idInquilino'] ?>"
+                                    href="inquilino_eliminar.php?id=<?= $fila['id'] ?>"
                                     class="btn btn-rojo"
                                     onclick="return confirm('¿Seguro que deseas eliminar este inquilino?');"
                                     >
