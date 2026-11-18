@@ -74,10 +74,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label>Inquilino:</label>
         <select name="IdInquilino" required>
             <option value="">Seleccionar...</option>
-            <?php while ($i = $inquilinos->fetch_assoc()) { ?>
-                <option value="<?= $i['id'] ?>">
-                    <?= $i['nombre'] . " " . $i['apellido'] ?>
-                </option>
+                <?php while ($i = $inquilinos->fetch_assoc()) { ?>
+            <option value="<?= (int) $i['id'] ?>">
+                <?= htmlspecialchars($i['nombre'] . " " . $i['apellido'], ENT_QUOTES, 'UTF-8') ?>
+            </option>
             <?php } ?>
         </select>
         <br>
@@ -87,8 +87,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <select name="IdInmueble" required>
             <option value="">Seleccionar...</option>
             <?php while ($m = $inmuebles->fetch_assoc()) { ?>
-                <option value="<?= $m['IdInmueble'] ?>">
-                    <?= $m['Direccion'] ?>
+                <option value="<?= (int) $m['IdInmueble'] ?>">
+                    <?= htmlspecialchars($m['Direccion'], ENT_QUOTES, 'UTF-8') ?>
                 </option>
             <?php } ?>
         </select>

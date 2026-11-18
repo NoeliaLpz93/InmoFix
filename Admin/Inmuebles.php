@@ -65,11 +65,11 @@ $resultado = $stmt->get_result();
 
             <div class="card-inmueble">
 
-                <img src="../uploads/<?= $fila['imagen'] ?>" class="foto-inmueble">
+            <img src="../uploads/<?= htmlspecialchars($fila['imagen'], ENT_QUOTES, 'UTF-8') ?>" class="foto-inmueble">
 
             <div class="info">
-                <h3><?= $fila["Direccion"] ?></h3>
-                <p><?= $fila["Tipo"] ?></p>
+                <h3><?= htmlspecialchars($fila["Direccion"], ENT_QUOTES, 'UTF-8') ?></h3>
+                <p><?= htmlspecialchars($fila["Tipo"], ENT_QUOTES, 'UTF-8') ?></p>
             </div>
 
             <div class="acciones-tarjeta">

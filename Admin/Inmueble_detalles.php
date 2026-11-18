@@ -65,7 +65,7 @@ $reclamos = $stmtReclamos->get_result();
             <div class="detalle-foto-card">
 
                 <img
-                    src="../uploads/<?= $inmueble['imagen'] ?>"
+                    src="../uploads/<?= htmlspecialchars($inmueble['imagen'], ENT_QUOTES, 'UTF-8') ?>"
                     alt="Imagen del inmueble"
                     class="detalle-foto"
                 >
@@ -80,20 +80,20 @@ $reclamos = $stmtReclamos->get_result();
                     <h3>Información general</h3>
 
                     <span class="estado-inmueble">
-                        <?= $inmueble["Estado"] ?>
+                        <?= htmlspecialchars($inmueble["Estado"], ENT_QUOTES, 'UTF-8') ?>
                     </span>
                 </div>
 
 
                 <div class="detalle-dato">
                     <span class="detalle-label">Dirección</span>
-                    <p><?= $inmueble["Direccion"] ?></p>
+                    <p><?= htmlspecialchars($inmueble["Direccion"], ENT_QUOTES, 'UTF-8') ?></p>
                 </div>
 
 
                 <div class="detalle-dato">
                     <span class="detalle-label">Tipo de inmueble</span>
-                    <p><?= $inmueble["Tipo"] ?></p>
+                    <p><?= htmlspecialchars($inmueble["Tipo"], ENT_QUOTES, 'UTF-8') ?></p>
                 </div>
 
 
@@ -101,7 +101,7 @@ $reclamos = $stmtReclamos->get_result();
                     <span class="detalle-label">Descripción</span>
                     <p>
                         <?= !empty($inmueble["Descripcion"])
-                            ? $inmueble["Descripcion"]
+                            ? htmlspecialchars($inmueble["Descripcion"], ENT_QUOTES, 'UTF-8')
                             : "Este inmueble no tiene una descripción cargada." ?>
                     </p>
                 </div>
@@ -120,7 +120,7 @@ $reclamos = $stmtReclamos->get_result();
                     </button>
 
                     <a
-                        href="inmueble_eliminar.php?id=<?= $inmueble['IdInmueble'] ?>"
+                        href="inmueble_eliminar.php?id=<?= (int) $inmueble['IdInmueble'] ?>"
                         class="btn btn-rojo"
                         onclick="return confirm('¿Seguro que deseas eliminar este inmueble? Esta acción no se puede deshacer.');"
                     >
@@ -204,17 +204,17 @@ $reclamos = $stmtReclamos->get_result();
                                     </td>
 
                                     <td>
-                                        <?= $reclamo["Categoria"] ?>
+                                        <?= htmlspecialchars($reclamo["Categoria"], ENT_QUOTES, 'UTF-8') ?>
                                     </td>
 
                                     <td>
-                                        <?= $reclamo["Descripcion"] ?>
+                                        <?= htmlspecialchars($reclamo["Descripcion"], ENT_QUOTES, 'UTF-8') ?>
                                     </td>
 
                                     <td>
 
-                                        <span class="reclamo-estado <?= strtolower(str_replace(" ", "-", $reclamo["Estado"])) ?>">
-                                            <?= $reclamo["Estado"] ?>
+                                        <span class="reclamo-estado <?= htmlspecialchars(strtolower(str_replace(" ", "-", $reclamo["Estado"])), ENT_QUOTES, 'UTF-8') ?>">
+                                            <?= htmlspecialchars($reclamo["Estado"], ENT_QUOTES, 'UTF-8') ?>
                                         </span>
 
                                     </td>
@@ -287,7 +287,7 @@ $reclamos = $stmtReclamos->get_result();
 
             <!-- FORMULARIO -->
             <form
-                action="inmueble_modificar.php?id=<?= $inmueble['IdInmueble'] ?>"
+                action="inmueble_modificar.php?id=<?= (int) $inmueble['IdInmueble'] ?>"
                 method="POST"
                 enctype="multipart/form-data"
                 class="formulario-inmueble">
@@ -328,7 +328,7 @@ $reclamos = $stmtReclamos->get_result();
                         type="text"
                         id="direccion-modificar"
                         name="direccion"
-                        value="<?= $inmueble['Direccion'] ?>"
+                        value="value="<?= htmlspecialchars($inmueble['Direccion'], ENT_QUOTES, 'UTF-8') ?>"
                         required
                     >
 
@@ -419,7 +419,7 @@ $reclamos = $stmtReclamos->get_result();
                         id="descripcion-modificar"
                         name="descripcion"
                         placeholder="descripción del inmueble"
-                    ><?= $inmueble['Descripcion'] ?></textarea>
+                    ><?= htmlspecialchars($inmueble['Descripcion'], ENT_QUOTES, 'UTF-8') ?></textarea>
 
                 </div>
 

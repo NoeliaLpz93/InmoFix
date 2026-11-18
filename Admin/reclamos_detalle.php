@@ -34,23 +34,30 @@ $reclamo = $stmt->get_result()->fetch_assoc();
 
 <div class="contenedor">
 <!-- Mostramos el número del reclamo -->
-    <h2>Detalle del Reclamo #<?= $reclamo["IdReclamo"] ?></h2>
+    <h2>Detalle del Reclamo #<?= (int) $reclamo["IdReclamo"] ?></h2>
 
-    <p><strong>Estado:</strong> <?= $reclamo["Estado"] ?></p>
-    <p><strong>Prioridad:</strong> <?= $reclamo["Prioridad"] ?></p>
-    <p><strong>Fecha de creación:</strong> <?= $reclamo["FechaCreacion"] ?></p>
-    <p><strong>Fecha de resolución:</strong> <?= $reclamo["FechaResolucion"] ?: "Sin resolver" ?></p>
-    <p><strong>Inquilino:</strong> <?= $reclamo["NombreInquilino"] . " " . $reclamo["ApellidoInquilino"] ?></p>
-    <p><strong>Inmueble:</strong> <?= $reclamo["DireccionInmueble"] ?></p>
-    <p><strong>Categoría:</strong> <?= $reclamo["Categoria"] ?></p>
-    <p><strong>Descripción:</strong> <?= $reclamo["Descripcion"] ?></p>
+    <p><strong>Estado:</strong> <?= htmlspecialchars($reclamo["Estado"], ENT_QUOTES, 'UTF-8') ?></p>
+
+    <p><strong>Prioridad:</strong> <?= htmlspecialchars($reclamo["Prioridad"], ENT_QUOTES, 'UTF-8') ?></p>
+
+    <p><strong>Fecha de creación:</strong> <?= htmlspecialchars($reclamo["FechaCreacion"], ENT_QUOTES, 'UTF-8') ?></p>
+
+    <p><strong>Fecha de resolución:</strong> <?= htmlspecialchars($reclamo["FechaResolucion"] ?: "Sin resolver", ENT_QUOTES, 'UTF-8') ?></p>
+
+    <p><strong>Inquilino:</strong> <?= htmlspecialchars($reclamo["NombreInquilino"] . " " . $reclamo["ApellidoInquilino"], ENT_QUOTES, 'UTF-8') ?></p>
+
+    <p><strong>Inmueble:</strong> <?= htmlspecialchars($reclamo["DireccionInmueble"], ENT_QUOTES, 'UTF-8') ?></p>
+
+    <p><strong>Categoría:</strong> <?= htmlspecialchars($reclamo["Categoria"], ENT_QUOTES, 'UTF-8') ?></p>
+
+    <p><strong>Descripción:</strong> <?= htmlspecialchars($reclamo["Descripcion"], ENT_QUOTES, 'UTF-8') ?></p>
  <!-- modificamos el estado del reclamo -->
     <div class="acciones-detalle">
-        <a href="reclamos_estado.php?id=<?= $reclamo['IdReclamo'] ?>" class="btn btn-naranja">
+        <a href="reclamos_estado.php?id=<?= (int) $reclamo['IdReclamo'] ?>" class="btn btn-naranja">
             Cambiar Estado
         </a>
 <!-- eliminamos el estado del reclamo -->
-        <a href="reclamos_eliminar.php?id=<?= $reclamo['IdReclamo'] ?>"
+        <a href="reclamos_eliminar.php?id=<?= (int) $reclamo['IdReclamo'] ?>"
            class="btn btn-rojo"
            onclick="return confirm('¿Seguro que deseas eliminar este reclamo?');">
             Eliminar Reclamo
