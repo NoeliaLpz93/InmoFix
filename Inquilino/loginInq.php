@@ -1,28 +1,83 @@
-
 <?php
+session_start();
+require_once "../Admin/conection.php";
 
-// Este if se pregunta si el usuario envió el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $usuario = $_POST["usuario"];
-    $clave = $_POST["clave"];
+    $usuario = trim($_POST["usuario"] ?? "");
+    $clave = $_POST["clave"] ?? "";
 
-    // Ejemplo temporal de validación
-    // Después acá va la consulta a la base de datos
+    // Buscar el usuario en la base de datos
+    $sql = "SELECT IdUsuario, Nombre, Apellido, Usuario,
+                   Password, Rol, idInquilino
+            FROM usuarios
+            WHERE Usuario = ?
+            LIMIT 1";
 
-    if ($usuario === "inquilino" && $clave === "1234") {
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $usuario);
+    $stmt->execute();
 
-        header("Location: panelInq.php");
-        exit();
+    $resultado = $stmt->get_result();
+    $datosUsuario = $resultado->fetch_assoc();
+
+    if ($datosUsuario) {
+
+        $passwordGuardada = $datosUsuario["Password"];
+
+        // Comprobar contraseña cifrada o contraseña antigua
+        $passwordCorrecta = password_verify($clave, $passwordGuardada);
+
+        // Compatibilidad con contraseñas guardadas en texto plano
+        if (!$passwordCorrecta && hash_equals((string)$passwordGuardada, $clave)) {
+
+            $passwordCorrecta = true;
+
+            // Actualizar automáticamente a un hash seguro
+            $nuevoHash = password_hash($clave, PASSWORD_DEFAULT);
+
+            $sqlActualizar = "UPDATE usuarios
+                              SET Password = ?
+                              WHERE IdUsuario = ?";
+
+            $stmtActualizar = $conn->prepare($sqlActualizar);
+            $stmtActualizar->bind_param(
+                "si",
+                $nuevoHash,
+                $datosUsuario["IdUsuario"]
+            );
+            $stmtActualizar->execute();
+            $stmtActualizar->close();
+        }
+
+        // Verificar contraseña, rol y vinculación con inquilinos
+        if (
+            $passwordCorrecta &&
+            $datosUsuario["Rol"] === "Inquilino" &&
+            !empty($datosUsuario["idInquilino"])
+        ) {
+
+            session_regenerate_id(true);
+
+            $_SESSION["idUsuario"] = $datosUsuario["IdUsuario"];
+            $_SESSION["idInquilino"] = $datosUsuario["idInquilino"];
+            $_SESSION["nombre"] = $datosUsuario["Nombre"];
+            $_SESSION["apellido"] = $datosUsuario["Apellido"];
+            $_SESSION["rol"] = $datosUsuario["Rol"];
+
+            header("Location: panelInq.php");
+            exit();
+
+        } else {
+            $error = "Usuario o contraseña incorrecto";
+        }
 
     } else {
-
         $error = "Usuario o contraseña incorrecto";
-
     }
 
+    $stmt->close();
 }
-
 ?>
 
 <!DOCTYPE html>

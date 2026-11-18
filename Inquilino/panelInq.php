@@ -1,13 +1,18 @@
 <?php
 session_start();
 
-//if (!isset($_SESSION["inquilino"])) {
-  //  header("Location: login.php");
-    //exit();
-//}
+if (
+    !isset($_SESSION["idUsuario"], $_SESSION["idInquilino"]) ||
+    $_SESSION["rol"] !== "Inquilino"
+) {
+    header("Location: loginInq.php");
+    exit();
+}
 
-// Datos de ejemplo (luego vienen desde BD)
-$nombre = "Pablo Martinez";
+require_once "../conection.php";
+
+// Datos desde BD
+$nombre = ($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"] ?? "");
 $contrato_estado = "Activo";
 $contrato_vencimiento = "15/06/2029";
 
@@ -77,7 +82,7 @@ $notificaciones = [
 
     <div class="contenedor">
 
-        <h2>Bienvenido, <?= $nombre ?></h2>
+        <h2>Bienvenido, <?= htmlspecialchars($nombre) ?></h2>
 
         <div class="cards">
 

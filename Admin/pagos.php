@@ -1,8 +1,17 @@
 <?php
 require "conection.php";
 
+// ACTUALIZAR PAGOS VENCIDOS
+$sqlVencidos = "UPDATE pagos
+                SET Estado = 'Vencido'
+                WHERE Estado = 'Pendiente'
+                AND FechaVencimiento < CURDATE()";
+
+$conn->query($sqlVencidos);
+
 // CONSULTA DE PAGOS
-$sql = "SELECT IdPago, IdContrato, Estado, Monto, FechaPago
+$sql = "SELECT IdPago, IdContrato, Estado, Monto,
+               FechaEmision, FechaVencimiento, FechaPago
         FROM pagos
         ORDER BY IdPago DESC";
 
@@ -68,10 +77,13 @@ $resultadoContratos = $conn->query($sqlContratos);
                 <thead>
                     <tr>
                         <th>Número</th>
-                        <th>Fecha</th> <!--Acá hay que modificar la base de datos para que esto sea la fecha de vencimiento-->
+                        <th>Contrato</th>
+                        <th>Fecha de emisión</th>
+                        <th>Fecha de vencimiento</th>
                         <th>Monto</th>
                         <th>Estado</th>
-                        <th>Fecha de pago</th> 
+                        <th>Fecha de pago</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
 
@@ -87,7 +99,15 @@ $resultadoContratos = $conn->query($sqlContratos);
                                 </td>
 
                                 <td>
-                                    <?= htmlspecialchars($fila["FechaPago"]) ?>
+                                    Contrato #<?= htmlspecialchars($fila["IdContrato"]) ?>
+                                </td>
+
+                                <td>
+                                    <?= htmlspecialchars($fila["FechaEmision"] ?? "—") ?>
+                                </td>
+
+                                <td>
+                                    <?= htmlspecialchars($fila["FechaVencimiento"] ?? "—") ?>
                                 </td>
 
                                 <td>
@@ -95,7 +115,7 @@ $resultadoContratos = $conn->query($sqlContratos);
                                         (float) $fila["Monto"],
                                         2,
                                         ',',
-                                        '.'
+                                         '.'
                                     ) ?>
                                 </td>
 
@@ -104,7 +124,25 @@ $resultadoContratos = $conn->query($sqlContratos);
                                 </td>
 
                                 <td>
-                                    <?= htmlspecialchars($fila["FechaPago"]) ?>
+                                    <?= htmlspecialchars($fila["FechaPago"] ?? "—") ?>
+                                </td>
+
+                                <td>
+                                    <?php if ($fila["Estado"] != "Pagado") { ?>
+
+                                        <button
+                                            type="button"
+                                            class="btn btn-registrar-pago"
+                                            data-id="<?= (int) $fila["IdPago"] ?>"
+                                        >
+                                            Registrar pago
+                                        </button>
+
+                                    <?php } else { ?>
+
+                                        Pagado
+
+                                    <?php } ?>
                                 </td>
                             </tr>
 
@@ -113,7 +151,7 @@ $resultadoContratos = $conn->query($sqlContratos);
                     <?php } else { ?>
 
                         <tr>
-                            <td colspan="5">
+                            <td colspan="8">
                                 No hay pagos registrados.
                             </td>
                         </tr>
@@ -209,33 +247,34 @@ $resultadoContratos = $conn->query($sqlContratos);
 
                     </div>
 
-                    <!-- ESTADO -->
+                    <!-- FECHA DE EMISIÓN -->
                     <div class="campo-inquilino">
 
-                        <label for="Estado">Estado</label>
-
-                        <select id="Estado" name="Estado" required>
-                            <option value="">Seleccionar estado</option>
-                            <option value="Pendiente">Pendiente</option>
-                            <option value="Pagado">Pagado</option>
-                            <option value="Vencido">Vencido</option>
-                        </select>
-
-                    </div>
-
-                    <!-- FECHA DE PAGO -->
-                    <div class="campo-inquilino campo-inquilino-completo">
-
-                        <label for="FechaPago">Fecha de pago</label>
+                        <label for="FechaEmision">Fecha de emisión</label>
 
                         <input
                             type="date"
-                            id="FechaPago"
-                            name="FechaPago"
+                            id="FechaEmision"
+                            name="FechaEmision"
+                            value="<?= date('Y-m-d') ?>"
                             required
                         >
 
                     </div>
+
+                    <!-- FECHA DE VENCIMIENTO -->
+                    <div class="campo-inquilino">
+
+                        <label for="FechaVencimiento">Fecha de vencimiento</label>
+
+                        <input
+                            type="date"
+                            id="FechaVencimiento"
+                            name="FechaVencimiento"
+                            required
+                        >
+
+                </div>
 
                 </div>
 
@@ -245,6 +284,79 @@ $resultadoContratos = $conn->query($sqlContratos);
                     <button type="submit" class="btn modal-guardar">
                         <i class="fa-solid fa-check"></i>
                         Guardar pago
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- MODAL REGISTRAR PAGO -->
+    <div class="modal-fondo" id="modal-registrar-pago">
+
+        <div class="modal-inmueble">
+
+            <!-- ENCABEZADO -->
+            <div class="modal-header">
+
+                <h2>
+                    <span class="modal-icono-titulo">
+                        <i class="fa-solid fa-money-bill-wave"></i>
+                    </span>
+                    Registrar pago
+                </h2>
+
+                <button
+                    type="button"
+                    class="modal-cerrar"
+                    id="cerrar-modal-registrar"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+            <!-- FORMULARIO -->
+            <form
+                action="pago_registrar.php"
+                method="POST"
+                class="formulario-inquilino"
+            >
+
+                <div class="campos-inquilino">
+
+                    <input
+                        type="hidden"
+                        name="IdPago"
+                        id="id-pago-registrar"
+                    >
+
+                    <div class="campo-inquilino campo-inquilino-completo">
+
+                        <label for="FechaPago">Fecha en que se recibió el pago</label>
+
+                        <input
+                            type="date"
+                            id="FechaPago"
+                            name="FechaPago"
+                            value="<?= date('Y-m-d') ?>"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+                <!-- BOTÓN CONFIRMAR -->
+                <div class="modal-footer">
+
+                    <button type="submit" class="btn modal-guardar">
+                        <i class="fa-solid fa-check"></i>
+                        Confirmar pago
                     </button>
 
                 </div>
@@ -282,6 +394,49 @@ $resultadoContratos = $conn->query($sqlContratos);
                 modalAgregarPago.classList.remove("modal-visible");
             }
         });
+
+        // MODAL REGISTRAR PAGO
+
+const botonesRegistrarPago =
+    document.querySelectorAll(".btn-registrar-pago");
+
+const modalRegistrarPago =
+    document.getElementById("modal-registrar-pago");
+
+const cerrarModalRegistrar =
+    document.getElementById("cerrar-modal-registrar");
+
+const idPagoRegistrar =
+    document.getElementById("id-pago-registrar");
+
+// Abrir modal
+botonesRegistrarPago.forEach(function (boton) {
+
+    boton.addEventListener("click", function () {
+
+        idPagoRegistrar.value = boton.dataset.id;
+
+        modalRegistrarPago.classList.add("modal-visible");
+
+    });
+
+});
+
+// Cerrar con la X
+cerrarModalRegistrar.addEventListener("click", function () {
+
+    modalRegistrarPago.classList.remove("modal-visible");
+
+});
+
+// Cerrar al hacer clic fuera
+modalRegistrarPago.addEventListener("click", function (e) {
+
+    if (e.target === modalRegistrarPago) {
+        modalRegistrarPago.classList.remove("modal-visible");
+    }
+
+});
     </script>
 
 </body>
