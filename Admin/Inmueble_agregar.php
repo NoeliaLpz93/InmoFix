@@ -22,12 +22,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // GUARDAR INMUEBLE EN LA BASE DE DATOS
     $sql = "INSERT INTO inmuebles
             (Direccion, Tipo, Estado, Descripcion, imagen)
-            VALUES
-            ('$direccion', '$tipo', '$estado', '$descripcion', '$nombreImg')";
+            VALUES (?, ?, ?, ?, ?)";
 
-    $conn->query($sql);
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param(
+        "sssss",
+        $direccion,
+        $tipo,
+        $estado,
+        $descripcion,
+        $nombreImg
+    );
 
-    header("Location: Inmuebles.php");
-    exit;
+    if ($stmt->execute()) {
+        header("Location: Inmuebles.php");
+        exit();
+    } else {
+        echo "Error al guardar el inmueble: " . $stmt->error;
+    }
+
+    $stmt->close();
 }
+
 ?>

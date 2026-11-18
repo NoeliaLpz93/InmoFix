@@ -15,13 +15,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // GUARDAR INQUILINO EN LA BASE DE DATOS
     $sql = "INSERT INTO inquilinos
             (apellido, nombre, dni, telefono, email)
-            VALUES
-            ('$apellido', '$nombre', '$dni', '$telefono', '$email')";
+            VALUES (?, ?, ?, ?, ?)";
 
-    $conn->query($sql);
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssss", $apellido, $nombre, $dni, $telefono, $email);
 
-    header("Location: inquilinos.php");
-    exit;
+    if ($stmt->execute()) {
+        header("Location: inquilinos.php");
+        exit();
+    } else {
+        echo "Error al guardar el inquilino: " . $stmt->error;
+    }
+
+    $stmt->close();
 }
 
 ?>

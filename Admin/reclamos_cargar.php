@@ -12,29 +12,45 @@ $sqlInmuebles = "SELECT IdInmueble, Direccion FROM Inmuebles";
 $inmuebles = $conn->query($sqlInmuebles);
 
 // Si se envió el formulario
-if ($_POST) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $IdInquilino = $_POST["IdInquilino"];
-    $IdInmueble = $_POST["IdInmueble"];
+    $IdInquilino = (int) $_POST["IdInquilino"];
+    $IdInmueble = (int) $_POST["IdInmueble"];
     $Categoria = $_POST["Categoria"];
     $Descripcion = $_POST["Descripcion"];
-    $Estado = "Pendiente"; // siempre inicia pendiente
+    $Estado = "Pendiente";
     $Prioridad = $_POST["Prioridad"];
-    $FechaCreacion = date("Y-m-d H:i:s");   // fecha y hora en que se crea el reclamo
+    $FechaCreacion = date("Y-m-d H:i:s");
 
-    // Insertamos el nuevo reclamo en la base de datos
-    $sql = "INSERT INTO Reclamos 
+    // INSERTAR NUEVO RECLAMO
+    $sql = "INSERT INTO Reclamos
             (IdInquilino, IdInmueble, Categoria, Descripcion, Estado, FechaCreacion, Prioridad)
-            VALUES 
-            ('$IdInquilino', '$IdInmueble', '$Categoria', '$Descripcion', '$Estado', '$FechaCreacion', '$Prioridad')";
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
 
- // Ejecutamos la consulta
-    $conn->query($sql);
+    $stmt = $conn->prepare($sql);
 
-    header("Location: Reclamos.php");
-    exit;
+    $stmt->bind_param(
+        "iisssss",
+        $IdInquilino,
+        $IdInmueble,
+        $Categoria,
+        $Descripcion,
+        $Estado,
+        $FechaCreacion,
+        $Prioridad
+    );
+
+    if ($stmt->execute()) {
+        header("Location: Reclamos.php");
+        exit();
+    } else {
+        echo "Error al guardar el reclamo: " . $stmt->error;
+    }
+
+    $stmt->close();
 }
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,7 +76,7 @@ if ($_POST) {
             <option value="">Seleccionar...</option>
             <?php while ($i = $inquilinos->fetch_assoc()) { ?>
                 <option value="<?= $i['id'] ?>">
-                    <?= $i['Nombre'] . " " . $i['Apellido'] ?>
+                    <?= $i['nombre'] . " " . $i['apellido'] ?>
                 </option>
             <?php } ?>
         </select>

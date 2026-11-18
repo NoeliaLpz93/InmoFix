@@ -1,17 +1,40 @@
+
 <?php
 
 require "verificar_admin.php";
 require "conection.php";
 
-    $id = $_GET["id"]; //obtiene el ID del inmueble que viene desde la URL
+$id = (int) $_GET["id"];
 
-    $sql = "SELECT * FROM inmuebles WHERE IdInmueble = $id"; //La consulta SQL busca en la tabla inmuebles el registro que tenga ese ID
-    $inmueble = $conn->query($sql)->fetch_assoc(); //convierte el resultado de la consulta en un array asociativo para poder acceder a los datos usando los nombres de las columnas
+// OBTENER DATOS DEL INMUEBLE
+$sql = "SELECT * FROM inmuebles WHERE IdInmueble = ?";
 
-    // Obtener reclamos del inmueble
-    $sqlReclamos = "SELECT * FROM reclamos WHERE IdInmueble = $id
-                    ORDER BY FechaCreacion DESC";
-    $reclamos = $conn->query($sqlReclamos);
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+
+$resultado = $stmt->get_result();
+$inmueble = $resultado->fetch_assoc();
+
+$stmt->close();
+
+// VERIFICAR SI EXISTE EL INMUEBLE
+if (!$inmueble) {
+    header("Location: Inmuebles.php");
+    exit();
+}
+
+// OBTENER RECLAMOS DEL INMUEBLE
+$sqlReclamos = "SELECT * FROM reclamos
+                WHERE IdInmueble = ?
+                ORDER BY FechaCreacion DESC";
+
+$stmtReclamos = $conn->prepare($sqlReclamos);
+$stmtReclamos->bind_param("i", $id);
+$stmtReclamos->execute();
+
+$reclamos = $stmtReclamos->get_result();
+
 ?>
 
 <!DOCTYPE html>

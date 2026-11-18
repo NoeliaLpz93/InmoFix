@@ -61,7 +61,7 @@ $resultado = $stmt->get_result();
     <!-- BUSCADOR -->
     <form method="GET" class="buscador">
           <!-- Formulario de búsqueda. -->
-        <input type="text" name="q" placeholder="Buscar por nombre o dirección" value="<?= $busqueda ?>">
+        <input type="text" name="q" placeholder="Buscar por nombre o dirección" value="<?= htmlspecialchars($busqueda, ENT_QUOTES, 'UTF-8') ?>">
         <button type="submit">Buscar</button>
     </form>
     </div>
@@ -107,21 +107,21 @@ $resultado = $stmt->get_result();
                 <tr>
                     <td>#<?= $fila["IdReclamo"] ?></td>
 
-                    <td class="<?= $colorEstado[$fila["Estado"]] ?>">
-                        <?= $fila["Estado"] ?>
+                    <td class="<?= htmlspecialchars($colorEstado[$fila["Estado"]] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                        <?= htmlspecialchars($fila["Estado"], ENT_QUOTES, 'UTF-8') ?>
                     </td>
 
-                    <td class="<?= $colorPrioridad[$fila["Prioridad"]] ?>">
-                        <?= $fila["Prioridad"] ?>
+                    <td class="<?= htmlspecialchars($colorPrioridad[$fila["Prioridad"]] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                        <?= htmlspecialchars($fila["Prioridad"], ENT_QUOTES, 'UTF-8') ?>
                     </td>
 
-                    <td><?= $fila["FechaCreacion"] ?></td>
+                    <td><?= htmlspecialchars($fila["FechaCreacion"], ENT_QUOTES, 'UTF-8') ?></td>
 
-                    <td><?= $fila["NombreInquilino"] . " " . $fila["ApellidoInquilino"] ?></td>
+                    <td><?= htmlspecialchars($fila["NombreInquilino"] . " " . $fila["ApellidoInquilino"], ENT_QUOTES, 'UTF-8') ?></td>
 
-                    <td><?= $fila["DireccionInmueble"] ?></td>
+                    <td><?= htmlspecialchars($fila["DireccionInmueble"], ENT_QUOTES, 'UTF-8') ?></td>
 
-                    <td><?= $fila["Categoria"] ?></td>
+                    <td><?= htmlspecialchars($fila["Categoria"], ENT_QUOTES, 'UTF-8') ?></td>
 
                     <td>
                         <a href="reclamos_detalle.php?id=<?= $fila['IdReclamo'] ?>" class="btn">Detalle</a>

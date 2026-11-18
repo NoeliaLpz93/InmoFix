@@ -3,10 +3,21 @@
 require "verificar_admin.php";
 require "conection.php";
 
-$id = $_GET["id"]; //obtiene el ID del inmueble que queremos eliminar
+$id = (int) $_GET["id"];
 
-$sql = "DELETE FROM inmuebles WHERE IdInmueble = $id"; // Crea la consulta SQL para eliminar el inmueble
-$conn->query($sql); // Ejecuta la consulta
+// ELIMINAR INMUEBLE
+$sql = "DELETE FROM inmuebles WHERE IdInmueble = ?";
 
-header("Location: inmuebles.php"); // Redirige al listado de inmuebles
-exit;
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+
+if ($stmt->execute()) {
+    header("Location: inmuebles.php");
+    exit();
+} else {
+    echo "Error al eliminar el inmueble: " . $stmt->error;
+}
+
+$stmt->close();
+
+?>

@@ -6,66 +6,107 @@ require "conection.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // RECIBIR LOS DATOS DEL FORMULARIO
-    $idInquilino = $_POST["IdInquilino"];
-    $idInmueble = $_POST["IdInmueble"];
+    $idInquilino = (int) $_POST["IdInquilino"];
+    $idInmueble = (int) $_POST["IdInmueble"];
     $fechaInicio = $_POST["FechaInicio"];
     $fechaFin = $_POST["FechaFin"];
-    $valorInicial = $_POST["ValorInicial"];
+    $valorInicial = (float) $_POST["ValorInicial"];
     $tipoAjuste = $_POST["TipoAjuste"];
-    $porcentajeAjuste = $_POST["PorcentajeAjuste"];
+    $porcentajeAjuste = (float) ($_POST["PorcentajeAjuste"] ?? 0);
 
     // SI EL AJUSTE NO ES POR PORCENTAJE, GUARDAR 0
     if ($tipoAjuste != "Porcentaje") {
         $porcentajeAjuste = 0;
     }
 
-    // GUARDAR EL CONTRATO
-    $sql = "INSERT INTO contratos
-            (IdInquilino, IdInmueble, FechaInicio, FechaFin,
-             ValorInicial, TipoAjuste, PorcentajeAjuste, Estado)
-            VALUES (?, ?, ?, ?, ?, ?, ?, 'Activo')";
-
-    $stmt = $conn->prepare($sql);
-
-    $stmt->bind_param(
-        "iissdsd",
-        $idInquilino,
-        $idInmueble,
-        $fechaInicio,
-        $fechaFin,
-        $valorInicial,
-        $tipoAjuste,
-        $porcentajeAjuste
-    );
-
-    // ACTUALIZAR EL ESTADO DEL INMUEBLE
+    // INICIAR TRANSACCIÓN
     $conn->begin_transaction();
 
     try {
-        $stmt->execute();
 
+        // VERIFICAR Y ACTUALIZAR EL ESTADO DEL INMUEBLE
         $sqlInmueble = "UPDATE inmuebles
                         SET Estado = 'Alquilado'
                         WHERE IdInmueble = ?
                         AND Estado = 'Disponible'";
 
         $stmtInmueble = $conn->prepare($sqlInmueble);
+
+        if (!$stmtInmueble) {
+            throw new Exception("Error al preparar la actualización del inmueble.");
+        }
+
         $stmtInmueble->bind_param("i", $idInmueble);
         $stmtInmueble->execute();
 
         if ($stmtInmueble->affected_rows != 1) {
-            throw new Exception("El inmueble ya no está disponible.");
+            throw new Exception("El inmueble no está disponible.");
         }
 
+        $stmtInmueble->close();
+
+        // VERIFICAR SI YA EXISTE UN CONTRATO ACTIVO
+        $sqlVerificar = "SELECT IdContrato
+                         FROM contratos
+                         WHERE IdInmueble = ?
+                         AND Estado = 'Activo'
+                         LIMIT 1";
+
+        $stmtVerificar = $conn->prepare($sqlVerificar);
+
+        if (!$stmtVerificar) {
+            throw new Exception("Error al verificar los contratos existentes.");
+        }
+
+        $stmtVerificar->bind_param("i", $idInmueble);
+        $stmtVerificar->execute();
+
+        $stmtVerificar->bind_result($idContratoExistente);
+
+        if ($stmtVerificar->fetch()) {
+            $stmtVerificar->close();
+            throw new Exception("El inmueble ya tiene un contrato activo.");
+        }
+
+        $stmtVerificar->close();
+
+        // GUARDAR EL CONTRATO
+        $sql = "INSERT INTO contratos
+                (IdInquilino, IdInmueble, FechaInicio, FechaFin,
+                 ValorInicial, TipoAjuste, PorcentajeAjuste, Estado)
+                VALUES (?, ?, ?, ?, ?, ?, ?, 'Activo')";
+
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt) {
+            throw new Exception("Error al preparar el contrato.");
+        }
+
+        $stmt->bind_param(
+            "iissdsd",
+            $idInquilino,
+            $idInmueble,
+            $fechaInicio,
+            $fechaFin,
+            $valorInicial,
+            $tipoAjuste,
+            $porcentajeAjuste
+        );
+
+        $stmt->execute();
+        $stmt->close();
+
+        // CONFIRMAR TRANSACCIÓN
         $conn->commit();
 
         header("Location: contratos.php?ok=agregado");
-        exit;
+        exit();
 
     } catch (Throwable $error) {
+
         $conn->rollback();
 
-        echo "No se pudo guardar el contrato. Verificá que el inmueble siga disponible.";
+        echo "No se pudo guardar el contrato. Verificá que el inmueble esté disponible y no tenga otro contrato activo.";
     }
 }
 ?>

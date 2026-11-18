@@ -11,10 +11,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fechaPago = $_POST["FechaPago"];
 
     // VALIDAR DATOS
-    if ($idPago <= 0 || empty($fechaPago)) {
-        die("Error: faltan datos para registrar el pago.");
+    if (
+        $idPago <= 0 ||
+        empty($fechaPago) ||
+        !DateTime::createFromFormat('Y-m-d', $fechaPago)
+    ) {
+        die("Error: los datos para registrar el pago no son válidos.");
     }
-
+    
     // ACTUALIZAR PAGO
     $sql = "UPDATE pagos
             SET Estado = 'Pagado',

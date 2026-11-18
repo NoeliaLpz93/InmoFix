@@ -23,6 +23,7 @@ if ($id !== false && $id !== null) {
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $contrato = $stmt->get_result()->fetch_assoc(); // null si no existe
+    $stmt->close();
 }
 ?>
 

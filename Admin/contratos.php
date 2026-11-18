@@ -460,6 +460,9 @@ $mensajeOk = $mensajes[$_GET["ok"] ?? ""] ?? null;
                 class="formulario-inquilino"
                 id="form-editar-contrato"
             >
+
+            <div id="error-editar-contrato" class="login-error" style="display: none;"></div>
+
                 <input type="hidden" name="IdContrato" id="editar-IdContrato">
 
                 <div class="campos-inquilino">
@@ -622,16 +625,23 @@ $mensajeOk = $mensajes[$_GET["ok"] ?? ""] ?? null;
         // Cada botón carga los datos del contrato de su propia fila.
         document.querySelectorAll(".btn-editar-contrato").forEach(function (boton) {
             boton.addEventListener("click", function () {
-                idEditar.value = boton.dataset.id;
-                estadoEditar.value = boton.dataset.estado;
-                fechaFinEditar.value = boton.dataset.fechaFin;
-                fechaFinEditar.min = boton.dataset.fechaInicio;
 
-                formularioEditar.action = "editarContrato.php?id=" + boton.dataset.id;
-                modalEditar.classList.add("modal-visible");
+            // Limpiar errores anteriores.
+            const contenedorError = document.getElementById("error-editar-contrato");
+            contenedorError.textContent = "";
+            contenedorError.style.display = "none";
+
+            // Cargar los datos del contrato seleccionado.
+            idEditar.value = boton.dataset.id;
+            estadoEditar.value = boton.dataset.estado;
+            fechaFinEditar.value = boton.dataset.fechaFin;
+            fechaFinEditar.min = boton.dataset.fechaInicio;
+
+            formularioEditar.action = "editarContrato.php?id=" + boton.dataset.id;
+
+            modalEditar.classList.add("modal-visible");
             });
         });
-
         // Cerrar desde la X.
         cerrarModalEditar.addEventListener("click", function () {
             modalEditar.classList.remove("modal-visible");
@@ -642,6 +652,49 @@ $mensajeOk = $mensajes[$_GET["ok"] ?? ""] ?? null;
             if (evento.target === modalEditar) {
                 modalEditar.classList.remove("modal-visible");
             }
+        });
+
+        // Enviar el formulario sin abandonar la página.
+        formularioEditar.addEventListener("submit", async function (evento) {
+
+            evento.preventDefault();
+
+            const contenedorError = document.getElementById("error-editar-contrato");
+            const botonGuardar = formularioEditar.querySelector('button[type="submit"]');
+
+            contenedorError.style.display = "none";
+            contenedorError.textContent = "";
+
+            botonGuardar.disabled = true;
+
+            try {
+
+                const respuesta = await fetch(formularioEditar.action, {
+                    method: "POST",
+                    body: new FormData(formularioEditar)
+                });
+
+                const resultado = await respuesta.json();
+
+            if (resultado.success) {
+                window.location.href = resultado.redirect;
+                return;
+            }
+
+            contenedorError.textContent = resultado.mensaje;
+            contenedorError.style.display = "block";
+
+            } catch (error) {
+
+            contenedorError.textContent = "Ocurrió un error al guardar los cambios. Intentá nuevamente.";
+            contenedorError.style.display = "block";
+
+            } finally {
+
+            botonGuardar.disabled = false;
+
+            }
+
         });
     </script>
     <script>

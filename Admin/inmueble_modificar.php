@@ -3,7 +3,7 @@
 require "verificar_admin.php";
 require "conection.php";
 
-$id = $_GET["id"];
+$id = (int) $_GET["id"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -25,29 +25,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         );
 
         $update = "UPDATE inmuebles
-                   SET Direccion='$direccion',
-                       Tipo='$tipo',
-                       Estado='$estado',
-                       Descripcion='$descripcion',
-                       imagen='$nombreImg'
-                   WHERE IdInmueble=$id";
+                   SET Direccion = ?,
+                       Tipo = ?,
+                       Estado = ?,
+                       Descripcion = ?,
+                       imagen = ?
+                   WHERE IdInmueble = ?";
+
+        $stmt = $conn->prepare($update);
+        $stmt->bind_param(
+            "sssssi",
+            $direccion,
+            $tipo,
+            $estado,
+            $descripcion,
+            $nombreImg,
+            $id
+        );
 
     } else {
 
         // SI NO SE SUBE IMAGEN, SE MANTIENE LA ANTERIOR
         $update = "UPDATE inmuebles
-                   SET Direccion='$direccion',
-                       Tipo='$tipo',
-                       Estado='$estado',
-                       Descripcion='$descripcion'
-                   WHERE IdInmueble=$id";
+                   SET Direccion = ?,
+                       Tipo = ?,
+                       Estado = ?,
+                       Descripcion = ?
+                   WHERE IdInmueble = ?";
+
+        $stmt = $conn->prepare($update);
+        $stmt->bind_param(
+            "ssssi",
+            $direccion,
+            $tipo,
+            $estado,
+            $descripcion,
+            $id
+        );
     }
 
 
-    $conn->query($update);
+    if ($stmt->execute()) {
+        header("Location: inmueble_detalles.php?id=$id");
+        exit();
+    } else {
+        echo "Error al modificar el inmueble: " . $stmt->error;
+    }
 
-    header("Location: inmueble_detalles.php?id=$id");
-    exit;
+    $stmt->close();
 }
 
 ?>

@@ -11,34 +11,85 @@ $contrato = null;
 
 if ($id !== false && $id !== null) {
 
-    $sql = "SELECT c.IdContrato, c.Estado,
+    $sql = "SELECT c.IdContrato, c.IdInmueble, c.Estado,
                    q.nombre AS NombreInquilino, q.apellido AS ApellidoInquilino,
                    i.Direccion AS DireccionInmueble
             FROM contratos c
             INNER JOIN inquilinos q ON c.IdInquilino = q.id
-            INNER JOIN inmuebles  i ON c.IdInmueble  = i.IdInmueble
+            INNER JOIN inmuebles i ON c.IdInmueble = i.IdInmueble
             WHERE c.IdContrato = ?";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $contrato = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
 }
 
 $yaFinalizado = $contrato && $contrato["Estado"] === $ESTADO_FINALIZADO;
 $error = null;
 
-// La acción que modifica datos solo se ejecuta por POST (al confirmar),
-// nunca con solo abrir la URL.
+// La acción solo se ejecuta al confirmar mediante POST.
 if ($contrato && !$yaFinalizado && $_SERVER["REQUEST_METHOD"] === "POST") {
+
     try {
-        $upd = $conn->prepare("UPDATE contratos SET Estado = ? WHERE IdContrato = ? AND Estado <> ?");
-        $upd->bind_param("sis", $ESTADO_FINALIZADO, $id, $ESTADO_FINALIZADO);
+
+        // INICIAR TRANSACCIÓN
+        $conn->begin_transaction();
+
+        // FINALIZAR EL CONTRATO
+        $upd = $conn->prepare(
+            "UPDATE contratos
+             SET Estado = ?
+             WHERE IdContrato = ? AND Estado = 'Activo'"
+        );
+
+        $upd->bind_param("si", $ESTADO_FINALIZADO, $id);
         $upd->execute();
+
+        if ($upd->affected_rows != 1) {
+            throw new Exception("No se pudo finalizar el contrato.");
+        }
+
+        $upd->close();
+
+        // VERIFICAR SI EL INMUEBLE TIENE OTRO CONTRATO ACTIVO
+        $sqlVerificar = "SELECT COUNT(*)
+                         FROM contratos
+                         WHERE IdInmueble = ?
+                         AND Estado = 'Activo'";
+
+        $stmtVerificar = $conn->prepare($sqlVerificar);
+        $stmtVerificar->bind_param("i", $contrato["IdInmueble"]);
+        $stmtVerificar->execute();
+        $stmtVerificar->bind_result($contratosActivos);
+        $stmtVerificar->fetch();
+        $stmtVerificar->close();
+
+        // SI NO TIENE OTROS CONTRATOS ACTIVOS, LIBERAR EL INMUEBLE
+        if ($contratosActivos == 0) {
+
+            $sqlInmueble = "UPDATE inmuebles
+                            SET Estado = 'Disponible'
+                            WHERE IdInmueble = ?
+                            AND Estado = 'Alquilado'";
+
+            $stmtInmueble = $conn->prepare($sqlInmueble);
+            $stmtInmueble->bind_param("i", $contrato["IdInmueble"]);
+            $stmtInmueble->execute();
+            $stmtInmueble->close();
+        }
+
+        // CONFIRMAR TRANSACCIÓN
+        $conn->commit();
 
         header("Location: contratos.php?ok=finalizado");
         exit;
-    } catch (mysqli_sql_exception $e) {
+
+    } catch (Throwable $e) {
+
+        $conn->rollback();
+
         $error = "No se pudo finalizar el contrato. Intentá nuevamente.";
     }
 }

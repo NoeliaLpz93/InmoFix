@@ -4,23 +4,40 @@ require "verificar_admin.php";
 require "conection.php";
 
 // Obtenemos el ID del reclamo desde la URL
-$id = $_GET["id"];
+$id = (int) $_GET["id"];
 
 // Buscamos el estado actual del reclamo
-$sql = "SELECT Estado FROM Reclamos WHERE IdReclamo = $id";
-$reclamo = $conn->query($sql)->fetch_assoc();
+$sql = "SELECT Estado FROM Reclamos WHERE IdReclamo = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+
+$reclamo = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+
+// Si no existe el reclamo, volvemos al listado
+if (!$reclamo) {
+    header("Location: reclamos.php");
+    exit();
+}
 
 // Si se envió el formulario
-if ($_POST) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     $nuevoEstado = $_POST["estado"];
-  // Actualizamos el estado del reclamo en la base de datos
-    $update = "UPDATE Reclamos SET Estado='$nuevoEstado' WHERE IdReclamo=$id";
-    $conn->query($update);
+
+    // Actualizamos el estado del reclamo
+    $update = "UPDATE Reclamos SET Estado = ? WHERE IdReclamo = ?";
+    $stmt = $conn->prepare($update);
+    $stmt->bind_param("si", $nuevoEstado, $id);
+    $stmt->execute();
+    $stmt->close();
 
     header("Location: reclamos_detalle.php?id=$id");
-    exit;
+    exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>

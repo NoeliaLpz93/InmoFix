@@ -16,8 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (
         $idContrato <= 0 ||
         $monto <= 0 ||
-        empty($fechaEmision) ||
-        empty($fechaVencimiento) ||
+        !DateTime::createFromFormat('Y-m-d', $fechaEmision) ||
+        !DateTime::createFromFormat('Y-m-d', $fechaVencimiento) ||
         $fechaEmision > $fechaVencimiento
     ) {
         die("Error: verificá los datos ingresados.");

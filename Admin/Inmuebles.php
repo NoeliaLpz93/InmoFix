@@ -3,14 +3,21 @@
 require "verificar_admin.php";
 require "conection.php";
 
-    $busqueda = $_GET["q"] ?? ""; // Guarda el texto buscado. Si no hay búsqueda, queda vacío.
+$busqueda = trim($_GET["q"] ?? "");
 
-    $sql = "SELECT * FROM inmuebles 
-        WHERE direccion LIKE '%$busqueda%'"; // Consulta los inmuebles cuya dirección contenga el texto buscado.
+$sql = "SELECT * FROM inmuebles
+        WHERE Direccion LIKE ?";
 
-    $resultado = $conn->query($sql); // Ejecuta la consulta y guarda los resultados.
+$stmt = $conn->prepare($sql);
+
+$like = "%" . $busqueda . "%";
+
+$stmt->bind_param("s", $like);
+$stmt->execute();
+
+$resultado = $stmt->get_result();
+
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -44,7 +51,7 @@ require "conection.php";
                 </button>
 
                 <form method="GET" class="buscador">
-                    <input type="text" name="q" placeholder="Buscar por dirección" value="<?= $busqueda ?>">
+                    <input type="text" name="q" placeholder="Buscar por dirección" value="<?= htmlspecialchars($busqueda, ENT_QUOTES, 'UTF-8') ?>"
                         <button type="submit">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>

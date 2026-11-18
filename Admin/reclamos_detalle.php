@@ -46,11 +46,11 @@ $reclamo = $stmt->get_result()->fetch_assoc();
     <p><strong>Descripción:</strong> <?= $reclamo["Descripcion"] ?></p>
  <!-- modificamos el estado del reclamo -->
     <div class="acciones-detalle">
-        <a href="reclamo_estado.php?id=<?= $reclamo['IdReclamo'] ?>" class="btn btn-naranja">
+        <a href="reclamos_estado.php?id=<?= $reclamo['IdReclamo'] ?>" class="btn btn-naranja">
             Cambiar Estado
         </a>
 <!-- eliminamos el estado del reclamo -->
-        <a href="reclamo_eliminar.php?id=<?= $reclamo['IdReclamo'] ?>"
+        <a href="reclamos_eliminar.php?id=<?= $reclamo['IdReclamo'] ?>"
            class="btn btn-rojo"
            onclick="return confirm('¿Seguro que deseas eliminar este reclamo?');">
             Eliminar Reclamo

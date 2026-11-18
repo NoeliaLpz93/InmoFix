@@ -3,12 +3,21 @@
 require "verificar_admin.php";
 require "conection.php";
 
-$id = $_GET["id"];
+$id = (int) $_GET["id"];
 
 $sql = "DELETE FROM inquilinos
-        WHERE id = $id";
+        WHERE id = ?";
 
-$conn->query($sql);
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
 
-header("Location: inquilinos.php");
-exit();
+if ($stmt->execute()) {
+    header("Location: inquilinos.php");
+    exit();
+} else {
+    echo "Error al eliminar el inquilino: " . $stmt->error;
+}
+
+$stmt->close();
+
+?>

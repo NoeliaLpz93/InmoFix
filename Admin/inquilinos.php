@@ -3,15 +3,22 @@
 require "verificar_admin.php";
 require "conection.php";
 
-    // BUSCADOR
-    $busqueda = $_GET["q"] ?? ""; // Obtiene el texto ingresado en el buscador.
+// BUSCADOR
+$busqueda = trim($_GET["q"] ?? "");
 
-    $sql = "SELECT * FROM inquilinos
-            WHERE nombre LIKE '%$busqueda%'
-            OR apellido LIKE '%$busqueda%'
-            OR DNI LIKE '%$busqueda%'";
+$sql = "SELECT * FROM inquilinos
+        WHERE nombre LIKE ?
+        OR apellido LIKE ?
+        OR DNI LIKE ?";
 
-    $resultado = $conn->query($sql);  // Ejecuta la consulta
+$stmt = $conn->prepare($sql);
+
+$like = "%" . $busqueda . "%";
+
+$stmt->bind_param("sss", $like, $like, $like);
+$stmt->execute();
+
+$resultado = $stmt->get_result();
 
 ?>
 
@@ -67,7 +74,7 @@ require "conection.php";
                         type="text"
                         name="q"
                         placeholder="Buscar por DNI o nombre"
-                        value="<?= htmlspecialchars($busqueda) ?>"
+                        value="<?= htmlspecialchars($busqueda, ENT_QUOTES, 'UTF-8') ?>"
                     >
 
                     <button type="submit">

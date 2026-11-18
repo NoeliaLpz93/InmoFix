@@ -3,7 +3,7 @@
 require "verificar_admin.php";
 require "conection.php";
 
-$id = $_GET["id"];
+$id = (int) $_GET["id"];
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -17,18 +17,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // MODIFICAR INQUILINO
     $update = "UPDATE inquilinos
-               SET apellido='$apellido',
-                   nombre='$nombre',
-                   dni='$dni',
-                   telefono='$telefono',
-                   email='$email'
-               WHERE id=$id";
+               SET apellido = ?,
+                   nombre = ?,
+                   dni = ?,
+                   telefono = ?,
+                   email = ?
+               WHERE id = ?";
 
-    $conn->query($update);
+    $stmt = $conn->prepare($update);
+    $stmt->bind_param("sssssi", $apellido, $nombre, $dni, $telefono, $email, $id);
 
+    if ($stmt->execute()) {
+        header("Location: inquilinos.php");
+        exit();
+    } else {
+        echo "Error al modificar el inquilino: " . $stmt->error;
+    }
 
-    header("Location: inquilinos.php");
-    exit;
+    $stmt->close();
 }
 
 ?>
