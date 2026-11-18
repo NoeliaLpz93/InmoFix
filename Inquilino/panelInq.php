@@ -12,16 +12,47 @@ if (
 require_once "../conection.php";
 
 // Datos desde BD
+// Datos del inquilino
+$idInquilino = (int) $_SESSION["idInquilino"];
+
 $nombre = ($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"] ?? "");
-$contrato_estado = "Activo";
-$contrato_vencimiento = "15/06/2029";
 
-$proximo_pago = "15/05/2028";
+// Valores iniciales
+$contrato_estado = "Sin contrato";
+$contrato_vencimiento = "No disponible";
+$inmueble = "Sin inmueble asignado";
 
-$reclamos_pendientes = 2;
-$reclamos_proceso = 1;
+// Buscar contrato e inmueble
+$sql = "SELECT
+            c.Estado,
+            c.FechaFin,
+            i.Direccion
+        FROM contratos c
+        INNER JOIN inmuebles i
+            ON c.IdInmueble = i.IdInmueble
+        WHERE c.IdInquilino = ?
+        ORDER BY c.IdContrato DESC
+        LIMIT 1";
 
-$inmueble = "San Martín 123";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $idInquilino);
+$stmt->execute();
+
+$resultado = $stmt->get_result();
+
+if ($datos = $resultado->fetch_assoc()) {
+
+    $contrato_estado = $datos["Estado"];
+
+    $contrato_vencimiento = date(
+        "d/m/Y",
+        strtotime($datos["FechaFin"])
+    );
+
+    $inmueble = $datos["Direccion"];
+}
+
+$stmt->close();
 
 $notificaciones = [
     "⚠️ Tu alquiler vence en 7 días",

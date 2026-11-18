@@ -19,6 +19,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $porcentajeAjuste = 0;
     }
 
+    // VALIDAR FECHAS
+    if (
+        empty($fechaInicio) ||
+        empty($fechaFin) ||
+        $fechaFin <= $fechaInicio
+    ) {
+        die("Error: la fecha de finalización debe ser posterior a la fecha de inicio.");
+    }
+
+    // VALIDAR VALOR INICIAL
+    if ($valorInicial <= 0) {
+        die("Error: el valor inicial debe ser mayor a cero.");
+    }   
+
+    // VALIDAR TIPO DE AJUSTE
+    $tiposPermitidos = [
+        "Trimestral",
+        "Semestral",
+        "Porcentaje",
+        "Cuatrimestral"
+    ];
+
+    if (!in_array($tipoAjuste, $tiposPermitidos, true)) {
+        die("Error: el tipo de ajuste no es válido.");
+    }
+
+    // VALIDAR PORCENTAJE
+    if ($tipoAjuste == "Porcentaje" &&
+        ($porcentajeAjuste < 0 || $porcentajeAjuste > 100)) {
+        die("Error: el porcentaje debe estar entre 0 y 100.");
+    }
+
+    // VERIFICAR QUE EL INQUILINO EXISTA
+    $sqlInquilino = "SELECT id FROM inquilinos WHERE id = ?";
+    $stmtInquilino = $conn->prepare($sqlInquilino);
+
+    if (!$stmtInquilino) {
+        die("Error al verificar el inquilino.");
+    }
+
+    $stmtInquilino->bind_param("i", $idInquilino);
+    $stmtInquilino->execute();
+    $stmtInquilino->store_result();
+
+    if ($stmtInquilino->num_rows === 0) {
+        $stmtInquilino->close();
+        die("Error: el inquilino seleccionado no existe.");
+    }
+
+    $stmtInquilino->close();
+
     // INICIAR TRANSACCIÓN
     $conn->begin_transaction();
 
