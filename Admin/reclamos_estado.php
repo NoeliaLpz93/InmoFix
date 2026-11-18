@@ -1,4 +1,6 @@
 <?php
+
+require "verificar_admin.php";
 require "conection.php";
 
 // Obtenemos el ID del reclamo desde la URL

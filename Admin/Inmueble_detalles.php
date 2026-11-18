@@ -1,5 +1,7 @@
 <?php
-    require "conection.php";
+
+require "verificar_admin.php";
+require "conection.php";
 
     $id = $_GET["id"]; //obtiene el ID del inmueble que viene desde la URL
 

@@ -1,4 +1,6 @@
 <?php
+
+require "verificar_admin.php";
 require "conection.php";
 
 // Estado que usa el sistema para un contrato cerrado (ver también finalizarContrato.php)

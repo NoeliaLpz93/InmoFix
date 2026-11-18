@@ -1,22 +1,51 @@
 <?php
-include ("conection.php");
+session_start();
 
-// Este if se pregunta si el usuario envió el formulario
+include("conection.php");
+
+// Verificamos si se envió el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
     $usuario = $_POST["usuario"];
     $clave = $_POST["clave"];
 
-    // Si el usuario y contraseña son correctos se dirige al panel de Administrador
-    if ($usuario === "admin" && $clave === "admin123") {
+    // Buscamos el usuario en la base de datos
+    $sql = "SELECT IdUsuario, Nombre, Apellido, Password, Rol
+            FROM usuarios
+            WHERE Usuario = ?
+            LIMIT 1";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $usuario);
+    $stmt->execute();
+
+    $resultado = $stmt->get_result();
+    $datos = $resultado->fetch_assoc();
+
+    // Comprobamos la contraseña y el rol
+    if (
+        $datos &&
+        password_verify($clave, $datos["Password"]) &&
+        $datos["Rol"] === "Administrador"
+    ) {
+
+        // Guardamos los datos en la sesión
+        session_regenerate_id(true);
+
+        $_SESSION["idUsuario"] = $datos["IdUsuario"];
+        $_SESSION["nombre"] = $datos["Nombre"];
+        $_SESSION["apellido"] = $datos["Apellido"];
+        $_SESSION["rol"] = $datos["Rol"];
+
         header("Location: panelAdmin.php");
         exit();
 
-    // Si no son correctos da error
     } else {
         $error = "Usuario o contraseña incorrecto";
     }
-}
 
+    $stmt->close();
+}
 ?>
 
 <!DOCTYPE html>

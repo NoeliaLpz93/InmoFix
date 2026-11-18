@@ -1,6 +1,8 @@
 <?php
-    require "conection.php";
-    
+
+require "verificar_admin.php";
+require "conection.php";
+
     // BUSCADOR
     $busqueda = $_GET["q"] ?? ""; // Obtiene el texto ingresado en el buscador.
 

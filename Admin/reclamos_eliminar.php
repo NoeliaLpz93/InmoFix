@@ -1,5 +1,8 @@
 <?php
+
+require "verificar_admin.php";
 require "conection.php";
+
 // Obtenemos el ID del reclamo que se quiere eliminar
 $id = $_GET["id"];
 // Eliminamos el reclamo de la base de datos

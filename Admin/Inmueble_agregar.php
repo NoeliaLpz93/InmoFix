@@ -1,5 +1,6 @@
 <?php
 
+require "verificar_admin.php";
 require "conection.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

@@ -1,6 +1,7 @@
 <?php
 
-include("conection.php");
+require "verificar_admin.php";
+require "conection.php";
 
 $nombre   = $_POST["nombre"];
 $apellido = $_POST["apellido"];

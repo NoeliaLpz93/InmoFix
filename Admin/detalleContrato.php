@@ -1,4 +1,6 @@
 <?php
+
+require "verificar_admin.php";
 require "conection.php";
 
 // El id llega por GET desde contratos.php. Se valida que sea un entero positivo.

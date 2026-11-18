@@ -1,27 +1,34 @@
 <?php
 session_start();
 
+// Verificar que el usuario haya iniciado sesión y sea administrador
+if (
+    !isset($_SESSION["idUsuario"]) ||
+    $_SESSION["rol"] !== "Administrador"
+) {
+    header("Location: loginAdmin.php");
+    exit();
+}
+
 require "conection.php";
 
-$nombre = "Administrador";
-
 // Contratos por vencer en los próximos 30 días
-$sqlContratos = "SELECT COUNT(*) AS total 
-                 FROM contratos 
+$sqlContratos = "SELECT COUNT(*) AS total
+                 FROM contratos
                  WHERE FechaFin <= DATE_ADD(CURDATE(), INTERVAL 30 DAY)
                  AND Estado = 'Activo'";
 $contratos_por_vencer = $conn->query($sqlContratos)->fetch_assoc()["total"];
 
 // Reclamos urgentes
-$sqlReclamos = "SELECT COUNT(*) AS total 
-                FROM reclamos 
-                WHERE Prioridad = 'Alta' 
+$sqlReclamos = "SELECT COUNT(*) AS total
+                FROM reclamos
+                WHERE Prioridad = 'Alta'
                 AND Estado = 'Pendiente'";
 $reclamos_urgentes = $conn->query($sqlReclamos)->fetch_assoc()["total"];
 
 // Pagos vencidos
-$sqlPagos = "SELECT COUNT(*) AS total 
-             FROM pagos 
+$sqlPagos = "SELECT COUNT(*) AS total
+             FROM pagos
              WHERE Estado = 'Vencido'";
 $pagos_vencidos = $conn->query($sqlPagos)->fetch_assoc()["total"];
 
@@ -68,7 +75,7 @@ $alertas = [
     <main class="panel-main">
 
         <h1 class="panel-bienvenida">
-            Bienvenido, <?= $nombre ?>
+            Hola, <?= htmlspecialchars($_SESSION["nombre"]) ?>
         </h1>
 
         <div class="panel-alertas">

@@ -1,5 +1,6 @@
 <?php
 
+require "verificar_admin.php";
 require "conection.php";
 
 // VERIFICAR QUE EL FORMULARIO SE HAYA ENVIADO

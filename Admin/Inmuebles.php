@@ -1,5 +1,7 @@
 <?php
-    require "conection.php";
+
+require "verificar_admin.php";
+require "conection.php";
 
     $busqueda = $_GET["q"] ?? ""; // Guarda el texto buscado. Si no hay búsqueda, queda vacío.
 
