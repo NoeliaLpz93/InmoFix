@@ -15,7 +15,7 @@ if ($_POST) {
     $update = "UPDATE Reclamos SET Estado='$nuevoEstado' WHERE IdReclamo=$id";
     $conn->query($update);
 
-    header("Location: reclamo_detalles.php?id=$id");
+    header("Location: reclamos_detalle.php?id=$id");
     exit;
 }
 ?>

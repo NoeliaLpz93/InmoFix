@@ -4,20 +4,28 @@ require "conection.php";
 $busqueda = $_GET["q"] ?? "";
 
 // Reclamos + datos del inquilino + datos del inmueble
-$sql = "SELECT r.*, 
-               u.Nombre AS NombreInquilino,
-               u.Apellido AS ApellidoInquilino,
+$sql = "SELECT r.*,
+               q.nombre AS NombreInquilino,
+               q.apellido AS ApellidoInquilino,
                i.Direccion AS DireccionInmueble
         FROM Reclamos r
-        INNER JOIN Usuarios u ON r.IdInquilino = u.IdUsuario
+        INNER JOIN inquilinos q ON r.IdInquilino = q.id
         INNER JOIN Inmuebles i ON r.IdInmueble = i.IdInmueble
-        WHERE u.Nombre LIKE '%$busqueda%'
-        OR u.Apellido LIKE '%$busqueda%'
-        OR i.Direccion LIKE '%$busqueda%'";
+        WHERE q.nombre LIKE ?
+        OR q.apellido LIKE ?
+        OR i.Direccion LIKE ?";
 
 // Ejecutamos la consulta
-$resultado = $conn->query($sql);
+$stmt = $conn->prepare($sql);
+
+$termino = "%" . $busqueda . "%";
+
+$stmt->bind_param("sss", $termino, $termino, $termino);
+$stmt->execute();
+
+$resultado = $stmt->get_result();
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -114,8 +122,8 @@ $resultado = $conn->query($sql);
                     <td><?= $fila["Categoria"] ?></td>
 
                     <td>
-                        <a href="reclamo_detalles.php?id=<?= $fila['IdReclamo'] ?>" class="btn">Detalle</a>
-                        <a href="reclamo_estado.php?id=<?= $fila['IdReclamo'] ?>" class="btn btn-naranja">Cambiar Estado</a>
+                        <a href="reclamos_detalle.php?id=<?= $fila['IdReclamo'] ?>" class="btn">Detalle</a>
+                        <a href="reclamos_estado.php?id=<?= $fila['IdReclamo'] ?>" class="btn btn-naranja">Cambiar Estado</a>
                     </td>
                 </tr>
 

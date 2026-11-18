@@ -2,7 +2,7 @@
 require "conection.php";
 
 // Obtener lista de inquilinos
-$sqlInquilinos = "SELECT IdUsuario, Nombre, Apellido FROM Usuarios";
+$sqlInquilinos = "SELECT id, nombre, apellido FROM inquilinos";
 $inquilinos = $conn->query($sqlInquilinos);
 
 // Obtener lista de inmuebles
@@ -57,7 +57,7 @@ if ($_POST) {
         <select name="IdInquilino" required>
             <option value="">Seleccionar...</option>
             <?php while ($i = $inquilinos->fetch_assoc()) { ?>
-                <option value="<?= $i['IdUsuario'] ?>">
+                <option value="<?= $i['id'] ?>">
                     <?= $i['Nombre'] . " " . $i['Apellido'] ?>
                 </option>
             <?php } ?>

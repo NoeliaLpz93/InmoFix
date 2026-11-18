@@ -3,18 +3,22 @@ require "conection.php";
 
 $id = $_GET["id"];
 // Consulta SQL para obtener toda la información del reclamo.
-$sql = "SELECT r.*, 
-               u.Nombre AS NombreInquilino,
-               u.Apellido AS ApellidoInquilino,
+$sql = "SELECT r.*,
+               q.nombre AS NombreInquilino,
+               q.apellido AS ApellidoInquilino,
                i.Direccion AS DireccionInmueble
         FROM Reclamos r
-        INNER JOIN Usuarios u ON r.IdInquilino = u.IdUsuario
+        INNER JOIN inquilinos q ON r.IdInquilino = q.id
         INNER JOIN Inmuebles i ON r.IdInmueble = i.IdInmueble
-        WHERE r.IdReclamo = $id";
+        WHERE r.IdReclamo = ?";
 
-// Ejecutamos la consulta
-$reclamo = $conn->query($sql)->fetch_assoc();
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+
+$reclamo = $stmt->get_result()->fetch_assoc();
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
