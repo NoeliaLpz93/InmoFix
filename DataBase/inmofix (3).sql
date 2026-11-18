@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-11-2026 a las 01:14:20
+-- Tiempo de generación: 18-11-2026 a las 06:27:17
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -137,8 +137,17 @@ CREATE TABLE `pagos` (
   `IdContrato` int(11) NOT NULL,
   `Estado` varchar(20) NOT NULL,
   `Monto` decimal(10,2) NOT NULL,
-  `FechaPago` date NOT NULL
+  `FechaEmision` date DEFAULT NULL,
+  `FechaVencimiento` date DEFAULT NULL,
+  `FechaPago` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `pagos`
+--
+
+INSERT INTO `pagos` (`IdPago`, `IdContrato`, `Estado`, `Monto`, `FechaEmision`, `FechaVencimiento`, `FechaPago`) VALUES
+(1, 23, 'Pagado', 500000.00, '2026-11-17', '2026-12-02', '2026-11-19');
 
 -- --------------------------------------------------------
 
@@ -176,7 +185,7 @@ CREATE TABLE `reclamos` (
 --
 
 INSERT INTO `reclamos` (`IdReclamo`, `IdInquilino`, `IdInmueble`, `Categoria`, `Descripcion`, `Estado`, `FechaCreacion`, `FechaResolucion`, `Prioridad`) VALUES
-(7, 1, 1, 'Plomería', 'Pérdida de agua en la canilla de la cocina.', 'Pendiente', '2026-10-01 09:30:00', NULL, 'Alta'),
+(7, 1, 1, 'Plomería', 'Pérdida de agua en la canilla de la cocina.', 'En Proceso', '2026-10-01 09:30:00', NULL, 'Alta'),
 (8, 2, 2, 'Electricidad', 'Una de las luces del living no funciona correctamente.', 'En proceso', '2026-10-02 14:15:00', NULL, 'Media'),
 (9, 3, 4, 'Humedad', 'Se observan manchas de humedad en una de las paredes del dormitorio.', 'Pendiente', '2026-10-03 11:20:00', NULL, 'Alta'),
 (10, 1, 5, 'Mantenimiento', 'La persiana del local quedó trabada y no puede abrirse correctamente.', 'Resuelto', '2026-09-25 10:00:00', '2026-09-27 16:30:00', 'Media'),
@@ -205,10 +214,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`IdUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `Rol`, `Usuario`, `idInquilino`) VALUES
-(1, 'Lucía', 'Gómez', 'lucia.gomez@inmofix.com', '123456', 'Inquilino', NULL, NULL),
-(2, 'Martín', 'Fernández', 'martin.fernandez@inmofix.com', '123456', 'Inquilino', NULL, NULL),
-(3, 'Sofía', 'Rodríguez', 'sofia.rodriguez@inmofix.com', '123456', 'Inquilino', NULL, NULL),
-(4, 'Mirtha', 'Legrand', 'mirthalegrand@gmail.com', 'mirtha123', 'Inquilino', '3123456', 16);
+(4, 'Mirtha', 'Legrand', 'mirthalegrand@gmail.com', '$2y$10$3/upCOoIt2U7F1OZbVJ6xOjS.O0XxpL2IHCPnKjWbGITesxT0RH3a', 'Inquilino', '3123456', 16),
+(5, 'Pablo', 'Martinez', 'pablom@gmail.com', '$2y$10$jJ3lc0Xc.wyEHbTf.QgeKOw3Z2aEeF8VYrr0dL.0ZVGTuvlsJqKKC', 'Administrador', 'admin', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -303,7 +310,7 @@ ALTER TABLE `notificaciones`
 -- AUTO_INCREMENT de la tabla `pagos`
 --
 ALTER TABLE `pagos`
-  MODIFY `IdPago` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdPago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `recibos`
@@ -321,7 +328,7 @@ ALTER TABLE `reclamos`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `IdUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `IdUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas
