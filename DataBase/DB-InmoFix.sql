@@ -1,260 +1,371 @@
--- MySQL dump 10.13  Distrib 8.0.46, for Win64 (x86_64)
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost    Database: inmofix
--- ------------------------------------------------------
--- Server version	8.0.46
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 18-11-2026 a las 01:14:20
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Table structure for table `contratos`
+-- Base de datos: `inmofix`
 --
 
-DROP TABLE IF EXISTS `contratos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `contratos`
+--
+
 CREATE TABLE `contratos` (
-  `IdContrato` int NOT NULL AUTO_INCREMENT,
-  `IdInmueble` int NOT NULL,
-  `IdInquilino` int NOT NULL,
+  `IdContrato` int(11) NOT NULL,
+  `IdInmueble` int(11) NOT NULL,
+  `IdInquilino` int(11) NOT NULL,
   `FechaInicio` date NOT NULL,
   `FechaFin` date NOT NULL,
   `ValorInicial` decimal(10,2) NOT NULL,
   `TipoAjuste` varchar(20) NOT NULL,
   `PorcentajeAjuste` decimal(5,2) NOT NULL,
-  `Estado` varchar(20) DEFAULT 'Activo',
-  PRIMARY KEY (`IdContrato`),
-  KEY `IdInmueble` (`IdInmueble`),
-  KEY `IdInquilino` (`IdInquilino`),
-  CONSTRAINT `contratos_ibfk_1` FOREIGN KEY (`IdInmueble`) REFERENCES `inmuebles` (`IdInmueble`),
-  CONSTRAINT `contratos_ibfk_2` FOREIGN KEY (`IdInquilino`) REFERENCES `usuarios` (`IdUsuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `Estado` varchar(20) DEFAULT 'Activo'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `contratos`
+-- Volcado de datos para la tabla `contratos`
 --
 
-LOCK TABLES `contratos` WRITE;
-/*!40000 ALTER TABLE `contratos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `contratos` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `contratos` (`IdContrato`, `IdInmueble`, `IdInquilino`, `FechaInicio`, `FechaFin`, `ValorInicial`, `TipoAjuste`, `PorcentajeAjuste`, `Estado`) VALUES
+(16, 2, 1, '2026-01-01', '2026-12-31', 250000.00, 'Trimestral', 15.00, 'Activo'),
+(17, 6, 2, '2026-03-01', '2027-02-28', 320000.00, 'Cuatrimestral', 12.00, 'Activo'),
+(18, 5, 3, '2025-07-01', '2026-06-30', 400000.00, 'Semestral', 20.00, 'Finalizado'),
+(19, 1, 4, '2026-09-01', '2027-08-31', 180000.00, 'Trimestral', 10.00, 'Activo'),
+(20, 7, 5, '2026-10-01', '2027-09-30', 280000.00, 'Semestral', 18.00, 'Activo'),
+(21, 4, 6, '2026-10-05', '2026-12-05', 450000.00, 'Porcentaje', 10.00, 'Activo'),
+(22, 5, 2, '2026-10-23', '2026-11-23', 250000.00, 'Porcentaje', 15.00, 'Activo'),
+(23, 7, 9, '2026-10-14', '2026-12-14', 500000.00, 'Trimestral', 0.00, 'Finalizado');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `inmuebles`
+-- Estructura de tabla para la tabla `inmuebles`
 --
 
-DROP TABLE IF EXISTS `inmuebles`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `inmuebles` (
-  `IdInmueble` int NOT NULL AUTO_INCREMENT,
+  `IdInmueble` int(11) NOT NULL,
   `Direccion` varchar(120) NOT NULL,
   `Tipo` varchar(50) NOT NULL,
   `Estado` varchar(30) NOT NULL,
   `Descripcion` varchar(255) DEFAULT NULL,
-  `imagen` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`IdInmueble`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `imagen` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `inmuebles`
+-- Volcado de datos para la tabla `inmuebles`
 --
 
-LOCK TABLES `inmuebles` WRITE;
-/*!40000 ALTER TABLE `inmuebles` DISABLE KEYS */;
-/*!40000 ALTER TABLE `inmuebles` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `inmuebles` (`IdInmueble`, `Direccion`, `Tipo`, `Estado`, `Descripcion`, `imagen`) VALUES
+(1, 'San Martín 1251', 'Departamento', 'Disponible', 'Departamento de 2 dormitorios, cocina, baño y balcón.', 'DeptoSanMartin.jpg'),
+(2, 'Lamadrid 130', 'Casa', 'Alquilado', 'Terreno 456M2, edificado 134M2, compuesta de 3 dormitorios, living, comedor, cocina, baño, lavadero, entrada para auto, y patio', 'CasaLamadrid130.jpg'),
+(4, 'Loteo Suarez', 'Casa', 'Mantenimiento', 'Vivienda en Loteo Suarez sobre terreno de 1139M2, con una edificación de 174M2, compuesta de 2 dormitorios, living, cocina-comedor amplia, baño, cochera doble, galería, patio, y pileta.', 'ViviendaLoteoSuarez.jpg'),
+(5, 'Mitre 678', 'Local', 'Alquilado', 'Local comercial ubicado en zona céntrica.', 'LocalMitre678.jpg'),
+(6, 'Ortiz Herrera 920', 'Departamento', 'Alquilado', 'Departamento en Planta alta con 2 Dormitorios, Cocina, Comedor, Estar, Baño con accesorios y Balcón pequeño', 'DeptoOrtizHerrera.jpeg'),
+(7, 'Salta 28', 'Casa', 'Alquilado', 'Terreno 318M2, edificado 192M2, compuesta de 2 dormitorios, living-comedor, cocina, comedor, 2 baños, lavadero, altillo, garaje, quincho, pileta, y patio.', 'Salta28.jpg');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `inquilinos`
+-- Estructura de tabla para la tabla `inquilinos`
 --
 
-DROP TABLE IF EXISTS `inquilinos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `inquilinos` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `apellido` varchar(50) DEFAULT NULL,
   `nombre` varchar(50) DEFAULT NULL,
   `dni` varchar(20) DEFAULT NULL,
   `telefono` varchar(30) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `Usuario` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `inquilinos`
+-- Volcado de datos para la tabla `inquilinos`
 --
 
-LOCK TABLES `inquilinos` WRITE;
-/*!40000 ALTER TABLE `inquilinos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `inquilinos` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `inquilinos` (`id`, `apellido`, `nombre`, `dni`, `telefono`, `email`, `Usuario`) VALUES
+(1, 'Gómez', 'Luciana', '40123456', '3534123456', 'lucia.gomez@email.com', NULL),
+(2, 'Fernández', 'Martín', '38987654', '3534987654', 'martin.fernandez@email.com', NULL),
+(3, 'Rodríguez', 'Sofía', '42111222', '3534556789', 'sofia.rodriguez@email.com', NULL),
+(4, 'Martínez', 'Nicolás', '37444555', '3534678901', 'nicolas.martinez@email.com', NULL),
+(5, 'López', 'Camila', '41555666', '3534234567', 'camila.lopez@email.com', NULL),
+(6, 'Sánchez', 'Tomás', '39666777', '3534890123', 'tomas.sanchez@email.com', NULL),
+(9, 'Ruiz', 'Maria ', '40444555', '3537456896', 'ruizmaria@gmail.com', NULL),
+(13, 'Ruiz', 'María', '4012345', '3537456896', 'mruiz@gmail.com', NULL),
+(15, 'Legrand', 'Mirtha', '3123456', NULL, 'mirthalegrand@gmail.com', NULL),
+(16, 'Legrand', 'Mirtha', '3123456', NULL, 'mirthalegrand@gmail.com', NULL);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `notificaciones`
+-- Estructura de tabla para la tabla `notificaciones`
 --
 
-DROP TABLE IF EXISTS `notificaciones`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notificaciones` (
-  `IdNotificacion` int NOT NULL AUTO_INCREMENT,
-  `IdUsuario` int NOT NULL,
+  `IdNotificacion` int(11) NOT NULL,
+  `IdUsuario` int(11) NOT NULL,
   `Mensaje` varchar(255) NOT NULL,
   `Fecha` datetime NOT NULL,
-  `Leido` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`IdNotificacion`),
-  KEY `IdUsuario` (`IdUsuario`),
-  CONSTRAINT `notificaciones_ibfk_1` FOREIGN KEY (`IdUsuario`) REFERENCES `usuarios` (`IdUsuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `Leido` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `notificaciones`
+-- Estructura de tabla para la tabla `pagos`
 --
 
-LOCK TABLES `notificaciones` WRITE;
-/*!40000 ALTER TABLE `notificaciones` DISABLE KEYS */;
-/*!40000 ALTER TABLE `notificaciones` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `pagos`
---
-
-DROP TABLE IF EXISTS `pagos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pagos` (
-  `IdPago` int NOT NULL AUTO_INCREMENT,
-  `IdContrato` int NOT NULL,
+  `IdPago` int(11) NOT NULL,
+  `IdContrato` int(11) NOT NULL,
   `Estado` varchar(20) NOT NULL,
   `Monto` decimal(10,2) NOT NULL,
-  `FechaPago` date NOT NULL,
-  PRIMARY KEY (`IdPago`),
-  KEY `IdContrato` (`IdContrato`),
-  CONSTRAINT `pagos_ibfk_1` FOREIGN KEY (`IdContrato`) REFERENCES `contratos` (`IdContrato`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `FechaPago` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `pagos`
+-- Estructura de tabla para la tabla `recibos`
 --
 
-LOCK TABLES `pagos` WRITE;
-/*!40000 ALTER TABLE `pagos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pagos` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `recibos`
---
-
-DROP TABLE IF EXISTS `recibos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `recibos` (
-  `IdRecibo` int NOT NULL AUTO_INCREMENT,
-  `IdPago` int NOT NULL,
+  `IdRecibo` int(11) NOT NULL,
+  `IdPago` int(11) NOT NULL,
   `ArchivoPDF` varchar(255) NOT NULL,
-  `FechaPago` datetime NOT NULL,
-  PRIMARY KEY (`IdRecibo`),
-  KEY `IdPago` (`IdPago`),
-  CONSTRAINT `recibos_ibfk_1` FOREIGN KEY (`IdPago`) REFERENCES `pagos` (`IdPago`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `FechaPago` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `recibos`
+-- Estructura de tabla para la tabla `reclamos`
 --
 
-LOCK TABLES `recibos` WRITE;
-/*!40000 ALTER TABLE `recibos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `recibos` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `reclamos`
---
-
-DROP TABLE IF EXISTS `reclamos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reclamos` (
-  `IdReclamo` int NOT NULL AUTO_INCREMENT,
-  `IdInquilino` int NOT NULL,
-  `IdInmueble` int NOT NULL,
+  `IdReclamo` int(11) NOT NULL,
+  `IdInquilino` int(11) NOT NULL,
+  `IdInmueble` int(11) NOT NULL,
   `Categoria` varchar(50) NOT NULL,
   `Descripcion` varchar(255) NOT NULL,
   `Estado` varchar(20) NOT NULL,
   `FechaCreacion` datetime NOT NULL,
   `FechaResolucion` datetime DEFAULT NULL,
-  `Prioridad` varchar(20) NOT NULL DEFAULT 'Media',
-  PRIMARY KEY (`IdReclamo`),
-  KEY `IdInquilino` (`IdInquilino`),
-  KEY `IdInmueble` (`IdInmueble`),
-  CONSTRAINT `reclamos_ibfk_1` FOREIGN KEY (`IdInquilino`) REFERENCES `usuarios` (`IdUsuario`),
-  CONSTRAINT `reclamos_ibfk_2` FOREIGN KEY (`IdInmueble`) REFERENCES `inmuebles` (`IdInmueble`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `Prioridad` varchar(20) NOT NULL DEFAULT 'Media'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `reclamos`
+-- Volcado de datos para la tabla `reclamos`
 --
 
-LOCK TABLES `reclamos` WRITE;
-/*!40000 ALTER TABLE `reclamos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `reclamos` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `reclamos` (`IdReclamo`, `IdInquilino`, `IdInmueble`, `Categoria`, `Descripcion`, `Estado`, `FechaCreacion`, `FechaResolucion`, `Prioridad`) VALUES
+(7, 1, 1, 'Plomería', 'Pérdida de agua en la canilla de la cocina.', 'Pendiente', '2026-10-01 09:30:00', NULL, 'Alta'),
+(8, 2, 2, 'Electricidad', 'Una de las luces del living no funciona correctamente.', 'En proceso', '2026-10-02 14:15:00', NULL, 'Media'),
+(9, 3, 4, 'Humedad', 'Se observan manchas de humedad en una de las paredes del dormitorio.', 'Pendiente', '2026-10-03 11:20:00', NULL, 'Alta'),
+(10, 1, 5, 'Mantenimiento', 'La persiana del local quedó trabada y no puede abrirse correctamente.', 'Resuelto', '2026-09-25 10:00:00', '2026-09-27 16:30:00', 'Media'),
+(11, 2, 6, 'Gas', 'La cocina presenta una falla en una de las hornallas.', 'En proceso', '2026-10-04 08:45:00', NULL, 'Alta'),
+(12, 3, 7, 'Plomería', 'El desagüe del baño se encuentra parcialmente tapado.', 'Pendiente', '2026-10-05 17:10:00', NULL, 'Media');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `usuarios`
+-- Estructura de tabla para la tabla `usuarios`
 --
 
-DROP TABLE IF EXISTS `usuarios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuarios` (
-  `IdUsuario` int NOT NULL AUTO_INCREMENT,
+  `IdUsuario` int(11) NOT NULL,
   `Nombre` varchar(50) NOT NULL,
   `Apellido` varchar(50) NOT NULL,
   `Email` varchar(80) NOT NULL,
   `Password` varchar(255) NOT NULL,
   `Rol` varchar(20) NOT NULL,
-  PRIMARY KEY (`IdUsuario`),
-  UNIQUE KEY `Email` (`Email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `Usuario` varchar(50) DEFAULT NULL,
+  `idInquilino` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `usuarios`
+-- Volcado de datos para la tabla `usuarios`
 --
 
-LOCK TABLES `usuarios` WRITE;
-/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+INSERT INTO `usuarios` (`IdUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `Rol`, `Usuario`, `idInquilino`) VALUES
+(1, 'Lucía', 'Gómez', 'lucia.gomez@inmofix.com', '123456', 'Inquilino', NULL, NULL),
+(2, 'Martín', 'Fernández', 'martin.fernandez@inmofix.com', '123456', 'Inquilino', NULL, NULL),
+(3, 'Sofía', 'Rodríguez', 'sofia.rodriguez@inmofix.com', '123456', 'Inquilino', NULL, NULL),
+(4, 'Mirtha', 'Legrand', 'mirthalegrand@gmail.com', 'mirtha123', 'Inquilino', '3123456', 16);
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `contratos`
+--
+ALTER TABLE `contratos`
+  ADD PRIMARY KEY (`IdContrato`),
+  ADD KEY `IdInmueble` (`IdInmueble`),
+  ADD KEY `IdInquilino` (`IdInquilino`);
+
+--
+-- Indices de la tabla `inmuebles`
+--
+ALTER TABLE `inmuebles`
+  ADD PRIMARY KEY (`IdInmueble`);
+
+--
+-- Indices de la tabla `inquilinos`
+--
+ALTER TABLE `inquilinos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `notificaciones`
+--
+ALTER TABLE `notificaciones`
+  ADD PRIMARY KEY (`IdNotificacion`),
+  ADD KEY `IdUsuario` (`IdUsuario`);
+
+--
+-- Indices de la tabla `pagos`
+--
+ALTER TABLE `pagos`
+  ADD PRIMARY KEY (`IdPago`),
+  ADD KEY `IdContrato` (`IdContrato`);
+
+--
+-- Indices de la tabla `recibos`
+--
+ALTER TABLE `recibos`
+  ADD PRIMARY KEY (`IdRecibo`),
+  ADD KEY `IdPago` (`IdPago`);
+
+--
+-- Indices de la tabla `reclamos`
+--
+ALTER TABLE `reclamos`
+  ADD PRIMARY KEY (`IdReclamo`),
+  ADD KEY `IdInquilino` (`IdInquilino`),
+  ADD KEY `IdInmueble` (`IdInmueble`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`IdUsuario`),
+  ADD UNIQUE KEY `Email` (`Email`),
+  ADD KEY `fk_usuario_inquilino` (`idInquilino`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `contratos`
+--
+ALTER TABLE `contratos`
+  MODIFY `IdContrato` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT de la tabla `inmuebles`
+--
+ALTER TABLE `inmuebles`
+  MODIFY `IdInmueble` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT de la tabla `inquilinos`
+--
+ALTER TABLE `inquilinos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT de la tabla `notificaciones`
+--
+ALTER TABLE `notificaciones`
+  MODIFY `IdNotificacion` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `pagos`
+--
+ALTER TABLE `pagos`
+  MODIFY `IdPago` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `recibos`
+--
+ALTER TABLE `recibos`
+  MODIFY `IdRecibo` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `reclamos`
+--
+ALTER TABLE `reclamos`
+  MODIFY `IdReclamo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `IdUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `contratos`
+--
+ALTER TABLE `contratos`
+  ADD CONSTRAINT `contratos_ibfk_1` FOREIGN KEY (`IdInmueble`) REFERENCES `inmuebles` (`IdInmueble`),
+  ADD CONSTRAINT `contratos_ibfk_2` FOREIGN KEY (`IdInquilino`) REFERENCES `inquilinos` (`id`);
+
+--
+-- Filtros para la tabla `notificaciones`
+--
+ALTER TABLE `notificaciones`
+  ADD CONSTRAINT `notificaciones_ibfk_1` FOREIGN KEY (`IdUsuario`) REFERENCES `usuarios` (`IdUsuario`);
+
+--
+-- Filtros para la tabla `pagos`
+--
+ALTER TABLE `pagos`
+  ADD CONSTRAINT `pagos_ibfk_1` FOREIGN KEY (`IdContrato`) REFERENCES `contratos` (`IdContrato`);
+
+--
+-- Filtros para la tabla `recibos`
+--
+ALTER TABLE `recibos`
+  ADD CONSTRAINT `recibos_ibfk_1` FOREIGN KEY (`IdPago`) REFERENCES `pagos` (`IdPago`);
+
+--
+-- Filtros para la tabla `reclamos`
+--
+ALTER TABLE `reclamos`
+  ADD CONSTRAINT `reclamos_ibfk_1` FOREIGN KEY (`IdInquilino`) REFERENCES `inquilinos` (`id`),
+  ADD CONSTRAINT `reclamos_ibfk_2` FOREIGN KEY (`IdInmueble`) REFERENCES `inmuebles` (`IdInmueble`);
+
+--
+-- Filtros para la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD CONSTRAINT `fk_usuario_inquilino` FOREIGN KEY (`idInquilino`) REFERENCES `inquilinos` (`id`);
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2026-06-29 22:06:43
