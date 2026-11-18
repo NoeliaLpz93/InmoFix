@@ -22,7 +22,7 @@ $sql = "SELECT
             q.apellido AS ApellidoInquilino,
             i.Direccion AS DireccionInmueble
         FROM contratos c
-        INNER JOIN inquilinos q ON c.IdInquilino = q.idInquilino
+        INNER JOIN inquilinos q ON c.IdInquilino = q.id
         INNER JOIN inmuebles  i ON c.IdInmueble  = i.IdInmueble
         WHERE (? = ''
                OR q.nombre   LIKE ?
@@ -41,7 +41,7 @@ $contratos = $stmt->get_result();
 
 // Obtener los inquilinos registrados para el formulario.
 
-$sqlInquilinos = "SELECT idInquilino, nombre, apellido, dni
+$sqlInquilinos = "SELECT id, nombre, apellido, dni
                   FROM inquilinos
                   ORDER BY apellido, nombre";
 $inquilinos = $conn->query($sqlInquilinos);
@@ -269,7 +269,7 @@ $mensajeOk = $mensajes[$_GET["ok"] ?? ""] ?? null;
 
                             <?php while ($inquilino = $inquilinos->fetch_assoc()): ?>
 
-                                <option value="<?= (int) $inquilino['idInquilino'] ?>">
+                                <option value="<?= (int) $inquilino['id'] ?>">
 
                                     <?= htmlspecialchars(
 
@@ -672,7 +672,7 @@ $mensajeOk = $mensajes[$_GET["ok"] ?? ""] ?? null;
              modalFinalizar.classList.remove("modal-visible");
             }
         });
-    git </script>
+    </script>
     <script>
 
         const notificacion = document.getElementById("notificacion-toast");

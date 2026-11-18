@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                    dni='$dni',
                    telefono='$telefono',
                    email='$email'
-               WHERE idInquilino=$id";
+               WHERE id=$id";
 
     $conn->query($update);
 
