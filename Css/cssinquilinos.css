@@ -548,3 +548,85 @@
     background: #fdf0e8;
     color: #24201e;
 }
+/* DETALLE INMUEBLE INQUILINO */
+.inq-detalle-wrap {
+    max-width: 920px;
+    margin: 26px auto 44px;
+    padding: 0 16px;
+}
+
+.inq-detalle-titulo {
+    text-align: center;
+    margin: 0 0 24px;
+    font-size: 2.05rem;
+    font-weight: 700;
+    color: #e26d3b;
+}
+
+.inq-detalle-card {
+    background: #fdf0e8;
+    border: 1px solid #f2dfd3;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(43, 38, 35, 0.06);
+    display: grid;
+    grid-template-columns: minmax(260px, 420px) 1fr;
+}
+
+.inq-detalle-img-box img {
+    width: 100%;
+    height: 100%;
+    min-height: 260px;
+    object-fit: cover;
+    display: block;
+}
+
+.inq-detalle-info {
+    padding: 24px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.95rem;
+    color: #2b2623;
+}
+
+.inq-detalle-info p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.inq-detalle-desc {
+    margin-top: 6px !important;
+    padding-top: 12px;
+    border-top: 1px solid #edd9cc;
+}
+
+.inq-detalle-acciones {
+    margin-top: auto;
+    padding-top: 18px;
+}
+
+.inq-btn-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #e26d3b;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 999px;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.inq-btn-volver:hover {
+    background: #c85a2b;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 760px) {
+    .inq-detalle-card {
+        grid-template-columns: 1fr;
+    }
+}

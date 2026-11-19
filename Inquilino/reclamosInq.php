@@ -1,6 +1,8 @@
 <?php
+// Inicia o reanuda la sesión del usuario
 session_start();
 
+// Verifica que el usuario haya iniciado sesión y tenga el rol de Inquilino
 if (
     !isset($_SESSION["idUsuario"], $_SESSION["idInquilino"]) ||
     $_SESSION["rol"] !== "Inquilino"
@@ -9,14 +11,17 @@ if (
     exit();
 }
 
+// Conecta a la base de datos
 require_once "../Admin/conection.php";
 
 $idInquilino = (int) $_SESSION["idInquilino"];
+
+// Recupera mensajes flash (éxito o error) de una acción anterior y los limpia
 $mensajeExito = $_SESSION["flash_exito"] ?? "";
 $mensajeError = $_SESSION["flash_error"] ?? "";
 unset($_SESSION["flash_exito"], $_SESSION["flash_error"]);
 
-// Buscar el último contrato del inquilino para asociar su inmueble
+// Busca el último contrato del inquilino para saber qué inmueble tiene asignado
 $idInmuebleActual = 0;
 $direccionInmuebleActual = "";
 
@@ -36,17 +41,19 @@ if ($filaContrato = $resContrato->fetch_assoc()) {
 }
 $stmtContrato->close();
 
-// Procesar envío de nuevo reclamo (patrón PRG)
+// Procesa el envío de un nuevo reclamo (patrón PRG para evitar reenvíos al actualizar)
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $categoria = trim($_POST["categoria"] ?? "");
     $prioridad = trim($_POST["prioridad"] ?? "Media");
     $descripcion = trim($_POST["descripcion"] ?? "");
 
+    // Valida que la prioridad sea una de las permitidas
     $prioridadesValidas = ["Baja", "Media", "Alta"];
     if (!in_array($prioridad, $prioridadesValidas, true)) {
         $prioridad = "Media";
     }
 
+    // Valida contrato activo y campos obligatorios
     if ($idInmuebleActual <= 0) {
         $_SESSION["flash_error"] = "No tenés un inmueble asignado en un contrato para asociar el reclamo.";
     } elseif ($categoria === "" || $descripcion === "") {
@@ -55,6 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $estadoInicial = "Pendiente";
         $fechaCreacion = date("Y-m-d H:i:s");
 
+        // Inserta el reclamo usando consulta preparada (evita SQL Injection)
         $sqlInsert = "INSERT INTO reclamos
                         (IdInquilino, IdInmueble, Categoria, Descripcion, Estado, FechaCreacion, FechaResolucion, Prioridad)
                       VALUES (?, ?, ?, ?, ?, ?, NULL, ?)";
@@ -78,11 +86,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmtInsert->close();
     }
 
+    // Redirige a la misma página después del POST
     header("Location: reclamosInq.php");
     exit();
 }
 
-// Listar los reclamos del inquilino
+// Consulta todos los reclamos del inquilino, del más nuevo al más viejo
 $reclamos = [];
 $sqlLista = "SELECT
                 r.IdReclamo,
@@ -113,36 +122,41 @@ $stmtLista->close();
 <head>
     <meta charset="UTF-8">
     <title>Mis Reclamos</title>
-    <!-- Letra -->
+    <!-- Tipografía íconos -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Iconos -->
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <!-- CSS -->
+    <!-- Estilos generales -->
     <link rel="stylesheet" href="../Css/estilo.css?v=1">
     <link rel="stylesheet" href="../Css/cssinquilinos.css?v=7">
 </head>
 
 <body>
 
-    <!-- HEADER -->
+    <!-- Encabezado con logo y menú de cierre de sesión -->
     <header class="panel-header">
-
         <div></div>
 
         <div class="panel-logo">
             <img src="../img/inmofix-02.png" alt="Logo INMOFIX">
         </div>
 
-        <div class="panel-perfil">
-            <i class="fa-solid fa-user"></i>
-        </div>
+        <div class="panel-perfil-wrap">
+            <button type="button" class="panel-perfil" aria-label="Menú de usuario">
+                <i class="fa-solid fa-user"></i>
+            </button>
 
+            <div class="panel-perfil-dropdown">
+                <a href="../Admin/logout.php" class="panel-perfil-item">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Cerrar sesión</span>
+                </a>
+            </div>
+        </div>
     </header>
 
-    <!-- NAVBAR -->
+    <!-- Barra de navegación del inquilino -->
     <nav class="nav-inquilino">
-
         <a href="panelInq.php">
             <i class="fa-solid fa-house"></i> Home
         </a>
@@ -158,13 +172,13 @@ $stmtLista->close();
         <a class="activo" href="reclamosInq.php">
             <i class="fa-solid fa-comments"></i> reclamos
         </a>
-
     </nav>
 
     <div class="inq-reclamos-wrap">
 
         <h2 class="inq-reclamos-titulo">Reclamos</h2>
 
+        <!-- Mensajes de éxito o error -->
         <?php if ($mensajeExito !== ""): ?>
             <div class="inq-alerta inq-alerta-exito">
                 <i class="fa-solid fa-circle-check"></i>
@@ -179,6 +193,7 @@ $stmtLista->close();
             </div>
         <?php endif; ?>
 
+        <!-- Formulario para crear un nuevo reclamo -->
         <section class="inq-reclamo-panel">
             <div class="inq-reclamo-panel-head">Nuevo reclamo</div>
 
@@ -233,6 +248,7 @@ $stmtLista->close();
             </div>
         </section>
 
+        <!-- Listado de reclamos cargados por el inquilino -->
         <h3 class="inq-subtitulo-seccion">Mis reclamos realizados</h3>
 
         <?php if (empty($reclamos)): ?>
@@ -245,19 +261,36 @@ $stmtLista->close();
             <div class="inq-reclamos-lista">
                 <?php foreach ($reclamos as $rec): ?>
                     <?php
+                    // Lee el estado actual guardado en la base de datos
+                    $estadoRec = trim($rec["Estado"] ?? "Pendiente");
+
+                    // Detecta si el admin ya lo marcó como solucionado/resuelto
+                    $esResuelto = in_array(
+                        strtolower($estadoRec),
+                        ["solucionado", "resuelto", "cerrado", "finalizado"],
+                        true
+                    );
+
+                    // Formatea la fecha de creación
                     $fechaCreaFmt = !empty($rec["FechaCreacion"])
                         ? date("d/m/Y H:i", strtotime($rec["FechaCreacion"]))
                         : "-";
-                    $fechaResFmt = !empty($rec["FechaResolucion"])
-                        ? date("d/m/Y H:i", strtotime($rec["FechaResolucion"]))
-                        : "Pendiente de resolución";
+
+                    // Muestra fecha de resolución, "Resuelto" si cambió el estado sin fecha, o "Pendiente de resolución"
+                    if (!empty($rec["FechaResolucion"])) {
+                        $fechaResFmt = date("d/m/Y H:i", strtotime($rec["FechaResolucion"]));
+                    } elseif ($esResuelto) {
+                        $fechaResFmt = "Resuelto";
+                    } else {
+                        $fechaResFmt = "Pendiente de resolución";
+                    }
                     ?>
-                    <article class="inq-reclamo-item">
+                    <article class="inq-reclamo-item <?= $esResuelto ? "is-resuelto" : "" ?>">
                         <div class="inq-reclamo-item-head">
                             <?= htmlspecialchars($rec["Categoria"] ?? "Reclamo") ?>
                         </div>
                         <div class="inq-reclamo-item-body">
-                            <p><strong>Estado:</strong> <?= htmlspecialchars($rec["Estado"] ?? "-") ?></p>
+                            <p><strong>Estado:</strong> <?= htmlspecialchars($estadoRec) ?></p>
                             <p><strong>Prioridad:</strong> <?= htmlspecialchars($rec["Prioridad"] ?? "-") ?></p>
                             <?php if (!empty($rec["Direccion"])): ?>
                                 <p><strong>Inmueble:</strong> <?= htmlspecialchars($rec["Direccion"]) ?></p>

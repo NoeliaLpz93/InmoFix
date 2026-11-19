@@ -73,18 +73,30 @@ $stmt->close();
 
 <body>
 
-    <!-- HEADER -->
+       <!-- HEADER -->
     <header class="panel-header">
 
-        <div></div>
+    <div></div>
 
-        <div class="panel-logo">
-            <img src="../img/inmofix-02.png" alt="Logo INMOFIX">
-        </div>
+    <div class="panel-logo">
+        <img src="../img/inmofix-02.png" alt="Logo INMOFIX">
+    </div>
 
-        <div class="panel-perfil">
+    <div class="panel-perfil-wrap">
+        <button type="button" class="panel-perfil" aria-label="Menú de usuario">
             <i class="fa-solid fa-user"></i>
+        </button>
+
+        <div class="panel-perfil-dropdown">
+            <a href="../Admin/logout.php" class="panel-perfil-item">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Cerrar sesión</span>
+            </a>
         </div>
+    </div>
+
+</header>
+
 
     </header>
 
