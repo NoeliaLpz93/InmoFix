@@ -77,34 +77,29 @@ $alertas = [
         <h1 class="panel-bienvenida">
             Hola, <?= htmlspecialchars($_SESSION["nombre"]) ?>
         </h1>
+        <div class="dashboard">
 
-        <div class="panel-alertas">
+    <div class="card-dashboard">
+        <h4>Contratos por vencer</h4>
+        <h2><?= $contratos_por_vencer ?></h2>
+        <p>Próximos 30 días</p>
+    </div>
 
-            <?php foreach ($alertas as $alerta): ?>
+    <div class="card-dashboard">
+        <h4>Reclamos urgentes</h4>
+        <h2><?= $reclamos_urgentes ?></h2>
+        <p>Sin resolver</p>
+    </div>
 
-                <div class="panel-alerta">
+    <div class="card-dashboard">
+        <h4>Pagos vencidos</h4>
+        <h2><?= $pagos_vencidos ?></h2>
+        <p>Pendientes</p>
+    </div>
 
-                    <div class="panel-icono">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                    </div>
+</div>
 
-                    <div class="panel-texto">
 
-                        <strong>
-                            <?= $alerta["titulo"] ?>
-                        </strong>
-
-                        <p>
-                            <?= $alerta["detalle"] ?>
-                        </p>
-
-                    </div>
-
-                </div>
-
-            <?php endforeach; ?>
-
-        </div>
 
     </main>
 
