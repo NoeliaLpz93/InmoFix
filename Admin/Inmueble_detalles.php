@@ -24,6 +24,22 @@ if (!$inmueble) {
     exit();
 }
 
+// OBTENER CONTRATO ACTIVO DEL INMUEBLE
+$sqlContrato = "SELECT IdContrato
+                FROM contratos
+                WHERE IdInmueble = ?
+                AND Estado = 'Activo'
+                LIMIT 1";
+
+$stmtContrato = $conn->prepare($sqlContrato);
+$stmtContrato->bind_param("i", $id);
+$stmtContrato->execute();
+
+$resultadoContrato = $stmtContrato->get_result();
+$contrato = $resultadoContrato->fetch_assoc();
+
+$stmtContrato->close();
+
 // OBTENER RECLAMOS DEL INMUEBLE
 $sqlReclamos = "SELECT * FROM reclamos
                 WHERE IdInmueble = ?
@@ -145,24 +161,45 @@ $reclamos = $stmtReclamos->get_result();
                 </div>
             </div>
 
+            <?php if ($contrato): ?>
 
-            <div class="contrato-vacio">
+                <div class="contrato-vacio">
 
-                <i class="fa-solid fa-file-contract"></i>
+                    <i class="fa-solid fa-file-contract"></i>
 
-                <div>
-                    <strong>Sin contrato asociado</strong>
-                    <p>
-                        Este inmueble todavía no tiene un contrato asociado.
-                    </p>
+                    <div>
+                        <strong>Contrato #<?= (int) $contrato['IdContrato'] ?></strong>
+                        <p>
+                            Este inmueble tiene un contrato activo asociado.
+                        </p>
+                    </div>
+
                 </div>
 
-                <a href="#" class="detalle-link">
-                    Asociar contrato
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
+            <?php else: ?>
 
-            </div>
+                <div class="contrato-vacio">
+
+                    <i class="fa-solid fa-file-contract"></i>
+
+                    <div>
+                        <strong>Sin contrato asociado</strong>
+                        <p>
+                            Este inmueble todavía no tiene un contrato asociado.
+                        </p>
+                    </div>
+
+                    <a href="contratos.php?inmueble=<?= (int) $inmueble['IdInmueble'] ?>"
+                        class="detalle-link">
+
+                        Asociar contrato
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+            <?php endif; ?>
 
         </div>
 

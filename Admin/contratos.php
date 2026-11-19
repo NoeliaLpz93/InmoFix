@@ -9,6 +9,7 @@ require "conection.php";
 // ==================================================
 
 $busqueda = trim($_GET["q"] ?? "");
+$idInmuebleSeleccionado = (int) ($_GET["inmueble"] ?? 0);
 
 // Se escapan % y \_ para que se busquen como texto literal dentro del LIKE
 
@@ -304,7 +305,9 @@ $mensajeOk = $mensajes[$_GET["ok"] ?? ""] ?? null;
 
                             <?php while ($inmueble = $inmueblesDisponibles->fetch_assoc()): ?>
 
-                                <option value="<?= (int) $inmueble['IdInmueble'] ?>">
+                                <option value="<?= (int) $inmueble['IdInmueble'] ?>"
+                                    <?= ((int) $inmueble['IdInmueble'] === $idInmuebleSeleccionado) ? 'selected' : '' ?>
+                                >
 
                                     <?= htmlspecialchars(
 
@@ -575,6 +578,11 @@ $mensajeOk = $mensajes[$_GET["ok"] ?? ""] ?? null;
         modalAgregarContrato.classList.add("modal-visible");
 
         });
+
+        // Abrir automáticamente si llegamos desde el detalle de un inmueble.
+        <?php if ($idInmuebleSeleccionado > 0): ?>
+            modalAgregarContrato.classList.add("modal-visible");
+        <?php endif; ?>
 
         // Cerrar desde la X.
         botonCerrarContrato.addEventListener("click", function () {
