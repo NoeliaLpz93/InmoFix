@@ -3,13 +3,27 @@
    ================================================== */
 
 body {
+
     margin: 0;
     padding: 0;
     min-height: 100vh;
     font-family: 'Montserrat', sans-serif;
-    background: white;
+
+    background: linear-gradient(
+        to top,
+        #ffdece 0%,
+        #fdebe3 45%,
+        #FFFFFF 100%
+    );
+
+    background-attachment: fixed;
+
 }
 
+/* Mantener el fondo blanco en el INDEX */
+body:has(.index-contenedor) {
+    background: white;
+}
 
 
 /* ==================================================
@@ -577,7 +591,6 @@ body {
    ================================================== */
 
 .nav-inquilino {
-    background: #DCE5E9;
     display: flex;
     justify-content: center;
     gap: 40px;

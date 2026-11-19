@@ -24,7 +24,7 @@
 
     <div id="menuPerfil" class="menu-perfil">
 
-        <a href="#" onclick="abrirModal()">
+        <a href="#" onclick="abrirModal(); return false;">
             <i class="fa-solid fa-user-plus"></i>
             Alta de Inquilino
         </a>
@@ -39,68 +39,164 @@
 </div>
 
 </header>
-<!-- Form oculto para alta de inquilino -->
-<div id="modalInquilino" class="modal">
+<!-- MODAL ALTA DE INQUILINO -->
+<div class="modal-fondo" id="modalInquilino">
 
-    <div class="modal-contenido">
+    <div class="modal-inmueble">
 
-        <h2>Alta de Inquilino</h2>
+        <!-- ENCABEZADO -->
+        <div class="modal-header">
 
-        <form action="guardarInquilino.php" method="POST">
+            <h2>
+                <span class="modal-icono-titulo">
+                    <i class="fa-solid fa-user-plus"></i>
+                </span>
+                Alta de Inquilino
+            </h2>
 
-            <input
-                type="text"
-                name="nombre"
-                placeholder="Nombre"
-                required>
-
-            <input
-                type="text"
-                name="apellido"
-                placeholder="Apellido"
-                required>
-
-            <input
-                type="text"
-                name="dni"
-                placeholder="DNI"
-                required>
-
-            <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                required>
-
-            <input
-                type="password"
-                name="password"
-                placeholder="Contraseña"
-                required>
-
-            <button type="submit">
-                Crear inquilino
+            <button
+                type="button"
+                class="modal-cerrar"
+                id="cerrar-modal-alta"
+            >
+                <i class="fa-solid fa-xmark"></i>
             </button>
+
+        </div>
+
+        <!-- FORMULARIO -->
+        <form
+            action="guardarInquilino.php"
+            method="POST"
+            class="formulario-inquilino"
+        >
+
+            <div class="campos-inquilino">
+
+                <div class="campo-inquilino">
+                    <label for="alta-nombre">Nombre</label>
+                    <input
+                        type="text"
+                        id="alta-nombre"
+                        name="nombre"
+                        placeholder="Nombre"
+                        required
+                    >
+                </div>
+
+                <div class="campo-inquilino">
+                    <label for="alta-apellido">Apellido</label>
+                    <input
+                        type="text"
+                        id="alta-apellido"
+                        name="apellido"
+                        placeholder="Apellido"
+                        required
+                    >
+                </div>
+
+                <div class="campo-inquilino">
+                    <label for="alta-dni">DNI</label>
+                    <input
+                        type="text"
+                        id="alta-dni"
+                        name="dni"
+                        placeholder="DNI"
+                        required
+                    >
+                </div>
+
+                <div class="campo-inquilino">
+                    <label for="alta-email">Email</label>
+                    <input
+                        type="email"
+                        id="alta-email"
+                        name="email"
+                        placeholder="Correo electrónico"
+                        required
+                    >
+                </div>
+
+                <div class="campo-inquilino campo-inquilino-completo">
+                    <label for="alta-password">Contraseña</label>
+                    <input
+                        type="password"
+                        id="alta-password"
+                        name="password"
+                        placeholder="Contraseña"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <!-- BOTÓN GUARDAR -->
+            <div class="modal-footer">
+
+                <button type="submit" class="btn modal-guardar">
+                    <i class="fa-solid fa-check"></i>
+                    Crear inquilino
+                </button>
+
+            </div>
 
         </form>
 
     </div>
 
 </div>
+
 <script>
+
+// ABRIR Y CERRAR MENÚ DE PERFIL
+
 function toggleMenu() {
+
     let menu = document.getElementById("menuPerfil");
 
-    if(menu.style.display == "block"){
+    if (menu.style.display === "block") {
         menu.style.display = "none";
     } else {
         menu.style.display = "block";
     }
+
 }
 
+
+// ABRIR MODAL
+
 function abrirModal() {
-    document.getElementById("modalInquilino").style.display = "block";
+
+    document.getElementById("modalInquilino")
+        .classList.add("modal-visible");
+
+    document.getElementById("menuPerfil").style.display = "none";
+
 }
+
+
+// CERRAR MODAL CON LA X
+
+document.getElementById("cerrar-modal-alta")
+    .addEventListener("click", function () {
+
+        document.getElementById("modalInquilino")
+            .classList.remove("modal-visible");
+
+    });
+
+
+// CERRAR MODAL HACIENDO CLIC FUERA
+
+document.getElementById("modalInquilino")
+    .addEventListener("click", function(e) {
+
+        if (e.target === this) {
+            this.classList.remove("modal-visible");
+        }
+
+    });
+
 </script>
 <!-- Barra de navegación
      La clase panel-activo se agrega automáticamente
