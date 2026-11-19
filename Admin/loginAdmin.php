@@ -123,9 +123,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     placeholder="Ingrese su contraseña"
                     required>
 
-                <a class="login-olvide" href="recuperar.php">
-                    Olvidé mi contraseña
-                </a>
+                <a class="login-link" href="recuperarPassword.php">
+    Olvidé mi contraseña
+</a>
 
                 <button class="login-btn" type="submit">
                     Ingresar

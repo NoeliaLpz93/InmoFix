@@ -31,6 +31,31 @@ $sqlPagos = "SELECT COUNT(*) AS total
              FROM pagos
              WHERE Estado = 'Vencido'";
 $pagos_vencidos = $conn->query($sqlPagos)->fetch_assoc()["total"];
+// Contratos activos
+$sqlActivos = "SELECT COUNT(*) AS total
+               FROM contratos
+               WHERE Estado = 'Activo'";
+
+$contratos_activos = $conn->query($sqlActivos)->fetch_assoc()["total"];
+// Próximos vencimientos
+$sqlProximos = "
+SELECT FechaFin
+FROM contratos
+WHERE Estado='Activo'
+ORDER BY FechaFin ASC
+LIMIT 5";
+
+$proximos = $conn->query($sqlProximos);
+
+// Últimos reclamos
+$sqlUltimosReclamos = "
+SELECT Estado, Prioridad
+FROM reclamos
+ORDER BY idReclamo DESC
+LIMIT 5";
+
+$ultimosReclamos = $conn->query($sqlUltimosReclamos);
+
 
 $alertas = [
     [
@@ -77,8 +102,17 @@ $alertas = [
         <h1 class="panel-bienvenida">
             Hola, <?= htmlspecialchars($_SESSION["nombre"]) ?>
         </h1>
-        <div class="dashboard">
 
+        <p class="fecha-dashboard">
+    <?= date("d/m/Y") ?>
+</p>
+
+        <div class="dashboard">
+    <div class="card-dashboard">
+    <h4>Contratos activos</h4>
+    <h2><?= $contratos_activos ?></h2>
+    <p>Actualmente vigentes</p>
+</div>
     <div class="card-dashboard">
         <h4>Contratos por vencer</h4>
         <h2><?= $contratos_por_vencer ?></h2>
@@ -98,9 +132,45 @@ $alertas = [
     </div>
 
 </div>
+<div class="dashboard-inferior">
 
+    <div class="panel-seccion">
 
+        <h2>
+            <i class="fa-solid fa-calendar-days"></i>
+            Próximos vencimientos
+        </h2>
 
+        <?php while($fila = $proximos->fetch_assoc()): ?>
+
+            <p>
+                <i class="fa-solid fa-calendar"></i>
+                <?= $fila["FechaFin"] ?>
+            </p>
+
+        <?php endwhile; ?>
+
+    </div>
+
+    <div class="panel-seccion">
+
+        <h2>
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Últimos reclamos
+        </h2>
+
+        <?php while($fila = $ultimosReclamos->fetch_assoc()): ?>
+
+            <p>
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <?= $fila["Estado"] ?> - Prioridad <?= $fila["Prioridad"] ?>
+            </p>
+
+        <?php endwhile; ?>
+
+    </div>
+
+</div>
     </main>
 
 </body>
