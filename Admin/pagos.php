@@ -203,7 +203,7 @@ $resultadoContratos = $conn->query($sqlContratos);
                 <div class="campos-inquilino">
 
                     <!-- CONTRATO -->
-                    <div class="campo-inquilino campo-inquilino-completo">
+                    <div class="campo-inmueble">
 
                         <label for="IdContrato">Contrato</label>
 

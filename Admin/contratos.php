@@ -258,9 +258,9 @@ $mensajeOk = $mensajes[$_GET["ok"] ?? ""] ?? null;
 
                 class="formulario-inquilino">
 
-                <div class="campos-inquilino">
+                <div class="modal-columna-datos">
 
-                    <div class="campo-inquilino">
+                    <div class="campo-inmueble">
 
                         <label for="IdInquilino">Inquilino</label>
 
@@ -290,7 +290,7 @@ $mensajeOk = $mensajes[$_GET["ok"] ?? ""] ?? null;
 
                     </div>
 
-                    <div class="campo-inquilino">
+                    <div class="campo-inmueble">
 
                         <label for="IdInmueble">Inmueble</label>
 
@@ -324,7 +324,7 @@ $mensajeOk = $mensajes[$_GET["ok"] ?? ""] ?? null;
 
 
 
-                    <div class="campo-inquilino">
+                    <div class="campo-inmueble">
 
                         <label for="FechaInicio">Fecha de inicio</label>
 
@@ -336,7 +336,7 @@ $mensajeOk = $mensajes[$_GET["ok"] ?? ""] ?? null;
 
 
 
-                    <div class="campo-inquilino">
+                    <div class="campo-inmueble">
 
                         <label for="FechaFin">Fecha de vencimiento</label>
 
@@ -348,7 +348,7 @@ $mensajeOk = $mensajes[$_GET["ok"] ?? ""] ?? null;
 
 
 
-                    <div class="campo-inquilino">
+                    <div class="campo-inmueble">
 
                         <label for="ValorInicial">Valor inicial del alquiler</label>
 
@@ -362,7 +362,7 @@ $mensajeOk = $mensajes[$_GET["ok"] ?? ""] ?? null;
 
 
 
-                    <div class="campo-inquilino">
+                    <div class="campo-inmueble">
 
                         <label for="TipoAjuste">Tipo de ajuste</label>
 
@@ -384,7 +384,7 @@ $mensajeOk = $mensajes[$_GET["ok"] ?? ""] ?? null;
 
 
 
-                    <div class="campo-inquilino">
+                    <div class="campo-inmueble">
 
                         <label for="PorcentajeAjuste">
 

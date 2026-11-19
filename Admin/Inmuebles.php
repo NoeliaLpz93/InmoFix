@@ -50,13 +50,21 @@ $resultado = $stmt->get_result();
                     Agregar inmueble
                 </button>
 
-                <form method="GET" class="buscador">
-                    <input type="text" name="q" placeholder="Buscar por dirección" value="<?= htmlspecialchars($busqueda, ENT_QUOTES, 'UTF-8') ?>"
-                        <button type="submit">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                </form>
+            <form method="GET" class="buscador">
+
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Buscar por dirección"
+                    value="<?= htmlspecialchars($busqueda, ENT_QUOTES, 'UTF-8') ?>"
+                >
+
+                <button type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
             </div>
+            
     <!-- TARJETAS -->
             <div class="grid-inmuebles">
 

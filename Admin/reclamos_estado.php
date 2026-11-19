@@ -4,7 +4,7 @@ require "verificar_admin.php";
 require "conection.php";
 
 // Obtenemos el ID del reclamo desde la URL
-$id = (int) $_GET["id"];
+$id = (int) ($_POST["id"] ?? $_GET["id"] ?? 0);
 
 // Buscamos el estado actual del reclamo
 $sql = "SELECT Estado FROM Reclamos WHERE IdReclamo = ?";
@@ -26,14 +26,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $nuevoEstado = $_POST["estado"];
 
-    // Actualizamos el estado del reclamo
     $update = "UPDATE Reclamos SET Estado = ? WHERE IdReclamo = ?";
     $stmt = $conn->prepare($update);
     $stmt->bind_param("si", $nuevoEstado, $id);
     $stmt->execute();
     $stmt->close();
 
-    header("Location: reclamos_detalle.php?id=$id");
+    header("Location: Reclamos.php");
     exit();
 }
 ?>
