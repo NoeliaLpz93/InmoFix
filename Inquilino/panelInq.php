@@ -9,7 +9,7 @@ if (
     exit();
 }
 
-require_once "../conection.php";
+require_once "../Admin/conection.php";
 
 // Datos desde BD
 // Datos del inquilino
@@ -21,6 +21,10 @@ $nombre = ($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"] ?? "");
 $contrato_estado = "Sin contrato";
 $contrato_vencimiento = "No disponible";
 $inmueble = "Sin inmueble asignado";
+$reclamos_pendientes = 0;
+$reclamos_proceso = 0;
+$proximo_pago = "No disponible";
+$dias_restantes_contrato = null;
 
 // Buscar contrato e inmueble
 $sql = "SELECT
@@ -44,20 +48,71 @@ if ($datos = $resultado->fetch_assoc()) {
 
     $contrato_estado = $datos["Estado"];
 
-    $contrato_vencimiento = date(
-        "d/m/Y",
-        strtotime($datos["FechaFin"])
-    );
+    if (!empty($datos["FechaFin"])) {
+        $timestampFin = strtotime($datos["FechaFin"]);
+        $contrato_vencimiento = date("d/m/Y", $timestampFin);
+
+        $hoy = new DateTime(date("Y-m-d"));
+        $fin = new DateTime(date("Y-m-d", $timestampFin));
+        $dias_restantes_contrato = (int) $hoy->diff($fin)->format("%r%a");
+    }
 
     $inmueble = $datos["Direccion"];
 }
 
 $stmt->close();
 
-$notificaciones = [
-    "⚠️ Tu alquiler vence en 7 días",
-    "⚠️ Tenés un reclamo en proceso"
-];
+// Buscar reclamos pendientes y en proceso del inquilino
+$sqlReclamos = "SELECT
+                    SUM(CASE WHEN Estado = 'Pendiente' THEN 1 ELSE 0 END) AS pendientes,
+                    SUM(CASE WHEN Estado = 'En Proceso' THEN 1 ELSE 0 END) AS en_proceso
+                FROM reclamos
+                WHERE IdInquilino = ?";
+
+$stmtRec = $conn->prepare($sqlReclamos);
+$stmtRec->bind_param("i", $idInquilino);
+$stmtRec->execute();
+
+$resRec = $stmtRec->get_result();
+
+if ($filaRec = $resRec->fetch_assoc()) {
+    $reclamos_pendientes = (int) ($filaRec["pendientes"] ?? 0);
+    $reclamos_proceso = (int) ($filaRec["en_proceso"] ?? 0);
+}
+
+$stmtRec->close();
+
+// Notificaciones de la bd
+$notificaciones = [];
+
+if ($dias_restantes_contrato !== null) {
+    if ($dias_restantes_contrato < 0) {
+        $notificaciones[] = "⚠️ Tu contrato venció el " . $contrato_vencimiento;
+    } elseif ($dias_restantes_contrato === 0) {
+        $notificaciones[] = "⚠️ Tu alquiler vence hoy";
+    } elseif ($dias_restantes_contrato <= 30) {
+        $textoDia = $dias_restantes_contrato === 1 ? "día" : "días";
+        $notificaciones[] = "⚠️ Tu alquiler vence en " . $dias_restantes_contrato . " " . $textoDia;
+    }
+}
+
+if ($reclamos_proceso > 0) {
+    $textoRec = $reclamos_proceso === 1
+        ? "⚠️ Tenés 1 reclamo en proceso"
+        : "⚠️ Tenés " . $reclamos_proceso . " reclamos en proceso";
+    $notificaciones[] = $textoRec;
+}
+
+if ($reclamos_pendientes > 0) {
+    $textoPend = $reclamos_pendientes === 1
+        ? "⚠️ Tenés 1 reclamo pendiente de revisión"
+        : "⚠️ Tenés " . $reclamos_pendientes . " reclamos pendientes de revisión";
+    $notificaciones[] = $textoPend;
+}
+
+if (empty($notificaciones)) {
+    $notificaciones[] = "No tenés avisos urgentes por el momento.";
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -69,8 +124,9 @@ $notificaciones = [
     <!-- Iconos -->
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-   <!-- CSS -->
+    <!-- CSS -->
     <link rel="stylesheet" href="../Css/estilo.css?v=1">
+    <link rel="stylesheet" href="../Css/cssinquilinos.css?v=9">
 </head>
 
 <body>
@@ -78,17 +134,26 @@ $notificaciones = [
     <!-- HEADER -->
     <header class="panel-header">
 
-        <div></div>
+    <div></div>
 
-        <div class="panel-logo">
-            <img src="../img/inmofix-02.png" alt="Logo INMOFIX">
-        </div>
+    <div class="panel-logo">
+        <img src="../img/inmofix-02.png" alt="Logo INMOFIX">
+    </div>
 
-        <div class="panel-perfil">
+    <div class="panel-perfil-wrap">
+        <button type="button" class="panel-perfil" aria-label="Menú de usuario">
             <i class="fa-solid fa-user"></i>
-        </div>
+        </button>
 
-    </header>
+        <div class="panel-perfil-dropdown">
+            <a href="../Admin/logout.php" class="panel-perfil-item">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Cerrar sesión</span>
+            </a>
+        </div>
+    </div>
+
+</header>
 
     <!-- NAVBAR -->
     <nav class="nav-inquilino">
@@ -121,9 +186,9 @@ $notificaciones = [
 
                 <h3>Mi Contrato</h3>
 
-                <p><strong>Estado:</strong> <?= $contrato_estado ?></p>
+                <p><strong>Estado:</strong> <?= htmlspecialchars($contrato_estado) ?></p>
 
-                <p><strong>Vence:</strong> <?= $contrato_vencimiento ?></p>
+                <p><strong>Vence:</strong> <?= htmlspecialchars($contrato_vencimiento) ?></p>
 
             </div>
 
@@ -131,9 +196,9 @@ $notificaciones = [
 
                 <h3>Mis Reclamos</h3>
 
-                <p><strong>Pendientes:</strong> <?= $reclamos_pendientes ?></p>
+                <p><strong>Pendientes:</strong> <?= (int) $reclamos_pendientes ?></p>
 
-                <p><strong>En proceso:</strong> <?= $reclamos_proceso ?></p>
+                <p><strong>En proceso:</strong> <?= (int) $reclamos_proceso ?></p>
 
             </div>
 
@@ -141,7 +206,7 @@ $notificaciones = [
 
                 <h3>Mis Pagos</h3>
 
-                <p><strong>Próximo vencimiento:</strong> <?= $proximo_pago ?></p>
+                <p><strong>Próximo vencimiento:</strong> <?= htmlspecialchars($proximo_pago) ?></p>
 
             </div>
 
@@ -149,7 +214,7 @@ $notificaciones = [
 
                 <h3>Mi Inmueble</h3>
 
-                <p><?= $inmueble ?></p>
+                <p><?= htmlspecialchars($inmueble) ?></p>
 
             </div>
 
@@ -161,7 +226,7 @@ $notificaciones = [
 
             <?php foreach ($notificaciones as $n): ?>
 
-                <p><?= $n ?></p>
+                <p><?= htmlspecialchars($n) ?></p>
 
             <?php endforeach; ?>
 

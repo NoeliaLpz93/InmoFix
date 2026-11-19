@@ -1,0 +1,550 @@
+.inq-catalogo-titulo {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #e26d3b;
+    margin: 24px 0 22px;
+}
+
+.inq-buscador-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 30px;
+    max-width: 440px;
+    background: #eef4f7;
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid #dce6ec;
+}
+
+.inq-buscador-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 11px 18px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.92rem;
+    color: #2b2623;
+    outline: none;
+}
+
+.inq-buscador-input::placeholder {
+    color: #8c969c;
+}
+
+.inq-buscador-btn {
+    border: none;
+    background: transparent;
+    color: #24201e;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inq-buscador-btn:hover {
+    color: #e26d3b;
+}
+
+.inq-inmuebles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    max-width: 1120px;
+    margin: 0 auto 36px;
+}
+
+.inq-inmueble-card {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 22px rgba(43, 38, 35, 0.08);
+    border: 1px solid #f2e5dc;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inq-inmueble-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 26px rgba(43, 38, 35, 0.12);
+}
+
+.inq-inmueble-img {
+    width: 100%;
+    height: 195px;
+    object-fit: cover;
+    background-color: #f3e7df;
+    display: block;
+}
+
+.inq-inmueble-body {
+    padding: 14px 18px 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.inq-inmueble-dir {
+    margin: 0 0 4px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #24201e;
+}
+
+.inq-inmueble-tipo {
+    margin: 0 0 14px;
+    font-size: 0.88rem;
+    color: #7a726d;
+}
+
+.inq-inmueble-footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 4px;
+}
+
+.inq-btn-detalles {
+    text-decoration: none;
+    color: #e26d3b;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    transition: background-color 0.2s ease;
+}
+
+.inq-btn-detalles:hover {
+    background-color: #fce9de;
+}
+
+.inq-vacio-msg {
+    max-width: 600px;
+    margin: 0 auto 36px;
+    text-align: center;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 28px 20px;
+    color: #5c544f;
+    font-size: 0.95rem;
+    border: 1px solid #f2e5dc;
+}
+
+@media (max-width: 960px) {
+    .inq-inmuebles-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .inq-inmuebles-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* ===== FICHA CONTRATO INQUILINO (SIN TARJETAS REPETITIVAS) ===== */
+.inq-contrato-wrap {
+    max-width: 980px;
+    margin: 26px auto 44px;
+    padding: 0 16px;
+}
+
+.inq-contrato-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.inq-contrato-titulo {
+    margin: 0;
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: #e26d3b;
+}
+
+.inq-btn-imprimir {
+    border: 1px solid #e26d3b;
+    background: #ffffff;
+    color: #e26d3b;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 8px 15px;
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.inq-btn-imprimir:hover {
+    background: #e26d3b;
+    color: #ffffff;
+}
+
+.inq-ficha-doc {
+    background: #ffffff;
+    border: 1px solid #eadad0;
+    border-radius: 14px;
+    padding: 28px 32px;
+}
+
+.inq-ficha-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 18px;
+    border-bottom: 2px solid #f4e7df;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.inq-ficha-sub {
+    margin: 4px 0 0;
+    font-size: 0.9rem;
+    color: #6f6660;
+}
+
+.inq-ficha-seccion {
+    margin-bottom: 26px;
+}
+
+.inq-ficha-seccion:last-child {
+    margin-bottom: 0;
+}
+
+.inq-ficha-seccion-titulo {
+    margin: 0 0 12px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #c86d51;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #f5ece6;
+}
+
+.inq-ficha-lista {
+    margin: 0;
+}
+
+.inq-ficha-fila {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 10px 4px;
+    border-bottom: 1px solid #f7f0eb;
+    font-size: 0.95rem;
+}
+
+.inq-ficha-fila:last-child {
+    border-bottom: none;
+}
+
+.inq-ficha-fila dt {
+    font-weight: 600;
+    color: #3a3430;
+}
+
+.inq-ficha-fila dd {
+    margin: 0;
+    color: #4f4844;
+    text-align: right;
+}
+
+.inq-ficha-inmueble-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 24px;
+    align-items: center;
+    padding-top: 6px;
+}
+
+.inq-ficha-foto {
+    width: 100%;
+    height: 145px;
+    object-fit: cover;
+    border-radius: 10px;
+    background: #f3e7df;
+    display: block;
+}
+
+@media (max-width: 720px) {
+    .inq-ficha-doc {
+        padding: 20px;
+    }
+
+    .inq-ficha-inmueble-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .inq-ficha-fila {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .inq-ficha-fila dd {
+        text-align: left;
+    }
+}
+
+@media print {
+    .panel-header,
+    .nav-inquilino,
+    .inq-btn-imprimir {
+        display: none !important;
+    }
+
+    .inq-ficha-doc {
+        border: none;
+        padding: 0;
+    }
+}
+
+/* ===== RECLAMOS INQUILINO ===== */
+.inq-reclamos-wrap {
+    max-width: 980px;
+    margin: 26px auto 44px;
+    padding: 0 16px;
+}
+
+.inq-reclamos-titulo {
+    text-align: center;
+    margin: 0 0 24px;
+    font-size: 2.15rem;
+    font-weight: 700;
+    color: #e26d3b;
+}
+
+.inq-reclamo-panel {
+    background: #fdf0e8;
+    border: 1px solid #f2dfd3;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 28px;
+    box-shadow: 0 6px 18px rgba(43, 38, 35, 0.05);
+}
+
+.inq-reclamo-panel-head {
+    background: #ece7e3;
+    padding: 13px 22px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #24201e;
+}
+
+.inq-reclamo-panel-body {
+    padding: 20px 24px 24px;
+}
+
+.inq-reclamo-inmueble-linea {
+    margin: 0 0 18px;
+    font-size: 0.96rem;
+    color: #2b2623;
+}
+
+.inq-reclamo-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 20px;
+    margin-bottom: 16px;
+}
+
+.inq-campo-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.inq-campo-grupo label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2b2623;
+}
+
+.inq-control-input,
+.inq-control-select,
+.inq-control-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.92rem;
+    color: #2b2623;
+    background: #ffffff;
+    border: 1px solid #dfd0c5;
+    border-radius: 10px;
+    padding: 10px 13px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inq-control-input:focus,
+.inq-control-select:focus,
+.inq-control-textarea:focus {
+    border-color: #e26d3b;
+    box-shadow: 0 0 0 3px rgba(226, 109, 59, 0.14);
+}
+
+.inq-control-textarea {
+    min-height: 110px;
+    resize: vertical;
+    line-height: 1.45;
+}
+
+.inq-form-acciones {
+    margin-top: 18px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.inq-btn-enviar {
+    border: none;
+    background: #e26d3b;
+    color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 10px 22px;
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.inq-btn-enviar:hover {
+    background: #c85a2b;
+    transform: translateY(-1px);
+}
+
+.inq-subtitulo-seccion {
+    margin: 0 0 16px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #24201e;
+}
+
+.inq-reclamos-lista {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.inq-reclamo-item {
+    background: #fdf0e8;
+    border: 1px solid #f2dfd3;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(43, 38, 35, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.inq-reclamo-item-head {
+    background: #ece7e3;
+    padding: 12px 18px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #24201e;
+}
+
+.inq-reclamo-item-body {
+    padding: 16px 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-size: 0.92rem;
+    color: #3a3430;
+}
+
+.inq-reclamo-item-body p {
+    margin: 0;
+}
+
+.inq-reclamo-desc {
+    margin-top: 8px !important;
+    padding-top: 10px;
+    border-top: 1px solid #edd9cc;
+    color: #2b2623;
+    line-height: 1.45;
+}
+
+@media (max-width: 780px) {
+    .inq-reclamo-form-grid,
+    .inq-reclamos-lista {
+        grid-template-columns: 1fr;
+    }
+}
+/* ===== MENÚ PERFIL CERRAR SESIÓN (SOLO CSS) ===== */
+.panel-perfil-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    justify-self: end;
+}
+
+.panel-perfil {
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel-perfil-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: -12px;
+    min-width: 185px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 6px;
+    box-shadow: 0 10px 26px rgba(24, 39, 51, 0.16);
+    border: 1px solid #ece6e2;
+    z-index: 999;
+}
+
+.panel-perfil-wrap:hover .panel-perfil-dropdown,
+.panel-perfil-wrap:focus-within .panel-perfil-dropdown {
+    display: block;
+}
+
+.panel-perfil-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #5c5652;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.panel-perfil-item i {
+    color: #0b6b94;
+    font-size: 1rem;
+}
+
+.panel-perfil-item:hover {
+    background: #fdf0e8;
+    color: #24201e;
+}
